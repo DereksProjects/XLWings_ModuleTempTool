@@ -3,6 +3,6 @@
 #	Ignore all the processed pickles 
 #################
 
-RawData/*
-Pandas_Pickle_DataFrames/*
+RawData/
+Pandas_Pickle_DataFrames/
 README.docx
