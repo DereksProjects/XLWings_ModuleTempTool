@@ -95,6 +95,15 @@ def universalTimeCorrected(dateTimeObj, hoursAheadOrBehind):
 
 
 
+def dayOfYear():
+    dayOfYearDif = 365/8760
+    
+    dayOfYear_list = [float(0)]
+    
+    for i in range(8759):
+        dayOfYear_list.append(dayOfYear_list[i] + dayOfYearDif)
+    
+    return pd.DataFrame(dayOfYear_list) 
 
 
 
@@ -175,6 +184,10 @@ def cleanedFrame( firstRow_summary_df, fileNames , index ):
     level_1_df['Hourly Local Solar Time'] = level_1_df['Local Solar Time'].apply(lambda x: x.hour + (x.minute/60))
     #We also need the hourly local time in minutes
     level_1_df['Minutes Local Solar Time'] = level_1_df['Local Solar Time'].apply(lambda x: x.hour*60  + x.minute)
+    #Calculalte the dayOfYear i.e. 365/8760 per hour of a year
+    level_1_df['Day of Year'] = dayOfYear()
+    
+    
     ################################################################
     # Slight Clean up the frame before processing 
     
@@ -187,6 +200,7 @@ def cleanedFrame( firstRow_summary_df, fileNames , index ):
                                                'Hourly Local Solar Time',
                                                'Minutes Local Solar Time',
                                                'Universal Date Time',
+                                               'Day of Year',
                                                'Albedo', 
                                                'Corrected Albedo',
                                                'Global horizontal irradiance',
@@ -206,8 +220,6 @@ def cleanedFrame( firstRow_summary_df, fileNames , index ):
     
     
     return level_1_df  
-
-
 
 
 
@@ -234,12 +246,64 @@ latitude = float(firstRow_summary_df.loc[83]['Site latitude'])
 longitude = float(firstRow_summary_df.loc[83]['Site longitude']) 
 
 
-test = cleanedFrame( firstRow_summary_df , fileNames , 83 )
+level_1_df = cleanedFrame( firstRow_summary_df , fileNames , 83 )
 
 
 
 
 
+
+
+
+
+'''
+
+DONE
+Create a day of year column for 365/8760 to match mikes column for AOI calculation
+
+
+
+
+
+Angle of incidence(radians)
+
+B7 = Day of Year
+G1 = latitude
+I1 = latitude (array tilt)
+L1 = Azimuth, usually 180 degrees facing south
+
+=+ACOS(SIN(23.45*PI()/180*SIN(2*PI()*(284+B7)/365.25))*
+SIN($G$1*PI()/180)*COS($I$1*PI()/180)+SIN(23.45*PI()/180*
+SIN(2*PI()*(284+B7)/365.25))*COS($G$1*PI()/180)*
+SIN($I$1*PI()/180)*COS($L$1*PI()/180)+COS(23.45*PI()/180*
+SIN(2*PI()*(284+B7)/365.25))*COS($G$1*PI()/180)*COS($I$1*PI()/180)*
+COS((B7-TRUNC(B7))*PI()*2-PI())-COS(23.45*PI()/180*SIN(2*PI()*
+(284+B7)/365.25))*SIN($G$1*PI()/180)*SIN($I$1*PI()/180)*COS($L$1*PI()/180)
+*COS((B7-TRUNC(B7))*PI()*2-PI())-COS(23.45*PI()/180*SIN(2*PI()*
+(284+B7)/365.25))*SIN($I$1*PI()/180)*SIN($L$1*PI()/180)*
+SIN((B7-TRUNC(B7))*PI()*2-PI()))
+
+
+
+
+
+Plane of Irradiance (1st calculation) V column on excel
+
+P7= AOI     NEED to CLACULATE BEFORE
+G8 = DNI
+H8 = DHI
+F8 = GHI
+O8 = Corrected Albedo, his is at .15 not... .133
+I1 = latitude "array tilt"
+
+
+=+IF(COS(P7)>0,(G8+G7)*COS(P7)/2+(H8+H7)*
+(1+COS($I$1*PI()/180))/4+(F8+F7)*O7*(1-COS($I$1*PI()/180))/4,
+
+else
+(H8+H7)*(1+COS($I$1*PI()/180))/4+(F8+F7)*O7*(1-COS($I$1*PI()/180))/4)
+
+'''
 
 
 
