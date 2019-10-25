@@ -324,10 +324,44 @@ level_1_df['Angle of incidence(pvLib)'] = aoiRadians['aoi'].values
 ##############################################################################
 
 
+def kempePOA_1( level_1_df , surface_tilt ):
 
-
-
-
+    poa_list = []
+    
+    for i in range( 0, len(level_1_df.index)):  
+        #If you get up to the second last row 
+        if i != len(level_1_df.index)-1: 
+            #Do mikes average of irradiances
+            if np.cos(level_1_df.iloc[i]['Angle of incidence(Kempe)']) > 0:
+                pOA = (level_1_df.iloc[i+1]['Direct normal irradiance']+level_1_df.iloc[i]['Direct normal irradiance'])\
+                      *np.cos(level_1_df.iloc[i]['Angle of incidence(Kempe)'])/2+\
+                      (level_1_df.iloc[i+1]['Diffuse horizontal irradiance']+level_1_df.iloc[i]['Diffuse horizontal irradiance'])*\
+                      (1+np.cos(surface_tilt*np.pi/180))/4+\
+                      (level_1_df.iloc[i+1]['Global horizontal irradiance']+level_1_df.iloc[i]['Global horizontal irradiance'])\
+                      *level_1_df.iloc[i]['Corrected Albedo']*\
+                      (1-np.cos(surface_tilt*np.pi/180))/4
+                poa_list.append(pOA)
+            
+            else:
+                pOA = (level_1_df.iloc[i+1]['Diffuse horizontal irradiance']+\
+                       level_1_df.iloc[i]['Diffuse horizontal irradiance'])*\
+                       (1+np.cos(surface_tilt*np.pi/180))/4+(level_1_df.iloc[i+1]['Global horizontal irradiance']+\
+                       level_1_df.iloc[i]['Global horizontal irradiance'])*\
+                       level_1_df.iloc[i]['Corrected Albedo']*(1-np.cos(surface_tilt*np.pi/180))/4
+                poa_list.append(pOA)
+    
+        #If your on the last row (hour 8760) then there is no averages to take
+        else:
+            pOA = (level_1_df.iloc[i]['Diffuse horizontal irradiance'])*\
+                  (1+np.cos(surface_tilt*np.pi/180))/4+\
+                  (level_1_df.iloc[i]['Global horizontal irradiance'])\
+                  *level_1_df.iloc[i]['Corrected Albedo']*\
+                  (1-np.cos(surface_tilt*np.pi/180))/4
+            poa_list.append(pOA)    
+    level_1_df['Kempe POA'] = poa_list
+    return level_1_df
+    
+level_1_df = kempePOA_1( level_1_df , surface_tilt )    
 
 
 '''
@@ -335,7 +369,7 @@ level_1_df['Angle of incidence(pvLib)'] = aoiRadians['aoi'].values
 
 Plane of Irradiance (1st calculation) V column on excel
 
-P7= AOI     NEED to CLACULATE BEFORE
+P7= AOI     NEED to CALCULATE BEFORE
 G8 = DNI
 H8 = DHI
 F8 = GHI
