@@ -518,6 +518,9 @@ def level_1_df_toPickle( currentDirectory ):
         else:
             surface_azimuth = 180
             
+        # Set the suface tilt to the latitude   
+        # PVlib requires the latitude tilt to always be positve for its irradiance calculations
+        surface_tilt = abs(latitude)        
             
         # Import the raw dataframe of the individual location to clean and process
         raw_df = pd.read_pickle( path + '\\Pandas_Pickle_DataFrames\\Pickle_RawData\\' + fileNames[i])
@@ -663,9 +666,7 @@ def level_1_df_toPickle( currentDirectory ):
             #poa_sky_diffuse 
             #poa_ground_diffuse
             
-        # Set the suface tilt to the latitude   
-        # PVlib requires the latitude tilt to always be positve for its irradiance calculations
-        surface_tilt = abs(latitude)     
+ 
  
         totalIrradiance_df = pvlib.irradiance.get_total_irradiance(surface_tilt, 
                                                                          surface_azimuth, 

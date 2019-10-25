@@ -13,6 +13,7 @@ import os
 from Calculate_Solar_Time import localTimeToSolarTime
 import datetime as dt
 from datetime import datetime, timedelta
+import numpy as np
 
 '''
 HELPER METHOD
@@ -100,11 +101,49 @@ def dayOfYear():
     
     dayOfYear_list = [float(0)]
     
+    # iterate and add the difference of time to a list being 8760 "hours in a year"
     for i in range(8759):
         dayOfYear_list.append(dayOfYear_list[i] + dayOfYearDif)
     
     return pd.DataFrame(dayOfYear_list) 
 
+
+
+'''
+Calculate the angle of incidence
+
+Angle of Incidence (radians) calculations derived from Mike Kempe's model on Miami, FL Data Spreadsheet.
+Data for spreadsheet came from TMY3 722020TYA.csv
+
+
+
+param@ dayOfYear        -float, day of the year as "hours in a year" i.e 365days/8760hours
+param@ surface_tilt     -float, tilt of solar module
+param@ latitude         -float, latitude coordinate (Decimal Degree, negative south)
+param@ surface_azimuth  -int, azimuth of solar module (0-360 degrees)
+
+return@ aOI             -float, angle of incidence
+
+'''
+
+def kempeAOIcalc(dayOfYear , surface_tilt , latitude , surface_azimuth ):
+       
+    aOI = np.arccos( np.sin(23.45*np.pi/180*np.sin(2*np.pi*(284+dayOfYear)/365.25))\
+                    *np.sin(latitude*np.pi/180)*np.cos(surface_tilt*np.pi/180)+\
+                    np.sin(23.45*np.pi/180*np.sin(2*np.pi*(284+dayOfYear)/365.25))\
+                    *np.cos(latitude*np.pi/180)*np.sin(surface_tilt*np.pi/180)*\
+                    np.cos(surface_azimuth*np.pi/180)+np.cos(23.45*np.pi/180*\
+                    np.sin(2*np.pi*(284+dayOfYear)/365.25))*np.cos(latitude*np.pi/180)\
+                    *np.cos(surface_tilt*np.pi/180)*np.cos((dayOfYear-np.trunc(dayOfYear))*\
+                    np.pi*2-np.pi)-np.cos(23.45*np.pi/180*np.sin(2*np.pi*(284+dayOfYear)\
+                    /365.25))*np.sin(latitude*np.pi/180)*np.sin(surface_tilt*np.pi/180)\
+                    *np.cos(surface_azimuth*np.pi/180)*np.cos((dayOfYear-\
+                    np.trunc(dayOfYear))*np.pi*2-np.pi)-np.cos(23.45*np.pi/180*\
+                    np.sin(2*np.pi*(284+dayOfYear)/365.25))*np.sin(surface_tilt*\
+                    np.pi/180)*np.sin(surface_azimuth*np.pi/180)*np.sin((dayOfYear\
+                    -np.trunc(dayOfYear))*np.pi*2-np.pi)  )
+
+    return aOI
 
 
 def cleanedFrame( firstRow_summary_df, fileNames , index ):    
@@ -245,33 +284,36 @@ firstRow_summary_df['Site elevation (km)'] = firstRow_summary_df['Site elevation
 latitude = float(firstRow_summary_df.loc[83]['Site latitude']) 
 longitude = float(firstRow_summary_df.loc[83]['Site longitude']) 
 
+surface_tilt = abs(latitude)
 
 level_1_df = cleanedFrame( firstRow_summary_df , fileNames , 83 )
 
+#If the latitude is in the southern hemisphere of the globe then surface azimuth of the panel must be 0 degrees
+if latitude <= 0:
+    surface_azimuth = 0
+# If the latitude is in the northern hemisphere set the panel azimuth to 180
+else:
+    surface_azimuth = 180
 
 
 
 
 
+test = kempeAOIcalc(0 , surface_tilt , latitude , surface_azimuth )
 
-
+level_1_df['Angle of incidence(Kempe)'] = level_1_df.apply(lambda x: kempeAOIcalc(x['Day of Year'] , surface_tilt , latitude , surface_azimuth ), axis=1)
 
 '''
-
-DONE
-Create a day of year column for 365/8760 to match mikes column for AOI calculation
-
-
-
-
 
 Angle of incidence(radians)
 
 B7 = Day of Year
 G1 = latitude
-I1 = latitude (array tilt)
+I1 = surface_tilt (array tilt)
 L1 = Azimuth, usually 180 degrees facing south
 
+=+ "THis is a carry over from different versions of excel to write a function"
+    
 =+ACOS(SIN(23.45*PI()/180*SIN(2*PI()*(284+B7)/365.25))*
 SIN($G$1*PI()/180)*COS($I$1*PI()/180)+SIN(23.45*PI()/180*
 SIN(2*PI()*(284+B7)/365.25))*COS($G$1*PI()/180)*
@@ -294,7 +336,7 @@ G8 = DNI
 H8 = DHI
 F8 = GHI
 O8 = Corrected Albedo, his is at .15 not... .133
-I1 = latitude "array tilt"
+I1 = surface_tilt "array tilt"
 
 
 =+IF(COS(P7)>0,(G8+G7)*COS(P7)/2+(H8+H7)*
