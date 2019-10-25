@@ -14,7 +14,8 @@ from Calculate_Solar_Time import localTimeToSolarTime
 import datetime as dt
 from datetime import datetime, timedelta
 import numpy as np
-
+import pvlib
+import math
 '''
 HELPER METHOD
 
@@ -94,6 +95,8 @@ def universalTimeCorrected(dateTimeObj, hoursAheadOrBehind):
     return universalTime
 
 
+def degreesToRadians( degrees ):
+    return math.radians( degrees / math.pi)
 
 
 def dayOfYear():
@@ -268,7 +271,7 @@ path = r'C:\Users\DHOLSAPP\Desktop\Weather_DatabaseAddingModuleTempRackRanges'
 fileNames = filesNameList_RawPickle( path )
 
 
-
+raw_df = pd.read_pickle( path + '\\Pandas_Pickle_DataFrames\\Pickle_RawData\\' + fileNames[83])
 firstRow_summary_df = pd.read_pickle( path + '\\Pandas_Pickle_DataFrames\\Pickle_FirstRows\\firstRowSummary_Of_CSV_Files.pickle')
 
 #SITE ELEVATION, sub frame needed for calculating the dew yield
@@ -296,37 +299,38 @@ else:
     surface_azimuth = 180
 
 
-
-
-
-test = kempeAOIcalc(0 , surface_tilt , latitude , surface_azimuth )
-
+###################################################################################
+#Calculate the AOI with Kempe Model
 level_1_df['Angle of incidence(Kempe)'] = level_1_df.apply(lambda x: kempeAOIcalc(x['Day of Year'] , surface_tilt , latitude , surface_azimuth ), axis=1)
 
+
+
+
+#Compare Kempe AOI model to pvLib
+solarPosition_df = pvlib.solarposition.get_solarposition( level_1_df['Universal Date Time'], 
+                                                                         latitude, 
+                                                                         longitude, 
+                                                                         altitude=None, 
+                                                                         pressure=None, 
+                                                                         method='nrel_numba' ) 
+# Calculates the angle of incidence of the solar vector on a surface. 
+# This is the angle between the solar vector and the surface normal.
+aoi = pvlib.irradiance.aoi(surface_tilt, surface_azimuth,
+                           solarPosition_df['apparent_zenith'], solarPosition_df['azimuth'])
+
+#aoi['aoi (radians)'] = aoi.apply(lambda x: degreesToRadians(x['aoi'], axis=1)
+aoiRadians = np.radians(aoi).to_frame()
+level_1_df['Angle of incidence(pvLib)'] = aoiRadians['aoi'].values
+##############################################################################
+
+
+
+
+
+
+
+
 '''
-
-Angle of incidence(radians)
-
-B7 = Day of Year
-G1 = latitude
-I1 = surface_tilt (array tilt)
-L1 = Azimuth, usually 180 degrees facing south
-
-=+ "THis is a carry over from different versions of excel to write a function"
-    
-=+ACOS(SIN(23.45*PI()/180*SIN(2*PI()*(284+B7)/365.25))*
-SIN($G$1*PI()/180)*COS($I$1*PI()/180)+SIN(23.45*PI()/180*
-SIN(2*PI()*(284+B7)/365.25))*COS($G$1*PI()/180)*
-SIN($I$1*PI()/180)*COS($L$1*PI()/180)+COS(23.45*PI()/180*
-SIN(2*PI()*(284+B7)/365.25))*COS($G$1*PI()/180)*COS($I$1*PI()/180)*
-COS((B7-TRUNC(B7))*PI()*2-PI())-COS(23.45*PI()/180*SIN(2*PI()*
-(284+B7)/365.25))*SIN($G$1*PI()/180)*SIN($I$1*PI()/180)*COS($L$1*PI()/180)
-*COS((B7-TRUNC(B7))*PI()*2-PI())-COS(23.45*PI()/180*SIN(2*PI()*
-(284+B7)/365.25))*SIN($I$1*PI()/180)*SIN($L$1*PI()/180)*
-SIN((B7-TRUNC(B7))*PI()*2-PI()))
-
-
-
 
 
 Plane of Irradiance (1st calculation) V column on excel
