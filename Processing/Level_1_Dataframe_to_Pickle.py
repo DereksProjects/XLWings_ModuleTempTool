@@ -1100,7 +1100,7 @@ def level_1_df_toPickle( currentDirectory ):
                                                          'Annual Liquid Percipitation Depth (mm)',
                                                          'Average of Yearly Water Vapor Pressure(kPa)',
                                                          'Sum of Yearly Water Vapor Pressure(kPa)',
-                                                         "Annual number of Hours Relative Humidity >= to 85%",
+                                                         "Annual number of Hours ambient Relative Humidity > to 85%",
                                                          'Sum of Yearly Dew(mmd-1)',
 
                                                          'Annual Average (98th Percentile) Cell Temperature__open_rack_cell_glassback (C)', 
