@@ -7,8 +7,8 @@ Created on Mon Oct 28 08:41:38 2019
 import datetime as dt
 from datetime import timedelta
 import pandas as pd
-from Calculate_Solar_Time import localTimeToSolarTime
-
+from Processing.Calculate_Solar_Time import localTimeToSolarTime
+#from Calculate_Solar_Time import localTimeToSolarTime
 
 
 class firstClean:
