@@ -23,7 +23,7 @@ import zipfile       # Package used to unzip files in a directory
 
 from Processing.rawDataImport import rawDataImport
 from Processing.Level_1_Dataframe_to_Pickle import outputFrame
-from Processing.Map_Pickle_Processing import process_Map_Pickle
+from Processing.mapProcessing import mapProcessing
 
 from SearchOutput.RawDataSearch_and_FirstRow_SummaryReport import dataSummaryFrame , filesNameList, dataSummaryFramePostProcess, stringList_UniqueID_List
 from SearchOutput.Closest_Lat_Long import closestLocationFrame
@@ -394,7 +394,7 @@ def createMap_Pickles( currentDirectory ):
     # The level_1_df_toPickle() will process raw data for irradiance and store 
     #   each location as a pickle in \Pandas_Pickle_DataFrames\Pickle_Level1
     # This is the largest computation currently
-    process_Map_Pickle(currentDirectory)
+    mapProcessing.process_Map_Pickle(currentDirectory)
 
     # User feedback
     myWorkBook.sheets[mySheet].range(76,4).value = "All Files Sucessfully Saved"
