@@ -37,7 +37,7 @@ def outputMapTemp(path , mapSelect):
     #Select which solar module temperature calculation the user would like to see
     
     if mapSelect == 'open_rack_cell_glassback':
-        moduleType = 'Average (98th Percentile) Module Temperature__open_rack_cell_glassback (C)'
+        moduleType = 'Annual Average (98th Percentile) Module Temperature__open_rack_cell_glassback (C)'
         chartHeader = 'Open Rack Cell Glass Back'
         htmlString = '_open_rack_cell_glassback'
         colorSelector = 'Spectral6'
@@ -46,7 +46,7 @@ def outputMapTemp(path , mapSelect):
         mapScaleLower = 20
         
     elif mapSelect == 'roof_mount_cell_glassback':
-        moduleType = 'Average (98th Percentile) Module Temperature__roof_mount_cell_glassback (C)'
+        moduleType = 'Annual Average (98th Percentile) Module Temperature__roof_mount_cell_glassback (C)'
         chartHeader = 'Roof Mount Cell Glass Back'
         htmlString = '_roof_mount_cell_glassback'
         colorSelector = 'Spectral6'
@@ -55,7 +55,7 @@ def outputMapTemp(path , mapSelect):
         mapScaleLower = 20
         
     elif mapSelect == 'open_rack_cell_polymerback':
-        moduleType = 'Average (98th Percentile) Module Temperature__open_rack_cell_polymerback (C)'
+        moduleType = 'Annual Average (98th Percentile) Module Temperature__open_rack_cell_polymerback (C)'
         chartHeader = 'Open Rack Cell Polymer Back'
         htmlString = '_open_rack_cell_polymerback'
         colorSelector = 'Spectral6'
@@ -64,7 +64,7 @@ def outputMapTemp(path , mapSelect):
         mapScaleLower = 20
         
     elif mapSelect == 'insulated_back_polymerback':
-        moduleType = 'Average (98th Percentile) Module Temperature__insulated_back_polymerback (C)'
+        moduleType = 'Annual Average (98th Percentile) Module Temperature__insulated_back_polymerback (C)'
         chartHeader = 'Insulated Back Polymer Back'
         htmlString = '_insulated_back_polymerback'
         colorSelector = 'Spectral6'
@@ -73,7 +73,7 @@ def outputMapTemp(path , mapSelect):
         mapScaleLower = 20
         
     elif mapSelect == 'open_rack_polymer_thinfilm_steel':
-        moduleType = 'Average (98th Percentile) Module Temperature__open_rack_polymer_thinfilm_steel (C)'
+        moduleType = 'Annual Average (98th Percentile) Module Temperature__open_rack_polymer_thinfilm_steel (C)'
         chartHeader = 'Open Rack Polymer Thin Film Steel'
         htmlString = '_open_rack_polymer_thinfilm_steel'
         colorSelector = 'Spectral6' 
@@ -82,7 +82,7 @@ def outputMapTemp(path , mapSelect):
         mapScaleLower = 20
         
     elif mapSelect == '22x_concentrator_tracker':
-        moduleType = 'Average (98th Percentile) Module Temperature__22x_concentrator_tracker (C)'
+        moduleType = 'Annual Average (98th Percentile) Module Temperature__22x_concentrator_tracker (C)'
         chartHeader = '22x Concentrator Tracker'
         htmlString = '_22x_concentrator_tracker'
         colorSelector = 'Spectral6'
@@ -219,9 +219,9 @@ def outputMapTemp(path , mapSelect):
 
 
 #TESTING ENVIRONMENT
-#path = r'C:\Users\DHOLSAPP\Desktop\Summer_Project\WithRawIWECfile_Proprietary\Python'
+#path = r'C:\Users\DHOLSAPP\Desktop\XLWings_ModuleTempTool'
 #outputMapTemp(path , 'open_rack_cell_glassback')
-
+#mapSelect = 'open_rack_cell_glassback'
 
 
 
