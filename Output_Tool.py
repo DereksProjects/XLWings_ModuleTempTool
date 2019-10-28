@@ -22,11 +22,11 @@ import zipfile       # Package used to unzip files in a directory
 # All imports beyond this point are helper methods found in the designated .py files
 
 from Processing.rawDataImport import rawDataImport
-from Processing.Level_1_Dataframe_to_Pickle import outputFrame
+from Processing.finalOutputFrame import finalOutputFrame
 from Processing.mapProcessing import mapProcessing
 
-from Processing.RawDataSearch_and_FirstRow_SummaryReport import dataSummaryFrame , filesNameList, dataSummaryFramePostProcess, stringList_UniqueID_List
-from Processing.Closest_Lat_Long import closestLocationFrame
+from Processing.cleanRawOutput import cleanRawOutput
+from Processing.closestLatLon import closestLatLon
 
 from Map.MapTemperature import outputMapTemp
 from Map.MapDewYield import outputMapDew
@@ -341,7 +341,7 @@ def createLevel_1_Pickles( currentDirectory ):
     # The level_1_df_toPickle() will process raw data for irradiance and store 
     #   each location as a pickle in \Pandas_Pickle_DataFrames\Pickle_Level1
     # This is the largest computation currently
-    outputFrame.level_1_df_toPickle( currentDirectory )
+    finalOutputFrame.level_1_df_toPickle( currentDirectory )
 
     # User feedback
     myWorkBook.sheets[mySheet].range(64,4).value = "All Files Sucessfully Saved"
@@ -432,7 +432,7 @@ def outputFileSummary( currentDirectory ):
     
     
     # create a summary data frame from the helper method
-    summary_df = dataSummaryFrame( path )
+    summary_df = cleanRawOutput.dataSummaryFrame( path )
 
     # Pull out the column names
     columnHeaders_list = list(summary_df)  
@@ -473,7 +473,7 @@ def outputFileSummaryPostProcess( currentDirectory ):
     
     
     # create a summary data frame from the helper method
-    summary_df = dataSummaryFramePostProcess( path )
+    summary_df = cleanRawOutput.dataSummaryFramePostProcess( path )
 
     # Pull out the column names
     columnHeaders_list = list(summary_df)  
@@ -523,13 +523,13 @@ def searchRawPickle_Output( currentDirectory , userInput):
     
     
     # Get the file name of each raw data pickle,  the unique identifier is inside this list
-    rawfileNames = filesNameList( path )
+    rawfileNames = cleanRawOutput.filesNameList( path )
     
     # Reference the summary frame to pull out the user Input row and display
-    summary_df = dataSummaryFrame( path )
+    summary_df = cleanRawOutput.dataSummaryFrame( path )
     
     #Create a list of unique identifiers for the file string names "See helper functions"
-    uniqueID_List = stringList_UniqueID_List(rawfileNames)
+    uniqueID_List = cleanRawOutput.stringList_UniqueID_List(rawfileNames)
     
     
     booleanSearch = summary_df["Site Identifier Code"].str.find(userInput) 
@@ -611,13 +611,13 @@ def search_Level1_Pickle_Output( currentDirectory , userInput):
     
     
     # Get the file name of each raw data pickle,  the unique identifier is inside this list
-    rawfileNames = filesNameList( path )
+    rawfileNames = cleanRawOutput.filesNameList( path )
     
     # Reference the summary frame to pull out the user Input row and display
-    summary_df = dataSummaryFrame( path )
+    summary_df = cleanRawOutput.dataSummaryFrame( path )
     
     #Create a list of unique identifiers for the file string names "See helper functions"
-    uniqueID_List = stringList_UniqueID_List(rawfileNames)
+    uniqueID_List = cleanRawOutput.stringList_UniqueID_List(rawfileNames)
     
     booleanSearch = summary_df["Site Identifier Code"].str.find(userInput) 
     for r in range( 0 , len(booleanSearch)):
@@ -702,7 +702,7 @@ def closest_Cities( currentDirectory ,  lat1 , lon1 ):
     myWorkBook.sheets[mySheet].range(7,12).value = "Longitude"
     myWorkBook.sheets[mySheet].range(8,12).value = lon1
     
-    closestLocation_df , columnNames_list = closestLocationFrame( currentDirectory ,  lat1 , lon1 )
+    closestLocation_df , columnNames_list = closestLatLon.closestLocationFrame( currentDirectory ,  lat1 , lon1 )
     
     myWorkBook.sheets[mySheet].range(11,3).value = closestLocation_df.values.tolist()
     

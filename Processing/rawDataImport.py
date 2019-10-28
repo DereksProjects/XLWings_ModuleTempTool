@@ -22,7 +22,7 @@ import glob
 import pandas as pd
 import os 
 import io
-from Processing.RawDataSearch_and_FirstRow_SummaryReport  import stringList_UniqueID_List
+from Processing.cleanRawOutput  import cleanRawOutput
 
 try:
     # python 2 compatibility
@@ -219,7 +219,7 @@ class rawDataImport:
             #Helper method, deltes NA data and renames column headers
             if len(csv_df.columns) == 71:
                 csv_df = csv_df.drop(['PresWth source','PresWth uncert (code)'], axis=1)
-            csv_df = RenameFrame(csv_df)
+            csv_df = rawDataImport.RenameFrame(csv_df)
             dataFrameCsvlist.append(csv_df) # Keep adding dataframes to the end of the list
     
     ############################################################################
@@ -229,7 +229,7 @@ class rawDataImport:
         #Create a list of dataframes for csv files
         for i in range( 0 , len( allEpwFiles ) ):  
             # Use helper method to convert the EPW file to a dataframe
-            epw_df = read_epw_df(allEpwFiles[i] , coerce_year=None)
+            epw_df = rawDataImport.read_epw_df(allEpwFiles[i] , coerce_year=None)
             #Put the datetime objects into their own column by reseting the index
             epw_df.reset_index(inplace=True)
             #Convert the pandas time series to MM/DD/YYYY format
@@ -350,12 +350,12 @@ class rawDataImport:
     
     def createPickleFiles( path ):
         
-        dataFrames = filesToDataFrame( path ) 
+        dataFrames = rawDataImport.filesToDataFrame( path ) 
         
         #Pull out the file names from the file path(.csv files) and return a list of file names without .csv extension
-        fileNames = filesNameListCSV_EPW( path )
+        fileNames = rawDataImport.filesNameListCSV_EPW( path )
         # Convert the fileNames to have a .pickle extention
-        pickleStringList = pickleNameList( fileNames )
+        pickleStringList = rawDataImport.pickleNameList( fileNames )
         
         for i in range( 0 , len( fileNames ) ):
             dataFrames[i].to_pickle( path + '\\Pandas_Pickle_DataFrames\\Pickle_RawData' +'\\'+ pickleStringList[i] )
@@ -448,7 +448,7 @@ class rawDataImport:
         
         for j in range( 0 , len(allFilesEPW)):
             #Helper method that pulls the first row of data
-            epwFirstRow = read_epw_firstRow(allFilesEPW[j], coerce_year=None)
+            epwFirstRow = rawDataImport.read_epw_firstRow(allFilesEPW[j], coerce_year=None)
         
             # Use the dictionary created to append the master frame
             row1_df = row1_df.append({'Site Identifier Code': '',
@@ -469,7 +469,7 @@ class rawDataImport:
         
         uniqueID = allFilesCSV + allFilesEPW
         #Helper method ID generator found in RawDataSearch_and_FirstRow_SummaryReport.py
-        uniqueID = stringList_UniqueID_List( uniqueID)
+        uniqueID = cleanRawOutput.stringList_UniqueID_List( uniqueID)
         
         row1_df['Site Identifier Code'] = uniqueID
         
@@ -496,7 +496,7 @@ class rawDataImport:
         fileName = 'firstRowSummary_Of_CSV_Files'
         # Convert the fileNames to have a .pickle extention
         
-        dataFrame = cleanFirstRowDataFrame( path )
+        dataFrame = rawDataImport.cleanFirstRowDataFrame( path )
         
         dataFrame.to_pickle( path + '\Pandas_Pickle_DataFrames\Pickle_FirstRows' +'\\'+ fileName + '.pickle' )
     

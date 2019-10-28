@@ -21,7 +21,7 @@ import xlwings as xw
 #from Plane_Of_Irradiance_and_Zenith import get_solarposition , get_total_irradiance  # Source code of pvLib
 import pvlib
 #from Calculate_Solar_Time import localTimeToSolarTime
-from Processing.RawDataSearch_and_FirstRow_SummaryReport import stringList_UniqueID_List
+from Processing.cleanRawOutput import cleanRawOutput
 #from RawDataSearch_and_FirstRow_SummaryReport import stringList_UniqueID_List
 #from Temp_DewPoint import moduleT
 from Processing.energyCalcs import energyCalcs
@@ -31,7 +31,7 @@ from Processing.firstClean import firstClean
 
 
 
-class outputFrame:
+class finalOutputFrame:
 
 
     '''
@@ -221,7 +221,7 @@ class outputFrame:
     
         
         # Create a list of file names of all the pickles from helper method
-        fileNames = outputFrame.filesNameList_RawPickle( path )
+        fileNames = finalOutputFrame.filesNameList_RawPickle( path )
         
         #Access the first row summary dataframe to pull out arguments for each location
         # We will need access to each files 
@@ -837,7 +837,7 @@ class outputFrame:
     ################ 
             
             #Search the string and determine if the data is TMY3, CWEC, or IWEC
-            dataSource_List.append( outputFrame.dataSource(fileNames[i]) )
+            dataSource_List.append( finalOutputFrame.dataSource(fileNames[i]) )
             
             #List of unique identifiers for reference
             filePath_List.append(fileNames[i])
@@ -949,7 +949,7 @@ class outputFrame:
         
         
         #Use the helper method to find the unique identifiers
-        unique_SummaryStats = stringList_UniqueID_List( unique_SummaryStats ) 
+        unique_SummaryStats = cleanRawOutput.stringList_UniqueID_List( unique_SummaryStats ) 
         summaryListsAs_df["Site Identifier Code Stats"] = unique_SummaryStats
     
     
