@@ -21,7 +21,7 @@ import zipfile       # Package used to unzip files in a directory
 
 # All imports beyond this point are helper methods found in the designated .py files
 
-from Processing.CVSfiles_toDataFrames_toPickles import filesToDataFrame, filesNameListCSV_EPW, createPickleFileFirstRow, pickleNameList
+from Processing.rawDataImport import rawDataImport
 from Processing.Level_1_Dataframe_to_Pickle import outputFrame
 from Processing.Map_Pickle_Processing import process_Map_Pickle
 
@@ -242,7 +242,7 @@ def createPickleFiles( currentDirectory ):
     myWorkBook.sheets[mySheet].range(50,4).value = "Files Processed"
     myWorkBook.sheets[mySheet].range(50,6).value = "Total Files"
     
-    dataFrames = filesToDataFrame( path ) 
+    dataFrames = rawDataImport.filesToDataFrame( path ) 
     
     myWorkBook.sheets[mySheet].range(48,4).value = "Processing files to Pickle"
     
@@ -264,11 +264,11 @@ def createPickleFiles( currentDirectory ):
     
     
     #Pull out the file names from the file path(.csv files) and return a list of file names without .csv extension
-    fileNames = filesNameListCSV_EPW( path )
+    fileNames = rawDataImport.filesNameListCSV_EPW( path )
     
     myWorkBook.sheets[mySheet].range(51,6).value = len(fileNames)
     # Convert the fileNames to have a .pickle extention
-    pickleStringList = pickleNameList( fileNames )
+    pickleStringList = rawDataImport.pickleNameList( fileNames )
     
     for i in range( 0 , len( fileNames ) ):
         dataFrames[i].to_pickle( path + '\\Pandas_Pickle_DataFrames\\Pickle_RawData' +'\\'+ pickleStringList[i] )
@@ -282,7 +282,7 @@ def createPickleFiles( currentDirectory ):
     myWorkBook.sheets[mySheet].range(51,4).value = ""
     myWorkBook.sheets[mySheet].range(51,6).value = ""
     
-    createPickleFileFirstRow( path )
+    rawDataImport.createPickleFileFirstRow( path )
     
     myWorkBook.sheets[mySheet].range(48,4).value = "Pickles Sucessfully Saved"
 
@@ -341,7 +341,7 @@ def createLevel_1_Pickles( currentDirectory ):
     # The level_1_df_toPickle() will process raw data for irradiance and store 
     #   each location as a pickle in \Pandas_Pickle_DataFrames\Pickle_Level1
     # This is the largest computation currently
-    level_1_df_toPickle( currentDirectory )
+    outputFrame.level_1_df_toPickle( currentDirectory )
 
     # User feedback
     myWorkBook.sheets[mySheet].range(64,4).value = "All Files Sucessfully Saved"
