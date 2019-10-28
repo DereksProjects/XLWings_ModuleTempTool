@@ -148,6 +148,62 @@ def kempeAOIcalc(dayOfYear , surface_tilt , latitude , surface_azimuth ):
 
     return aOI
 
+'''
+Calculate the Plane of Array
+
+Plane of Array (first POA calc) calculations derived from Mike Kempe's model on Miami, FL Data Spreadsheet.
+Data for spreadsheet came from TMY3 722020TYA.csv
+
+
+
+param@ dayOfYear        -datafraem, dataframe containing DNI, GHI, DHI, AOI
+param@ surface_tilt     -float, tilt of solar module
+
+
+return@ level_1_df      -dataframe, level 1 df with Kempe POA calcualtion
+
+'''
+
+def kempePOA_1( level_1_df , surface_tilt ):
+
+    poa_list = []
+    
+    for i in range( 0, len(level_1_df.index)):  
+        #If you get up to the second last row 
+        if i != len(level_1_df.index)-1: 
+            #Do mikes average of irradiances
+            if np.cos(level_1_df.iloc[i]['Angle of incidence(Kempe)']) > 0:
+                pOA = (level_1_df.iloc[i+1]['Direct normal irradiance']+level_1_df.iloc[i]['Direct normal irradiance'])\
+                      *np.cos(level_1_df.iloc[i]['Angle of incidence(Kempe)'])/2+\
+                      (level_1_df.iloc[i+1]['Diffuse horizontal irradiance']+level_1_df.iloc[i]['Diffuse horizontal irradiance'])*\
+                      (1+np.cos(surface_tilt*np.pi/180))/4+\
+                      (level_1_df.iloc[i+1]['Global horizontal irradiance']+level_1_df.iloc[i]['Global horizontal irradiance'])\
+                      *level_1_df.iloc[i]['Corrected Albedo']*\
+                      (1-np.cos(surface_tilt*np.pi/180))/4
+                poa_list.append(pOA)
+            
+            else:
+                pOA = (level_1_df.iloc[i+1]['Diffuse horizontal irradiance']+\
+                       level_1_df.iloc[i]['Diffuse horizontal irradiance'])*\
+                       (1+np.cos(surface_tilt*np.pi/180))/4+(level_1_df.iloc[i+1]['Global horizontal irradiance']+\
+                       level_1_df.iloc[i]['Global horizontal irradiance'])*\
+                       level_1_df.iloc[i]['Corrected Albedo']*(1-np.cos(surface_tilt*np.pi/180))/4
+                poa_list.append(pOA)
+    
+        #If your on the last row (hour 8760) then there is no averages to take
+        else:
+            pOA = (level_1_df.iloc[i]['Diffuse horizontal irradiance'])*\
+                  (1+np.cos(surface_tilt*np.pi/180))/4+\
+                  (level_1_df.iloc[i]['Global horizontal irradiance'])\
+                  *level_1_df.iloc[i]['Corrected Albedo']*\
+                  (1-np.cos(surface_tilt*np.pi/180))/4
+            poa_list.append(pOA)    
+    level_1_df['Kempe POA'] = poa_list
+    return level_1_df
+
+
+
+
 
 def cleanedFrame( firstRow_summary_df, fileNames , index ):    
     raw_df = pd.read_pickle( path + '\\Pandas_Pickle_DataFrames\\Pickle_RawData\\' + fileNames[index])
@@ -313,6 +369,51 @@ solarPosition_df = pvlib.solarposition.get_solarposition( level_1_df['Universal 
                                                                          altitude=None, 
                                                                          pressure=None, 
                                                                          method='nrel_numba' ) 
+
+
+# Add onto the level 1 frame
+level_1_df['Solar Zenith'] = solarPosition_df['zenith'].values
+level_1_df['Solar Azimuth'] = solarPosition_df['azimuth'].values
+level_1_df['Solar Elevation'] = solarPosition_df['elevation'].values
+
+################  
+# Calculate the POA
+################    
+# Create a dataframe that stores all the returns as a series
+# Within each element of the series the returns will be a dictionary referencing
+    #poa_global 
+    #poa_direct 
+    #poa_diffuse
+    #poa_sky_diffuse 
+    #poa_ground_diffuse
+    
+ 
+ 
+totalIrradiance_df = pvlib.irradiance.get_total_irradiance(surface_tilt, 
+                                                                 surface_azimuth, 
+                                                                 level_1_df['Solar Zenith'], 
+                                                                 level_1_df['Solar Azimuth'], 
+                                                                 level_1_df['Direct normal irradiance'], 
+                                                                 level_1_df['Global horizontal irradiance'], 
+                                                                 level_1_df['Diffuse horizontal irradiance'], 
+                                                                 dni_extra=None, 
+                                                                 airmass=None, 
+                                                                 albedo= level_1_df['Corrected Albedo'], 
+                                                                 surface_type=None, 
+                                                                 model= 'isotropic', 
+                                                                 model_perez='allsitescomposite1990')   
+
+#Add the new data as new columns of the level_1_data
+level_1_df['POA Diffuse'] = totalIrradiance_df['poa_diffuse'].values
+level_1_df['POA Direct'] = totalIrradiance_df['poa_direct'].values
+level_1_df['POA Global'] = totalIrradiance_df['poa_global'].values
+level_1_df['POA Ground Diffuse'] = totalIrradiance_df['poa_ground_diffuse'].values
+level_1_df['POA Sky Diffuse'] = totalIrradiance_df['poa_sky_diffuse'].value
+
+
+
+
+
 # Calculates the angle of incidence of the solar vector on a surface. 
 # This is the angle between the solar vector and the surface normal.
 aoi = pvlib.irradiance.aoi(surface_tilt, surface_azimuth,
@@ -324,66 +425,10 @@ level_1_df['Angle of incidence(pvLib)'] = aoiRadians['aoi'].values
 ##############################################################################
 
 
-def kempePOA_1( level_1_df , surface_tilt ):
 
-    poa_list = []
-    
-    for i in range( 0, len(level_1_df.index)):  
-        #If you get up to the second last row 
-        if i != len(level_1_df.index)-1: 
-            #Do mikes average of irradiances
-            if np.cos(level_1_df.iloc[i]['Angle of incidence(Kempe)']) > 0:
-                pOA = (level_1_df.iloc[i+1]['Direct normal irradiance']+level_1_df.iloc[i]['Direct normal irradiance'])\
-                      *np.cos(level_1_df.iloc[i]['Angle of incidence(Kempe)'])/2+\
-                      (level_1_df.iloc[i+1]['Diffuse horizontal irradiance']+level_1_df.iloc[i]['Diffuse horizontal irradiance'])*\
-                      (1+np.cos(surface_tilt*np.pi/180))/4+\
-                      (level_1_df.iloc[i+1]['Global horizontal irradiance']+level_1_df.iloc[i]['Global horizontal irradiance'])\
-                      *level_1_df.iloc[i]['Corrected Albedo']*\
-                      (1-np.cos(surface_tilt*np.pi/180))/4
-                poa_list.append(pOA)
-            
-            else:
-                pOA = (level_1_df.iloc[i+1]['Diffuse horizontal irradiance']+\
-                       level_1_df.iloc[i]['Diffuse horizontal irradiance'])*\
-                       (1+np.cos(surface_tilt*np.pi/180))/4+(level_1_df.iloc[i+1]['Global horizontal irradiance']+\
-                       level_1_df.iloc[i]['Global horizontal irradiance'])*\
-                       level_1_df.iloc[i]['Corrected Albedo']*(1-np.cos(surface_tilt*np.pi/180))/4
-                poa_list.append(pOA)
-    
-        #If your on the last row (hour 8760) then there is no averages to take
-        else:
-            pOA = (level_1_df.iloc[i]['Diffuse horizontal irradiance'])*\
-                  (1+np.cos(surface_tilt*np.pi/180))/4+\
-                  (level_1_df.iloc[i]['Global horizontal irradiance'])\
-                  *level_1_df.iloc[i]['Corrected Albedo']*\
-                  (1-np.cos(surface_tilt*np.pi/180))/4
-            poa_list.append(pOA)    
-    level_1_df['Kempe POA'] = poa_list
-    return level_1_df
     
 level_1_df = kempePOA_1( level_1_df , surface_tilt )    
 
-
-'''
-
-
-Plane of Irradiance (1st calculation) V column on excel
-
-P7= AOI     NEED to CALCULATE BEFORE
-G8 = DNI
-H8 = DHI
-F8 = GHI
-O8 = Corrected Albedo, his is at .15 not... .133
-I1 = surface_tilt "array tilt"
-
-
-=+IF(COS(P7)>0,(G8+G7)*COS(P7)/2+(H8+H7)*
-(1+COS($I$1*PI()/180))/4+(F8+F7)*O7*(1-COS($I$1*PI()/180))/4,
-
-else
-(H8+H7)*(1+COS($I$1*PI()/180))/4+(F8+F7)*O7*(1-COS($I$1*PI()/180))/4)
-
-'''
 
 
 
