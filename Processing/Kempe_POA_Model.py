@@ -12,24 +12,27 @@ import glob
 import os 
 from Calculate_Solar_Time import localTimeToSolarTime
 import datetime as dt
-from datetime import datetime, timedelta
+from datetime import timedelta
 from kempeCalcs import kempeCalcs
 import pvlib
-import math
 import numpy as np
-'''
-HELPER METHOD
 
-filesNameList_RawPickle()
 
-Pull out the file name from the file pathes and return a list of file names
 
-@param path       -String, path to the folder with the pickle files
 
-@retrun allFiles  -String List, filenames without the file path
-
-'''
 def filesNameList_RawPickle( path ):
+    '''
+    HELPER METHOD
+    
+    filesNameList_RawPickle()
+    
+    Pull out the file name from the file pathes and return a list of file names
+    
+    @param path       -String, path to the folder with the pickle files
+    
+    @retrun allFiles  -String List, filenames without the file path
+    
+    '''
     
     #list of strings of all the files
     allFiles = glob.glob(path + "/Pandas_Pickle_DataFrames/Pickle_RawData/*")
@@ -43,21 +46,22 @@ def filesNameList_RawPickle( path ):
         
     return allFiles
 
-'''
-HELPER METHOD
 
-my_to_datetime()
-
-Create a datetime object from a string of Date and Time.  This method will also 
-correct the raw data from referencing 24:00 and change it to the next day being 00:00 
-
-@param date_str   -String, of Date and Time
-
-@return datetime  -dateTime object, return a datetime object of the string passed
-
-'''
 def my_to_datetime(date_str):
     
+    '''
+    HELPER METHOD
+    
+    my_to_datetime()
+    
+    Create a datetime object from a string of Date and Time.  This method will also 
+    correct the raw data from referencing 24:00 and change it to the next day being 00:00 
+    
+    @param date_str   -String, of Date and Time
+    
+    @return datetime  -dateTime object, return a datetime object of the string passed
+    
+    '''
     #If the time is not 24:00
     if date_str[11:13] != '24':
         # Return the date time object without any changes
@@ -70,38 +74,31 @@ def my_to_datetime(date_str):
            dt.timedelta(days=1)
 
 
-'''
-HELPER METHOD
 
-universalTimeCorrected()
-
-Create a datetime object from a string of Date and Time.  This method will also 
-correct the raw data from referencing 24:00 and change it to the next day being 00:00 
-
-@param dateTimeObj          -dateTime object, of Local Date and Time
-@param hoursAheadorBehind   -int, How many hours the local time is ahead or 
-                                        behind of Universal Time
-
-@return universalTime       -dateTime object, return a datetime object of the
-                                                 Universal Time
-
-
-'''
 
 def universalTimeCorrected(dateTimeObj, hoursAheadOrBehind):
-    #*See column "D1" of raw data for universal time correction
-    #If the location is behind( negative int) then you will add to the local time
-    #If the location is ahead ( positive int) then you will subtract to the local time
+    
+    '''
+    HELPER METHOD
+    
+    universalTimeCorrected()
+    
+    Create a datetime object from a string of Date and Time.  This method will also 
+    correct the raw data from referencing 24:00 and change it to the next day being 00:00 
+    
+    If the location is behind ( negative int ) then you will add to the local time
+    If the location is ahead ( positive int ) then you will subtract to the local time
+    
+    @param dateTimeObj          -dateTime object, of Local Date and Time
+    @param hoursAheadorBehind   -int, How many hours the local time is ahead or 
+                                            behind of Universal Time
+    
+    @return universalTime       -dateTime object, return a datetime object of the
+                                                     Universal Time
+    '''
+    
     universalTime = dateTimeObj + timedelta(hours=-(hoursAheadOrBehind))
     return universalTime
-
-
-def degreesToRadians( degrees ):
-    return math.radians( degrees / math.pi)
-
-
-
-
 
 
 
@@ -319,7 +316,7 @@ level_1_df['POA Sky Diffuse'] = totalIrradiance_df['poa_sky_diffuse']
 aoi = pvlib.irradiance.aoi(surface_tilt, surface_azimuth,
                            solarPosition_df['apparent_zenith'], solarPosition_df['azimuth'])
 
-#aoi['aoi (radians)'] = aoi.apply(lambda x: degreesToRadians(x['aoi'], axis=1)
+
 aoiRadians = np.radians(aoi).to_frame()
 level_1_df['Angle of incidence(pvLib)'] = aoiRadians['aoi'].values
 ##############################################################################
