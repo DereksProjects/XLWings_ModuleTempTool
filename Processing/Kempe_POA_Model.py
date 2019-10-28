@@ -16,21 +16,20 @@ from datetime import datetime, timedelta
 import numpy as np
 import pvlib
 import math
+'''
+HELPER METHOD
 
+filesNameList_RawPickle()
 
+Pull out the file name from the file pathes and return a list of file names
+
+@param path       -String, path to the folder with the pickle files
+
+@retrun allFiles  -String List, filenames without the file path
+
+'''
 def filesNameList_RawPickle( path ):
-    '''
-    HELPER METHOD
     
-    filesNameList_RawPickle()
-    
-    Pull out the file name from the file pathes and return a list of file names
-    
-    @param path       -String, path to the folder with the pickle files
-    
-    @retrun allFiles  -String List, filenames without the file path
-    
-    '''    
     #list of strings of all the files
     allFiles = glob.glob(path + "/Pandas_Pickle_DataFrames/Pickle_RawData/*")
     
@@ -43,22 +42,21 @@ def filesNameList_RawPickle( path ):
         
     return allFiles
 
+'''
+HELPER METHOD
 
+my_to_datetime()
+
+Create a datetime object from a string of Date and Time.  This method will also 
+correct the raw data from referencing 24:00 and change it to the next day being 00:00 
+
+@param date_str   -String, of Date and Time
+
+@return datetime  -dateTime object, return a datetime object of the string passed
+
+'''
 def my_to_datetime(date_str):
     
-    '''
-    HELPER METHOD
-    
-    my_to_datetime()
-    
-    Create a datetime object from a string of Date and Time.  This method will also 
-    correct the raw data from referencing 24:00 and change it to the next day being 00:00 
-    
-    @param date_str   -String, of Date and Time
-    
-    @return datetime  -dateTime object, return a datetime object of the string passed
-    
-    '''   
     #If the time is not 24:00
     if date_str[11:13] != '24':
         # Return the date time object without any changes
@@ -71,27 +69,25 @@ def my_to_datetime(date_str):
            dt.timedelta(days=1)
 
 
+'''
+HELPER METHOD
+
+universalTimeCorrected()
+
+Create a datetime object from a string of Date and Time.  This method will also 
+correct the raw data from referencing 24:00 and change it to the next day being 00:00 
+
+@param dateTimeObj          -dateTime object, of Local Date and Time
+@param hoursAheadorBehind   -int, How many hours the local time is ahead or 
+                                        behind of Universal Time
+
+@return universalTime       -dateTime object, return a datetime object of the
+                                                 Universal Time
+
+
+'''
 
 def universalTimeCorrected(dateTimeObj, hoursAheadOrBehind):
-    
-
-    '''
-    HELPER METHOD
-    
-    universalTimeCorrected()
-    
-    Create a datetime object from a string of Date and Time.  This method will also 
-    correct the raw data from referencing 24:00 and change it to the next day being 00:00 
-    
-    @param dateTimeObj          -dateTime object, of Local Date and Time
-    @param hoursAheadorBehind   -int, How many hours the local time is ahead or 
-                                            behind of Universal Time
-    
-    @return universalTime       -dateTime object, return a datetime object of the
-                                                     Universal Time
-    
-    
-    '''    
     #*See column "D1" of raw data for universal time correction
     #If the location is behind( negative int) then you will add to the local time
     #If the location is ahead ( positive int) then you will subtract to the local time
@@ -116,26 +112,24 @@ def dayOfYear():
 
 
 
+'''
+Calculate the angle of incidence
 
+Angle of Incidence (radians) calculations derived from Mike Kempe's model on Miami, FL Data Spreadsheet.
+Data for spreadsheet came from TMY3 722020TYA.csv
+
+
+
+param@ dayOfYear        -float, day of the year as "hours in a year" i.e 365days/8760hours
+param@ surface_tilt     -float, tilt of solar module
+param@ latitude         -float, latitude coordinate (Decimal Degree, negative south)
+param@ surface_azimuth  -int, azimuth of solar module (0-360 degrees)
+
+return@ aOI             -float, angle of incidence
+
+'''
 
 def kempeAOIcalc(dayOfYear , surface_tilt , latitude , surface_azimuth ):
-
-    '''
-    Calculate the angle of incidence
-    
-    Angle of Incidence (radians) calculations derived from Mike Kempe's model on Miami, FL Data Spreadsheet.
-    Data for spreadsheet came from TMY3 722020TYA.csv
-    
-    
-    
-    param@ dayOfYear        -float, day of the year as "hours in a year" i.e 365days/8760hours
-    param@ surface_tilt     -float, tilt of solar module
-    param@ latitude         -float, latitude coordinate (Decimal Degree, negative south)
-    param@ surface_azimuth  -int, azimuth of solar module (0-360 degrees)
-    
-    return@ aOI             -float, angle of incidence
-    
-    '''    
        
     aOI = np.arccos( np.sin(23.45*np.pi/180*np.sin(2*np.pi*(284+dayOfYear)/365.25))\
                     *np.sin(latitude*np.pi/180)*np.cos(surface_tilt*np.pi/180)+\
@@ -206,15 +200,6 @@ def kempePOA_1( level_1_df , surface_tilt ):
             poa_list.append(pOA)    
     level_1_df['Kempe POA'] = poa_list
     return level_1_df
-
-
-
-
-
-
-
-
-
 
 
 
@@ -372,7 +357,10 @@ else:
 
 ###################################################################################
 #Calculate the AOI with Kempe Model
-level_1_df['Angle of incidence(Kempe)'] = level_1_df.apply(lambda x: kempeAOIcalc(x['Day of Year'] , surface_tilt , latitude , surface_azimuth ), axis=1)
+level_1_df['Angle of incidence(Kempe)'] = level_1_df.apply(lambda x: kempeAOIcalc(x['Day of Year'] , 
+                                                           surface_tilt , 
+                                                           latitude , 
+                                                           surface_azimuth ), axis=1)
 
 
 
@@ -394,16 +382,6 @@ level_1_df['Solar Elevation'] = solarPosition_df['elevation'].values
 ################  
 # Calculate the POA
 ################    
-# Create a dataframe that stores all the returns as a series
-# Within each element of the series the returns will be a dictionary referencing
-    #poa_global 
-    #poa_direct 
-    #poa_diffuse
-    #poa_sky_diffuse 
-    #poa_ground_diffuse
-    
- 
- 
 totalIrradiance_df = pvlib.irradiance.get_total_irradiance(surface_tilt, 
                                                                  surface_azimuth, 
                                                                  level_1_df['Solar Zenith'], 
@@ -417,6 +395,10 @@ totalIrradiance_df = pvlib.irradiance.get_total_irradiance(surface_tilt,
                                                                  surface_type=None, 
                                                                  model= 'isotropic', 
                                                                  model_perez='allsitescomposite1990')   
+
+
+
+
 
 #Add the new data as new columns of the level_1_data
 level_1_df['POA Diffuse'] = totalIrradiance_df['poa_diffuse'].values
@@ -445,7 +427,8 @@ level_1_df['Angle of incidence(pvLib)'] = aoiRadians['aoi'].values
 level_1_df = kempePOA_1( level_1_df , surface_tilt )    
 
 
-
+    
+level_1_df.to_csv( r'C:\Users\DHOLSAPP\Desktop\XLWings_ModuleTempTool\something.csv' )
 
 
 
