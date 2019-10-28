@@ -17,7 +17,6 @@ import pandas as pd
 import glob
 import os 
 import xlwings as xw
-import math
 # Methods from pvlib to calcualtate solar position and total irradaince
 #from Plane_Of_Irradiance_and_Zenith import get_solarposition , get_total_irradiance  # Source code of pvLib
 import pvlib
@@ -25,7 +24,7 @@ import pvlib
 from SearchOutput.RawDataSearch_and_FirstRow_SummaryReport import stringList_UniqueID_List
 #from RawDataSearch_and_FirstRow_SummaryReport import stringList_UniqueID_List
 #from Temp_DewPoint import moduleT
-from Processing.DewYield import dewYield
+from Processing.energyCalcs import energyCalcs
 #from DewYield import dewYield
 from Processing.firstClean import firstClean
 
@@ -62,106 +61,7 @@ class outputFrame:
         return allFiles
     
     
-    '''
-    HELPER METHOD
-    
-    waterVaporPressure()
-    
-    Find the average water vapor pressure (kPa) based on the Dew Point Temperature 
-    model created from Mike Kempe on 10/07/19.  
-    
-    @param dewPtTemp          -float, Dew Point Temperature
-    
-    
-    @return                   -float, return water vapor pressur in kPa
-    
-    '''
-    
-    def waterVaporPressure( dewPtTemp ):
-    
-        return( math.exp(( 3.257532E-13 * dewPtTemp**6 ) - 
-                ( 1.568073E-10 * dewPtTemp**6 ) + 
-                ( 2.221304E-08 * dewPtTemp**4 ) + 
-                ( 2.372077E-7 * dewPtTemp**3) - 
-                ( 4.031696E-04 * dewPtTemp**2) + 
-                ( 7.983632E-02 * dewPtTemp ) - 
-                ( 5.698355E-1))
-                
-                )
-    
-    '''
-    HELPER METHOD
-    
-    rH_Above85()
-    
-    Determine if the relative humidity is above 85%.  
-    
-    @param rH          -float, Relative Humidity %
-    
-    
-    @return                   -Boolean, True if the relative humidity is abover 85% and 
-                                        return False if the relative humidity is below 85%
-    
-    '''    
-    def rH_Above85( rH ):    
-        if rH > 85:
-            return( True )
-        else:
-            return ( False )
-     
-    '''
-    HELPER METHOD
-    
-    hoursRH_Above85()
-    
-    Count the number of hours relative humidity is above 85%.  
-    
-    @param    df          -dataFrame, dataframe containing Relative Humidity %
-    
-    
-    @return              -int, number of hours relative humidity is above 85%
-    
-    '''    
-    def hoursRH_Above85( df ):      
-        
-        booleanDf = df.apply(lambda x: outputFrame.rH_Above85( x ) )
-        return( booleanDf.sum() )
-        
-    #test = level_1_df['Relative humidity'].apply(lambda x: rH_Above85( x ) )    
-    #test2 =  hoursRH_Above85( level_1_df['Relative humidity'] )   
-    '''
-    HELPER METHOD
-    
-    whToGJ()
-    
-    Convert Wh/m^2 to GJ/m^-2 
-    
-    @param wh          -float, Wh/m^2
-    
-    
-    @return                   -float, GJ/m^-2
-    
-    '''
-    def whToGJ( wh ):
-    
-        return( 0.0000036 * wh )
-    
-    '''
-    HELPER METHOD
-    
-    gJtoMJ()
-    
-    Convert GJ/m^-2 to MJ/y^-1
-    
-    @param gJ          -float, Wh/m^2
-    
-    
-    @return            -float, GJ/m^-2
-    
-    '''
-    def gJtoMJ( gJ ):
-    
-        return( gJ * 1000 )
+
     
     '''
     HELPER METHOD
@@ -695,7 +595,7 @@ class outputFrame:
     
             siteElevation = firstRow_summary_df['Site elevation (km)'][i]
             
-            level_1_df['Dew Yield'] = level_1_df.apply(lambda x: dewYield( siteElevation ,
+            level_1_df['Dew Yield'] = level_1_df.apply(lambda x: energyCalcs.dewYield( siteElevation ,
                                                            x['Dew-point temperature'], 
                                                            x['Dry-bulb temperature'] ,
                                                            x['Wind speed'] ,
@@ -712,7 +612,7 @@ class outputFrame:
         
             #############################################
             #Annual Water Vapor Pressure Average/Sum
-            level_1_df['Water Vapor Pressure (kPa)'] = level_1_df.apply(lambda x: outputFrame.waterVaporPressure( 
+            level_1_df['Water Vapor Pressure (kPa)'] = level_1_df.apply(lambda x: energyCalcs.waterVaporPressure( 
                                                            x['Dew-point temperature'], 
                                                            ), axis=1 )
             
@@ -737,37 +637,37 @@ class outputFrame:
             
             
             #Calculate the sum of yearly GHI
-            sumOfGHI = outputFrame.whToGJ( level_1_df['Global horizontal irradiance'].sum(axis = 0, skipna = True) )
+            sumOfGHI = energyCalcs.whToGJ( level_1_df['Global horizontal irradiance'].sum(axis = 0, skipna = True) )
             annual_GHI_List.append( sumOfGHI )
      
             #Calculate the sum of yearly DNI
-            sumOfDNI = outputFrame.whToGJ( level_1_df['Direct normal irradiance'].sum(axis = 0, skipna = True) )
+            sumOfDNI = energyCalcs.whToGJ( level_1_df['Direct normal irradiance'].sum(axis = 0, skipna = True) )
             annual_DNI_List.append( sumOfDNI )
     
             #Calculate the sum of yearly DHI
-            sumOfDHI = outputFrame.whToGJ( level_1_df['Diffuse horizontal irradiance'].sum(axis = 0, skipna = True) )
+            sumOfDHI = energyCalcs.whToGJ( level_1_df['Diffuse horizontal irradiance'].sum(axis = 0, skipna = True) )
             annual_DHI_List.append( sumOfDHI )
     
     
     
             #Calculate the sum of yearly POA global
-            sumOfPOA_Global = outputFrame.whToGJ( totalIrradiance_df['poa_global'].sum(axis = 0, skipna = True) )
+            sumOfPOA_Global = energyCalcs.whToGJ( totalIrradiance_df['poa_global'].sum(axis = 0, skipna = True) )
             annual_POA_Global_List.append( sumOfPOA_Global )
     
             #Calculate the sum of yearly POA Direct
-            sumOfPOA_Direct = outputFrame.whToGJ( totalIrradiance_df['poa_direct'].sum(axis = 0, skipna = True) )
+            sumOfPOA_Direct = energyCalcs.whToGJ( totalIrradiance_df['poa_direct'].sum(axis = 0, skipna = True) )
             annual_POA_Direct_List.append( sumOfPOA_Direct )
     
             #Calculate the sum of yearly POA Diffuse
-            sumOfPOA_Diffuse = outputFrame.whToGJ( totalIrradiance_df['poa_diffuse'].sum(axis = 0, skipna = True) )
+            sumOfPOA_Diffuse = energyCalcs.whToGJ( totalIrradiance_df['poa_diffuse'].sum(axis = 0, skipna = True) )
             annual_POA_Diffuse_List.append( sumOfPOA_Diffuse )
     
             #Calculate the sum of yearly POA Sky Diffuse
-            sumOfPOA_SkyDiffuse = outputFrame.whToGJ( totalIrradiance_df['poa_sky_diffuse'].sum(axis = 0, skipna = True) )
+            sumOfPOA_SkyDiffuse = energyCalcs.whToGJ( totalIrradiance_df['poa_sky_diffuse'].sum(axis = 0, skipna = True) )
             annual_POA_SkyDiffuse_List.append( sumOfPOA_SkyDiffuse )
     
             #Calculate the sum of yearly POA Ground Diffuse
-            sumOfPOA_GroundDiffuse = outputFrame.whToGJ( totalIrradiance_df['poa_ground_diffuse'].sum(axis = 0, skipna = True) )
+            sumOfPOA_GroundDiffuse = energyCalcs.whToGJ( totalIrradiance_df['poa_ground_diffuse'].sum(axis = 0, skipna = True) )
             annual_POA_GroundDiffuse_List.append( sumOfPOA_GroundDiffuse )
     
     
@@ -775,12 +675,12 @@ class outputFrame:
     
     
             #Calculate the Global UV Dose, 5% of the annual GHI
-            global_UV_Dose = outputFrame.gJtoMJ( sumOfGHI * .05 )
+            global_UV_Dose = energyCalcs.gJtoMJ( sumOfGHI * .05 )
             annual_Global_UV_Dose_List.append( global_UV_Dose )
     
             #Calculate the annual UV Dose at Latitude Tilt, 5% of the annual GHI
             #Estimate as 5% of global plane of irradiance
-            sumOfPOA_Global = outputFrame.gJtoMJ( outputFrame.whToGJ(level_1_df['POA Global'].sum(axis = 0, skipna = True) ) )
+            sumOfPOA_Global = energyCalcs.gJtoMJ( energyCalcs.whToGJ(level_1_df['POA Global'].sum(axis = 0, skipna = True) ) )
             uV_Dose_atLatitude_Tilt = sumOfPOA_Global * .05
             annual_UV_Dose_atLatitude_Tilt_List.append( uV_Dose_atLatitude_Tilt )
     
@@ -811,7 +711,7 @@ class outputFrame:
             annual_LiquidPercipitationDepth_List.append( sumOfLiquidPercipitationDepth )
                                                       
     
-            hoursRHabove85 = outputFrame.hoursRH_Above85( level_1_df['Relative humidity'] )
+            hoursRHabove85 = energyCalcs.hoursRH_Above85( level_1_df['Relative humidity'] )
             annual_hoursThatRHabove85_List.append( hoursRHabove85 )
     
     
