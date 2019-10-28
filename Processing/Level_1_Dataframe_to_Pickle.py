@@ -23,13 +23,12 @@ import math
 import datetime as dt
 from datetime import datetime, timedelta
 import pvlib
-from Processing.Calculate_Solar_Time import localTimeToSolarTime
 #from Calculate_Solar_Time import localTimeToSolarTime
-from SearchOutput.RawDataSearch_and_FirstRow_SummaryReport import stringList_UniqueID_List
-#from RawDataSearch_and_FirstRow_SummaryReport import stringList_UniqueID_List
+#from SearchOutput.RawDataSearch_and_FirstRow_SummaryReport import stringList_UniqueID_List
+from RawDataSearch_and_FirstRow_SummaryReport import stringList_UniqueID_List
 #from Temp_DewPoint import moduleT
-from Processing.DewYield import dewYield
-#from DewYield import dewYield
+#from Processing.DewYield import dewYield
+from DewYield import dewYield
 from firstClean import firstClean
 '''
 HELPER METHOD
