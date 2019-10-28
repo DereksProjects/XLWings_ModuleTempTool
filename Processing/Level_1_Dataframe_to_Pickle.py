@@ -21,7 +21,7 @@ import xlwings as xw
 #from Plane_Of_Irradiance_and_Zenith import get_solarposition , get_total_irradiance  # Source code of pvLib
 import pvlib
 #from Calculate_Solar_Time import localTimeToSolarTime
-from SearchOutput.RawDataSearch_and_FirstRow_SummaryReport import stringList_UniqueID_List
+from Processing.RawDataSearch_and_FirstRow_SummaryReport import stringList_UniqueID_List
 #from RawDataSearch_and_FirstRow_SummaryReport import stringList_UniqueID_List
 #from Temp_DewPoint import moduleT
 from Processing.energyCalcs import energyCalcs
