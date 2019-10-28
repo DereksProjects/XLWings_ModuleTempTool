@@ -13,9 +13,10 @@ import os
 from Calculate_Solar_Time import localTimeToSolarTime
 import datetime as dt
 from datetime import datetime, timedelta
-import numpy as np
+from kempeCalcs import kempeCalcs
 import pvlib
 import math
+import numpy as np
 '''
 HELPER METHOD
 
@@ -99,107 +100,9 @@ def degreesToRadians( degrees ):
     return math.radians( degrees / math.pi)
 
 
-def dayOfYear():
-    dayOfYearDif = 365/8760
-    
-    dayOfYear_list = [float(0)]
-    
-    # iterate and add the difference of time to a list being 8760 "hours in a year"
-    for i in range(8759):
-        dayOfYear_list.append(dayOfYear_list[i] + dayOfYearDif)
-    
-    return pd.DataFrame(dayOfYear_list) 
 
 
 
-'''
-Calculate the angle of incidence
-
-Angle of Incidence (radians) calculations derived from Mike Kempe's model on Miami, FL Data Spreadsheet.
-Data for spreadsheet came from TMY3 722020TYA.csv
-
-
-
-param@ dayOfYear        -float, day of the year as "hours in a year" i.e 365days/8760hours
-param@ surface_tilt     -float, tilt of solar module
-param@ latitude         -float, latitude coordinate (Decimal Degree, negative south)
-param@ surface_azimuth  -int, azimuth of solar module (0-360 degrees)
-
-return@ aOI             -float, angle of incidence
-
-'''
-
-def kempeAOIcalc(dayOfYear , surface_tilt , latitude , surface_azimuth ):
-       
-    aOI = np.arccos( np.sin(23.45*np.pi/180*np.sin(2*np.pi*(284+dayOfYear)/365.25))\
-                    *np.sin(latitude*np.pi/180)*np.cos(surface_tilt*np.pi/180)+\
-                    np.sin(23.45*np.pi/180*np.sin(2*np.pi*(284+dayOfYear)/365.25))\
-                    *np.cos(latitude*np.pi/180)*np.sin(surface_tilt*np.pi/180)*\
-                    np.cos(surface_azimuth*np.pi/180)+np.cos(23.45*np.pi/180*\
-                    np.sin(2*np.pi*(284+dayOfYear)/365.25))*np.cos(latitude*np.pi/180)\
-                    *np.cos(surface_tilt*np.pi/180)*np.cos((dayOfYear-np.trunc(dayOfYear))*\
-                    np.pi*2-np.pi)-np.cos(23.45*np.pi/180*np.sin(2*np.pi*(284+dayOfYear)\
-                    /365.25))*np.sin(latitude*np.pi/180)*np.sin(surface_tilt*np.pi/180)\
-                    *np.cos(surface_azimuth*np.pi/180)*np.cos((dayOfYear-\
-                    np.trunc(dayOfYear))*np.pi*2-np.pi)-np.cos(23.45*np.pi/180*\
-                    np.sin(2*np.pi*(284+dayOfYear)/365.25))*np.sin(surface_tilt*\
-                    np.pi/180)*np.sin(surface_azimuth*np.pi/180)*np.sin((dayOfYear\
-                    -np.trunc(dayOfYear))*np.pi*2-np.pi)  )
-
-    return aOI
-
-'''
-Calculate the Plane of Array
-
-Plane of Array (first POA calc) calculations derived from Mike Kempe's model on Miami, FL Data Spreadsheet.
-Data for spreadsheet came from TMY3 722020TYA.csv
-
-
-
-param@ dayOfYear        -datafraem, dataframe containing DNI, GHI, DHI, AOI
-param@ surface_tilt     -float, tilt of solar module
-
-
-return@ level_1_df      -dataframe, level 1 df with Kempe POA calcualtion
-
-'''
-
-def kempePOA_1( level_1_df , surface_tilt ):
-
-    poa_list = []
-    
-    for i in range( 0, len(level_1_df.index)):  
-        #If you get up to the second last row 
-        if i != len(level_1_df.index)-1: 
-            #Do mikes average of irradiances
-            if np.cos(level_1_df.iloc[i]['Angle of incidence(Kempe)']) > 0:
-                pOA = (level_1_df.iloc[i+1]['Direct normal irradiance']+level_1_df.iloc[i]['Direct normal irradiance'])\
-                      *np.cos(level_1_df.iloc[i]['Angle of incidence(Kempe)'])/2+\
-                      (level_1_df.iloc[i+1]['Diffuse horizontal irradiance']+level_1_df.iloc[i]['Diffuse horizontal irradiance'])*\
-                      (1+np.cos(surface_tilt*np.pi/180))/4+\
-                      (level_1_df.iloc[i+1]['Global horizontal irradiance']+level_1_df.iloc[i]['Global horizontal irradiance'])\
-                      *level_1_df.iloc[i]['Corrected Albedo']*\
-                      (1-np.cos(surface_tilt*np.pi/180))/4
-                poa_list.append(pOA)
-            
-            else:
-                pOA = (level_1_df.iloc[i+1]['Diffuse horizontal irradiance']+\
-                       level_1_df.iloc[i]['Diffuse horizontal irradiance'])*\
-                       (1+np.cos(surface_tilt*np.pi/180))/4+(level_1_df.iloc[i+1]['Global horizontal irradiance']+\
-                       level_1_df.iloc[i]['Global horizontal irradiance'])*\
-                       level_1_df.iloc[i]['Corrected Albedo']*(1-np.cos(surface_tilt*np.pi/180))/4
-                poa_list.append(pOA)
-    
-        #If your on the last row (hour 8760) then there is no averages to take
-        else:
-            pOA = (level_1_df.iloc[i]['Diffuse horizontal irradiance'])*\
-                  (1+np.cos(surface_tilt*np.pi/180))/4+\
-                  (level_1_df.iloc[i]['Global horizontal irradiance'])\
-                  *level_1_df.iloc[i]['Corrected Albedo']*\
-                  (1-np.cos(surface_tilt*np.pi/180))/4
-            poa_list.append(pOA)    
-    level_1_df['Kempe POA'] = poa_list
-    return level_1_df
 
 
 
@@ -283,7 +186,7 @@ def cleanedFrame( firstRow_summary_df, fileNames , index ):
     #We also need the hourly local time in minutes
     level_1_df['Minutes Local Solar Time'] = level_1_df['Local Solar Time'].apply(lambda x: x.hour*60  + x.minute)
     #Calculalte the dayOfYear i.e. 365/8760 per hour of a year
-    level_1_df['Day of Year'] = dayOfYear()
+    level_1_df['Day of Year'] = kempeCalcs.dayOfYear()
     
     
     ################################################################
@@ -357,7 +260,7 @@ else:
 
 ###################################################################################
 #Calculate the AOI with Kempe Model
-level_1_df['Angle of incidence(Kempe)'] = level_1_df.apply(lambda x: kempeAOIcalc(x['Day of Year'] , 
+level_1_df['Angle of incidence(Kempe)'] = level_1_df.apply(lambda x: kempeCalcs.kempeAOIcalc(x['Day of Year'] , 
                                                            surface_tilt , 
                                                            latitude , 
                                                            surface_azimuth ), axis=1)
@@ -405,7 +308,7 @@ level_1_df['POA Diffuse'] = totalIrradiance_df['poa_diffuse'].values
 level_1_df['POA Direct'] = totalIrradiance_df['poa_direct'].values
 level_1_df['POA Global'] = totalIrradiance_df['poa_global'].values
 level_1_df['POA Ground Diffuse'] = totalIrradiance_df['poa_ground_diffuse'].values
-level_1_df['POA Sky Diffuse'] = totalIrradiance_df['poa_sky_diffuse'].value
+level_1_df['POA Sky Diffuse'] = totalIrradiance_df['poa_sky_diffuse']
 
 
 
@@ -424,11 +327,11 @@ level_1_df['Angle of incidence(pvLib)'] = aoiRadians['aoi'].values
 
 
     
-level_1_df = kempePOA_1( level_1_df , surface_tilt )    
+level_1_df = kempeCalcs.kempePOA_1( level_1_df , surface_tilt )    
 
 
-    
-level_1_df.to_csv( r'C:\Users\DHOLSAPP\Desktop\XLWings_ModuleTempTool\something.csv' )
+#Make A CSV file from frame   
+level_1_df.to_csv( r'C:\Users\DHOLSAPP\Desktop\XLWings_ModuleTempTool\POA_compare.csv' )
 
 
 
