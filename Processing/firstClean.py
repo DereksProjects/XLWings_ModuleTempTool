@@ -65,9 +65,28 @@ class firstClean:
                dt.timedelta(days=1)
     
     
-    def cleanedFrame( firstRow_summary_df, longitude , fileNames , index , path):    
-        raw_df = pd.read_pickle( path + '\\Pandas_Pickle_DataFrames\\Pickle_RawData\\' + fileNames[index])
+    def cleanedFrame( raw_df , hoursAheadOrBehind , longitude ):    
         
+        '''
+        HELPER FUNCTION
+        
+        cleanedFrame()
+        
+        First clean of individual data to be processed.  THese columns will be 
+        needed for later calculations.  cleanedFrame was created to reduce the 
+        amount of code from Level_1_Dataframe_ro_Pickle.py
+        1) Correct albedo
+        2) Convert sky cover to Octa
+        3) find Universal time
+        4) find Local Solar Time
+        
+        @param raw_df                -dataframe, raw dataframe of individual location
+        @param hoursAheadOrBehind    -int,       number of hours ahead or behind universal time
+        @param longitude             -float,     longitude of location (positve east, negative west)
+        
+        @return level_1_df           -dataframe, return a cleaned dataframe
+        
+        '''
         level_1_df = raw_df.loc[:,['Date (MM/DD/YYYY)', 
                                    'Time (HH:MM)',
                                    'Albedo',
@@ -120,11 +139,6 @@ class firstClean:
         #Note: The my_to_datetime() will correct 24:00 to the next day at 0:00
         level_1_df['Local Date Time'] = DateTimeStrings.apply(lambda x: firstClean.my_to_datetime(x))
         
-        
-        #Correct for Universal Time
-        # From the first Row summary frame pull out the number of hours by 
-        #    which local standard time is ahead or behind Universal Time ( + or -)
-        hoursAheadOrBehind = float(firstRow_summary_df.iloc[83]['Site time zone (Universal time + or -)'])
         
         # Correct the datetime object to universal time
         # Use the helper method universalTimeCorrected() to process each local 
