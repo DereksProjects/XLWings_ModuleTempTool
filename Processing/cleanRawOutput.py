@@ -14,21 +14,22 @@ import xlwings as xw
 
     
 class cleanRawOutput:   
-    '''
-    HELPER METHOD
-    
-    dataSummaryFrame()
-    
-    This will be a dataframe used for user reference table
-    Clean the dataframe and change variables for readability
-    
-    @param path     -String, path to the folder with the pickle files
-    
-    @retrun formatted_df  -Dataframe, summarized dataframe for user reference table
-    
-    '''
+
     
     def dataSummaryFrame( path ):
+        '''
+        HELPER FUNCTION
+        
+        dataSummaryFrame()
+        
+        This will be a dataframe used for user reference table
+        Clean the dataframe and change variables for readability
+        
+        @param path     -String, path to the folder with the pickle files
+        
+        @retrun formatted_df  -Dataframe, summarized dataframe for user reference table
+        
+        '''
     
         #import the pickle dataframe for the summary report
         formatted_df = pd.read_pickle( path + '\\Pandas_Pickle_DataFrames\\Pickle_FirstRows\\firstRowSummary_Of_CSV_Files.pickle')
@@ -65,43 +66,45 @@ class cleanRawOutput:
         return formatted_df
     
     
-    '''
-    HELPER METHOD
-    
-    dataSummaryFrame()
-    
-    This will be a dataframe used for user reference table
-    Clean the dataframe and change variables for readability
-    
-    @param path     -String, path to the folder with the pickle files
-    
-    @retrun formatted_df  -Dataframe, summarized dataframe for user reference table
-    
-    '''
+
     
     def dataSummaryFramePostProcess( path ):
+        
+        '''
+        HELPER METHOD
+        
+        dataSummaryFrame()
+        
+        This will be a dataframe used for user reference table
+        Clean the dataframe and change variables for readability
+        
+        @param path     -String, path to the folder with the pickle files
+        
+        @retrun formatted_df  -Dataframe, summarized dataframe for user reference table
+        
+        '''
     
         #import the pickle dataframe for the summary report
         firstRowSummary_df = pd.read_pickle( path + '\\Pandas_Pickle_DataFrames\\Pickle_Level1_Summary\\Pickle_Level1_Summary.pickle')
         
         return firstRowSummary_df
         
-    '''
-    OUTPUT METHOD
-    
-    Take a summary dataframe from the helper method and output a report to a 
-    generated excel sheet
-    
-    param@ currentDirectory      - String, where the excel file is located (passed as an argument 
-                                                              from EXCEL if using UDF) 
-    
-    return@ void                 - Creates a summary csv of all data
-    
-    '''
+
     
     def outputFileSummary( FileName , currentDirectory ):
         
+        '''
+        OUTPUT METHOD
         
+        Take a summary dataframe from the helper method and output a report to a 
+        generated excel sheet
+        
+        param@ currentDirectory      - String, where the excel file is located (passed as an argument 
+                                                                  from EXCEL if using UDF) 
+        
+        return@ void                 - Creates a summary csv of all data
+        
+        '''        
         # Reference which sheet inside the workbook you want to manipulate
         # Create a .csv file to store the new data 
         open( FileName , 'wb')
@@ -127,20 +130,20 @@ class cleanRawOutput:
         myWorkBook.sheets[mySheet].range(2,1).value = summary_df.values.tolist()
     
     
-    '''
-    HELPER METHOD
-    
-    filesNameList()
-    
-    Pull out the file name from the file pathes and return a list of file names
-    
-    @param path     -String, path to the folder with the pickle files
-    
-    @retrun allFiles  -String List, filenames without the file path
-    
-    '''
+
     def filesNameList( path ):
+        '''
+        HELPER METHOD
         
+        filesNameList()
+        
+        Pull out the file name from the file pathes and return a list of file names
+        
+        @param path     -String, path to the folder with the pickle files
+        
+        @retrun allFiles  -String List, filenames without the file path
+        
+        '''        
         #list of strings of all the files
         allFiles = glob.glob(path + "/Pandas_Pickle_DataFrames/Pickle_RawData/*")
         
@@ -154,23 +157,25 @@ class cleanRawOutput:
         return allFiles
     
     
-    '''
-    OUTPUT METHOD
-    
-    searchRawPickle_Output()
-    
-    1) Take user input being a unique Identifier 
-    2) Search the pickle files for a match
-    3) Output the raw pickle data to the excel sheet
-    
-    @param path     -String, path to the folder where this .py file is located
-    @param userInput -String, unique Identifier of a location found on sheet one 
-    
-    @return void    - Output of raw data to excel sheet two
-    
-    '''
+
         
     def searchRawPickle_Output( FileName , currentDirectory , userInput):    
+        
+        '''
+        OUTPUT METHOD
+        
+        searchRawPickle_Output()
+        
+        1) Take user input being a unique Identifier 
+        2) Search the pickle files for a match
+        3) Output the raw pickle data to the excel sheet
+        
+        @param path     -String, path to the folder where this .py file is located
+        @param userInput -String, unique Identifier of a location found on sheet one 
+        
+        @return void    - Output of raw data to excel sheet two
+        
+        '''        
         
         #XL Wings
         # Create a .csv file to store the new data 
@@ -230,35 +235,36 @@ class cleanRawOutput:
      
     
     
-    '''
-    stringList_UniqueID_List()
-    
-    This method takes a lists of strings and searches for a unique sample identifier.  
-    It then takes that unique identifier and creates a list.  If one of the strings 
-    does not have a unique identifier it will put that original string back into the list
-    
-    Example List
-    
-    '690190TYA.pickle',
-    'GRC_SOUDA(AP)_167460_IW2.pickle',
-    'GRC_SOUDA-BAY-CRETE_167464_IW2.pickle',
-    'Test']
-    
-    
-    Return List
-    
-    '690190'
-    '167460'
-    '167464'
-    'Test'
-     
-    
-    param@ listOfStrings   -List of Strings , list of strings containing unique identifier
-    
-    @return                - List of Strings, list of filtered strings with unique identifiers
-    '''
-    
+
     def stringList_UniqueID_List( listOfStrings ):
+        '''
+        stringList_UniqueID_List()
+        
+        This method takes a lists of strings and searches for a unique sample identifier.  
+        It then takes that unique identifier and creates a list.  If one of the strings 
+        does not have a unique identifier it will put that original string back into the list
+        
+        Example List
+        
+        '690190TYA.pickle',
+        'GRC_SOUDA(AP)_167460_IW2.pickle',
+        'GRC_SOUDA-BAY-CRETE_167464_IW2.pickle',
+        'Test']
+        
+        
+        Return List
+        
+        '690190'
+        '167460'
+        '167464'
+        'Test'
+         
+        
+        param@ listOfStrings   -List of Strings , list of strings containing unique identifier
+        
+        @return                - List of Strings, list of filtered strings with unique identifiers
+        '''
+
         sampleList = []
         #Create a list of ASCII characters to find the sample name from the given string
         for i in range(0, len(listOfStrings)):
