@@ -14,62 +14,55 @@ from math import cos, asin, sqrt
 import pandas as pd
 
 class closestLatLon:    
-    '''
-    HELPER METHOD
-    
-    distance()
-    
-    Method to measure the distance(kilometers) between two Latitudes and Longitudes
-    
-    @param lat1       -Float, Latitude of location 1 in Decimal Degrees
-    @param lon1       -Float, Longitude of location 1 in Decimal Degrees
-    @param lat2       -Float, Latitude of location 2 in Decimal Degrees
-    @param lon2       -Float, Longitude of location 2 in Decimal Degrees
-    
-    @return allFiles  -Float, distance in miles the two locations are apart
-    
-    '''
-    
+
     def distance(lat1, lon1, lat2, lon2):
+        
+        '''
+        HELPER FUNCTION
+        
+        distance()
+        
+        Function to measure the distance(kilometers) between two Latitudes and Longitudes
+        
+        @param lat1       -Float, Latitude of location 1 in Decimal Degrees
+        @param lon1       -Float, Longitude of location 1 in Decimal Degrees
+        @param lat2       -Float, Latitude of location 2 in Decimal Degrees
+        @param lon2       -Float, Longitude of location 2 in Decimal Degrees
+        
+        @return allFiles  -Float, distance in miles the two locations are apart
+        
+        '''
         # Use the Haversine formula to calculate the distance of a Lat Long on the globe
         p = 0.017453292519943295
         a = 0.5 - cos((lat2-lat1)*p)/2 + cos(lat1*p)*cos(lat2*p) * (1-cos((lon2-lon1)*p)) / 2
+        
         return 12742 * asin(sqrt(a))
     
-    
-    
-    '''
-    HELPER METHOD
-    
-    calcDistanceFrame()
-    
-    Method to return a dataframe of calculated distance from a Latitude and Longitude input.
-    This method will import the summary data frame and apply the distance formula 
-    on the Latitudes and Longitudes
-    
-    @param currentDirectory      - String, of the current working directory                                  
-    @param lat1                  - Float, Latitude of point of interest in Decimal Degrees
-    @param lon1                  - Float, Longitude of point of interest in Decimal Degrees
-    
-    
-    @return firstRow_summary_df  -Dataframe, dataframe of summary stats with 
-                                                distance from point of interest
-    '''
-    
+
     def calcDistanceFrame(currentDirectory ,  lat1 , lon1 ):
+        '''
+        HELPER FUNCTION
         
+        calcDistanceFrame()
+        
+        Method to return a dataframe of calculated distance from a Latitude and Longitude input.
+        This method will import the summary data frame and apply the distance()  
+        on the Latitudes and Longitudes
+        
+        @param currentDirectory      - String, of the current working directory                                  
+        @param lat1                  - Float, Latitude of point of interest in Decimal Degrees
+        @param lon1                  - Float, Longitude of point of interest in Decimal Degrees
+        
+        
+        @return firstRow_summary_df  -Dataframe, dataframe of summary stats with 
+                                                    distance from point of interest
+        '''
         path = currentDirectory
     
         #Access the first row summary for arguments to pass
         firstRow_summary_df = pd.read_pickle( path + '\\Pandas_Pickle_DataFrames\\Pickle_Level1_Summary\\Pickle_Level1_Summary.pickle')
         
-        #Drop columns not needed for output
-    #    firstRow_summary_df = firstRow_summary_df.drop(['WMO region',
-    #                                                    'Time zone code',
-    #                                                    'Koppen-Geiger climate classification'
-    #                                                    ], axis=1)
-        
-        
+      
         # Create a lat and long frame to calculate the distance from input lat and long
         # Change the data type to float
         latLong_df = firstRow_summary_df[['Site latitude', 'Site longitude']].astype(float)
@@ -80,24 +73,24 @@ class closestLatLon:
         return firstRow_summary_df    
          
     
-    '''
-    HELPER METHOD
-    
-    closestLocationList()
-    
-    Method to sort the dataframe from closest location to farthest location.
-    
-    @param currentDirectory      - String, of the current working directory                                  
-    @param lat1                  - Float, Latitude of point of interest in Decimal Degrees
-    @param lon1                  - Float, Longitude of point of interest in Decimal Degrees
-    
-    @return firstRow_summary_df  - Dataframe, dataframe of summary stats with 
-                                                distance from point of interest
-    @return columnNames          - List of Strings, list of the column names for the dataFrame                                            
-    '''
+
     
     def closestLocationFrame( currentDirectory ,  lat1 , lon1 ):
+        '''
+        HELPER FUNCTION
         
+        closestLocationList()
+        
+        Function to sort the dataframe from closest location to farthest location.
+        
+        @param currentDirectory      - String, of the current working directory                                  
+        @param lat1                  - Float, Latitude of point of interest in Decimal Degrees
+        @param lon1                  - Float, Longitude of point of interest in Decimal Degrees
+        
+        @return firstRow_summary_df  - Dataframe, dataframe of summary stats with 
+                                                    distance from point of interest
+        @return columnNames          - List of Strings, list of the column names for the dataFrame                                            
+        '''        
         firstRow_summary_df = closestLatLon.calcDistanceFrame(currentDirectory ,  lat1 , lon1 )
         
         closeLocationsList = []
