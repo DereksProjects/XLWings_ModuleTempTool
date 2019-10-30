@@ -91,7 +91,7 @@ class closestLatLon:
                                                     distance from point of interest
         @return columnNames          - List of Strings, list of the column names for the dataFrame                                            
         '''        
-        firstRow_summary_df = closestLatLon.calcDistanceFrame(currentDirectory ,  lat1 , lon1 )
+        firstRow_summary_df = closestLatLon.calcDistanceFrame(currentDirectory , lat1 , lon1 )
         
         closeLocationsList = []
         for i in range(0 , len(firstRow_summary_df)):
@@ -106,8 +106,7 @@ class closestLatLon:
             
             # Remove the closest index location
             firstRow_summary_df = firstRow_summary_df.drop([closeLocationIndex] , axis=0)
-            
-            
+                
         # Create a list of column names to output to excel    
         columnNames = list(firstRow_summary_df)    
         
@@ -115,11 +114,18 @@ class closestLatLon:
         closeLocationsFrame = pd.DataFrame(data = closeLocationsList , columns = columnNames)
     
     
+        columnNames = list(closeLocationsFrame.columns)
+        columnNames = [columnNames[-1]] + columnNames[:-1]
+        closeLocationsFrame = closeLocationsFrame[columnNames]
+
+
         return closeLocationsFrame , columnNames
     
 
 
-
+#currentDirectory = r'C:\Users\DHOLSAPP\Desktop\Weather_DatabaseAddingModuleTempRackRanges'
+#lat1 = 32
+#lon1 = -117
 
 
 

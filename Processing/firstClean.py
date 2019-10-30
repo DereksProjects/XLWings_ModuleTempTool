@@ -150,7 +150,7 @@ class firstClean:
         #Calculate the Local Solar time
         # Use the localTimeToSolarTime() helper method
         # Create a new column in the level_1_df to store the Universal Date time object
-        level_1_df['Local Solar Time'] = level_1_df.apply(lambda x: localTimeToSolarTime( longitude , hoursAheadOrBehind , x['Local Date Time']), axis=1)
+        level_1_df['Local Solar Time'] = level_1_df.apply(lambda x: solarTime.localTimeToSolarTime( longitude , hoursAheadOrBehind , x['Local Date Time']), axis=1)
          
         #Create another column of the hourly numeric Local Solar Time
         level_1_df['Hourly Local Solar Time'] = level_1_df['Local Solar Time'].apply(lambda x: x.hour + (x.minute/60))

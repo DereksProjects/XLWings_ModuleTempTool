@@ -188,17 +188,17 @@ class solarTime:
     
         lSTM = 15 * timeZoneDif
         
-        daysInTheYear = toDaysOfYear(localTime)
+        daysInTheYear = solarTime.toDaysOfYear(localTime)
         
-        angleB = angle_B(daysInTheYear)
+        angleB = solarTime.angle_B(daysInTheYear)
     
-        equationOfTime = eoT(angleB)
+        equationOfTime = solarTime.eoT(angleB)
         
-        timeCor = timeCorrection(equationOfTime , longitude , lSTM )
+        timeCor = solarTime.timeCorrection(equationOfTime , longitude , lSTM )
     
-        solarTime = localSolarTime( localTime, timeCor )
+        solarTimeOut = solarTime.localSolarTime( localTime, timeCor )
         
-        return solarTime
+        return solarTimeOut
     
 
 

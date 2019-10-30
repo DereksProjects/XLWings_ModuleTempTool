@@ -588,7 +588,7 @@ searchRawPickle_Output()
 2) Search the pickle files for a match
 3) Output the raw pickle data to the excel sheet
 
-@param path     -String, path to the folder where this .py file is located
+@param path      -String, path to the folder where this .py file is located
 @param userInput -String, unique Identifier of a location found on sheet one 
 
 @return void    - Output of raw data to excel sheet two
@@ -694,19 +694,19 @@ def closest_Cities( currentDirectory ,  lat1 , lon1 ):
     mySheet = myWorkBook.sheets[1]
     ##############
     
-    myWorkBook.sheets[mySheet].range(6,11).value = "Distance From (km)"
+    myWorkBook.sheets[mySheet].range(6,1).value = "Distance From (km)"
     
-    myWorkBook.sheets[mySheet].range(7,11).value = "Latitude"
-    myWorkBook.sheets[mySheet].range(8,11).value = lat1
+    myWorkBook.sheets[mySheet].range(7,1).value = "Latitude"
+    myWorkBook.sheets[mySheet].range(8,1).value = lat1
     
-    myWorkBook.sheets[mySheet].range(7,12).value = "Longitude"
-    myWorkBook.sheets[mySheet].range(8,12).value = lon1
+    myWorkBook.sheets[mySheet].range(7,2).value = "Longitude"
+    myWorkBook.sheets[mySheet].range(8,2).value = lon1
     
     closestLocation_df , columnNames_list = closestLatLon.closestLocationFrame( currentDirectory ,  lat1 , lon1 )
     
-    myWorkBook.sheets[mySheet].range(11,3).value = closestLocation_df.values.tolist()
+    myWorkBook.sheets[mySheet].range(11,1).value = closestLocation_df.values.tolist()
     
-    myWorkBook.sheets[mySheet].range(10,3).value = columnNames_list
+    myWorkBook.sheets[mySheet].range(10,1).value = columnNames_list
 
 ###############################################################################
 # Output Map of Summary Data
