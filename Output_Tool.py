@@ -29,7 +29,7 @@ from Processing.cleanRawOutput import cleanRawOutput
 from Processing.closestLatLon import closestLatLon
 
 from Map.mapTemp import mapTemp
-from Map.MapDewYield import outputMapDew
+from Map.mapDewYield import mapDewYield
 
 '''
 XL Wings Method
@@ -768,7 +768,7 @@ def createDewMap(path , mapSelect ):
     #Reference sheet 0    
     ##############
 
-    outputMapDew(path , mapSelect )
+    mapDewYield.outputMapDew(path , mapSelect )
 
 
 
