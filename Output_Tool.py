@@ -28,7 +28,7 @@ from Processing.mapProcessing import mapProcessing
 from Processing.cleanRawOutput import cleanRawOutput
 from Processing.closestLatLon import closestLatLon
 
-from Map.MapTemperature import outputMapTemp
+from Map.mapTemp import mapTemp
 from Map.MapDewYield import outputMapDew
 
 '''
@@ -740,7 +740,7 @@ def createTempMap(path , mapSelect ):
     #Reference sheet 0    
     ##############
 
-    outputMapTemp(path , mapSelect )
+    mapTemp.outputMapTemp(path , mapSelect )
 
 
 '''

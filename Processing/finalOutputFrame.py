@@ -1052,8 +1052,8 @@ class finalOutputFrame:
     
 #Testing    
     
-currentDirectory = r'C:\Users\DHOLSAPP\Desktop\Weather_DatabaseAddingModuleTempRackRanges'
-i = 0
+#currentDirectory = r'C:\Users\DHOLSAPP\Desktop\Weather_DatabaseAddingModuleTempRackRanges'
+#i = 0
 
 
 
