@@ -2,7 +2,9 @@
 """
 Created on Fri Jul 12 11:03:01 2019
 
-@author: dholsapp
+Class contains energy algorithms for additional processing.
+
+@author: Derek Holsapple
 """
 
 import numpy as np
@@ -10,23 +12,32 @@ from numba import jit             # Package that allows direct machine language 
 import math
 
 
-# H is the site elevation in kilometers, *need to convert raw data to kilometers raw data is in meters
-# tD is Dewpoint temperature in Celsius
-# n = cloud coverage okta, *will need to convert with IW2 data is in tenths
-#tA is air temperature "dry bulb temperature"
-# windSpeed is air or windspeed measure in m*s^-1  or m/s
-# Cut-off windspeed
 
 
 
-#mm·d−1
+
 
 class energyCalcs:
 
 
     @jit(nopython=True , error_model = 'python') # Numba Machine Language Level ( Fast Processing )
     def dewYield( h , tD , tA , windSpeed , n ):
+        '''
+        HELPER FUNCTION
         
+        Find the dew yield in (mm·d−1).  Calculation taken from XXXXXXXXXXXXXXXX paper
+        
+        @param h          -int, site elevation in kilometers
+        @param tD         -float, Dewpoint temperature in Celsius
+        @param tA         -float, air temperature "dry bulb temperature"
+        @param windSpeed  -float, air or windspeed measure in m*s^-1  or m/s
+        @param n          -float, Total sky cover(okta)
+        
+        @return  dewYield -float, amount of dew yield in (mm·d−1)
+        
+        '''
+
+
         windSpeedCutOff = 4.4 
     
         dewYield = .37 * ( 1 + ( 0.204323 * h ) - (0.0238893 * h**2 ) - \
@@ -37,23 +48,24 @@ class energyCalcs:
         return dewYield
     
     
-    '''
-    HELPER METHOD
-    
-    waterVaporPressure()
-    
-    Find the average water vapor pressure (kPa) based on the Dew Point Temperature 
-    model created from Mike Kempe on 10/07/19.  
-    
-    @param dewPtTemp          -float, Dew Point Temperature
-    
-    
-    @return                   -float, return water vapor pressur in kPa
-    
-    '''
+
     
     def waterVaporPressure( dewPtTemp ):
-    
+        '''
+        HELPER FUNCTION
+        
+        waterVaporPressure()
+        
+        Find the average water vapor pressure (kPa) based on the Dew Point Temperature 
+        model created from Mike Kempe on 10/07/19.  
+        
+        @param dewPtTemp          -float, Dew Point Temperature
+        
+        
+        @return                   -float, return water vapor pressur in kPa
+        
+        '''    
+        
         return( math.exp(( 3.257532E-13 * dewPtTemp**6 ) - 
                 ( 1.568073E-10 * dewPtTemp**6 ) + 
                 ( 2.221304E-08 * dewPtTemp**4 ) + 
@@ -64,76 +76,76 @@ class energyCalcs:
                 
                 )
     
-    '''
-    HELPER METHOD
-    
-    rH_Above85()
-    
-    Determine if the relative humidity is above 85%.  
-    
-    @param rH          -float, Relative Humidity %
-    
-    
-    @return                   -Boolean, True if the relative humidity is abover 85% and 
-                                        return False if the relative humidity is below 85%
-    
-    '''    
+   
     def rH_Above85( rH ):    
+        '''
+        HELPER FUNCTION
+        
+        rH_Above85()
+        
+        Determine if the relative humidity is above 85%.  
+        
+        @param rH          -float, Relative Humidity %
+        
+        
+        @return                   -Boolean, True if the relative humidity is abover 85% and 
+                                            return False if the relative humidity is below 85%
+        
+        '''         
         if rH > 85:
             return( True )
         else:
             return ( False )
      
-    '''
-    HELPER METHOD
-    
-    hoursRH_Above85()
-    
-    Count the number of hours relative humidity is above 85%.  
-    
-    @param    df          -dataFrame, dataframe containing Relative Humidity %
-    
-    
-    @return              -int, number of hours relative humidity is above 85%
-    
-    '''    
+   
     def hoursRH_Above85( df ):      
+        '''
+        HELPER FUNCTION
         
+        hoursRH_Above85()
+        
+        Count the number of hours relative humidity is above 85%.  
+        
+        @param    df     -dataFrame, dataframe containing Relative Humidity %
+        
+        
+        @return          -int, number of hours relative humidity is above 85%
+        
+        '''         
         booleanDf = df.apply(lambda x: energyCalcs.rH_Above85( x ) )
         return( booleanDf.sum() )
         
-    #test = level_1_df['Relative humidity'].apply(lambda x: rH_Above85( x ) )    
-    #test2 =  hoursRH_Above85( level_1_df['Relative humidity'] )   
-    '''
-    HELPER METHOD
-    
-    whToGJ()
-    
-    Convert Wh/m^2 to GJ/m^-2 
-    
-    @param wh          -float, Wh/m^2
-    
-    
-    @return                   -float, GJ/m^-2
-    
-    '''
+  
+
     def whToGJ( wh ):
-    
+        '''
+        HELPER FUNCTION
+        
+        whToGJ()
+        
+        Convert Wh/m^2 to GJ/m^-2 
+        
+        @param wh          -float, Wh/m^2
+        
+        
+        @return                   -float, GJ/m^-2
+        
+        '''    
         return( 0.0000036 * wh )
     
-    '''
-    HELPER METHOD
-    
-    gJtoMJ()
-    
-    Convert GJ/m^-2 to MJ/y^-1
-    
-    @param gJ          -float, Wh/m^2
-    
-    
-    @return            -float, GJ/m^-2
-    
-    '''
+
     def gJtoMJ( gJ ):
-    
+        '''
+        HELPER FUNCTION
+        
+        gJtoMJ()
+        
+        Convert GJ/m^-2 to MJ/y^-1
+        
+        @param gJ          -float, Wh/m^2
+        
+        
+        @return            -float, GJ/m^-2
+        
+        '''    
         return( gJ * 1000 )
