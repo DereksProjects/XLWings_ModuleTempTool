@@ -269,10 +269,6 @@ class finalOutputFrame:
         annual_Maximum_Ambient_Temperature_List = []
         annual_Ambient_Temperature_Range_List = []
         
-    
-        annual_PrecipitableWater_List = []
-        annual_LiquidPercipitationDepth_List = []
-        
         annual_hoursThatRHabove85_List = []
         
     #####################################    
@@ -702,18 +698,7 @@ class finalOutputFrame:
     
             #Calculate the annual range ambient temperature
             ambient_Temperature_Range = maximum_Ambient_Temperature - minimum_Ambient_Temperature
-            annual_Ambient_Temperature_Range_List.append( ambient_Temperature_Range )
-    
-            #Calculate the sum of Precipitable Water
-                #Multiply y ten to convert cm to mm
-            sumOfPrecipitableWater = 10 * (level_1_df['Precipitable water'].sum(axis = 0, skipna = True) )
-            annual_PrecipitableWater_List.append( sumOfPrecipitableWater )
-    
-            #Calculate the sum of Liquid Percipitation Depth
-                # Already in mm
-            sumOfLiquidPercipitationDepth = level_1_df['Liquid percipitation depth'].sum(axis = 0, skipna = True) 
-            annual_LiquidPercipitationDepth_List.append( sumOfLiquidPercipitationDepth )
-                                                      
+            annual_Ambient_Temperature_Range_List.append( ambient_Temperature_Range )                                                     
     
             hoursRHabove85 = energyCalcs.hoursRH_Above85( level_1_df['Relative humidity'] )
             annual_hoursThatRHabove85_List.append( hoursRHabove85 )
@@ -924,9 +909,6 @@ class finalOutputFrame:
         summaryListsAs_df["Annual Average Ambient Temperature (C)"] = annual_Average_Ambient_Temperature_List
         summaryListsAs_df["Annual Maximum Ambient Temperature (C)"] = annual_Maximum_Ambient_Temperature_List
         summaryListsAs_df["Annual Range Ambient Temperature (C)"] = annual_Ambient_Temperature_Range_List
-    
-        summaryListsAs_df["Annual Precipitable Water (mm)"] = annual_PrecipitableWater_List
-        summaryListsAs_df["Annual Liquid Percipitation Depth (mm)"] = annual_LiquidPercipitationDepth_List
         
         summaryListsAs_df["Annual number of Hours Relative Humidity > to 85%"] = annual_hoursThatRHabove85_List
      
@@ -1007,8 +989,6 @@ class finalOutputFrame:
                                                              'Annual Average Ambient Temperature (C)',
                                                              'Annual Maximum Ambient Temperature (C)',
                                                              'Annual Range Ambient Temperature (C)',
-                                                             'Annual Precipitable Water (mm)',
-                                                             'Annual Liquid Percipitation Depth (mm)',
                                                              'Average of Yearly Water Vapor Pressure(kPa)',
                                                              'Sum of Yearly Water Vapor Pressure(kPa)',
                                                              "Annual number of Hours ambient Relative Humidity > to 85%",
