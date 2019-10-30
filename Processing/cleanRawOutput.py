@@ -1,6 +1,10 @@
 # -*- coding: utf-8 -*-
 """
-One method of this code will create a summary dataframe.  The other method 
+This class will contain two output functions
+
+1) One method of this code will create a summary dataframe.  
+
+The other method 
 searches for a user input Site Identifier Code and displays the raw data
 
 @author: Derek Holsapple
@@ -22,7 +26,7 @@ class cleanRawOutput:
         
         dataSummaryFrame()
         
-        This will be a dataframe used for user reference table
+        This will be a dataframe for a user reference table
         Clean the dataframe and change variables for readability
         
         @param path     -String, path to the folder with the pickle files
@@ -71,7 +75,7 @@ class cleanRawOutput:
     def dataSummaryFramePostProcess( path ):
         
         '''
-        HELPER METHOD
+        HELPER FUNCTION
         
         dataSummaryFrame()
         
@@ -94,7 +98,7 @@ class cleanRawOutput:
     def outputFileSummary( FileName , currentDirectory ):
         
         '''
-        OUTPUT METHOD
+        OUTPUT FUNCTION
         
         Take a summary dataframe from the helper method and output a report to a 
         generated excel sheet
@@ -133,7 +137,7 @@ class cleanRawOutput:
 
     def filesNameList( path ):
         '''
-        HELPER METHOD
+        HELPER FUNCTION
         
         filesNameList()
         
@@ -162,7 +166,7 @@ class cleanRawOutput:
     def searchRawPickle_Output( FileName , currentDirectory , userInput):    
         
         '''
-        OUTPUT METHOD
+        OUTPUT FUNCTION
         
         searchRawPickle_Output()
         
@@ -170,10 +174,10 @@ class cleanRawOutput:
         2) Search the pickle files for a match
         3) Output the raw pickle data to the excel sheet
         
-        @param path     -String, path to the folder where this .py file is located
-        @param userInput -String, unique Identifier of a location found on sheet one 
+        @param path      - String, path to the folder where this .py file is located
+        @param userInput - String, unique Identifier of a location found on sheet one 
         
-        @return void    - Output of raw data to excel sheet two
+        @return void     - Output of raw data to excel sheet two
         
         '''        
         
@@ -273,9 +277,7 @@ class cleanRawOutput:
             ascii_list =[ord(c) for c in listOfStrings[i]]
             char_list = list(listOfStrings[i])
     
-            
-            #If the first string  does not pass the filter set the sample flag to 0
-     #       sampleFlag = 0 
+
             count = 0 
             # j will be the index referencing the next ASCII character
             for j in range(0, len(ascii_list)):
