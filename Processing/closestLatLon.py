@@ -123,9 +123,7 @@ class closestLatLon:
     
 
 
-#currentDirectory = r'C:\Users\DHOLSAPP\Desktop\Weather_DatabaseAddingModuleTempRackRanges'
-#lat1 = 32
-#lon1 = -117
+
 
 
 

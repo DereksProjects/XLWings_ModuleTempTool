@@ -69,6 +69,7 @@ def outputMapDew(path , mapSelect ):
     longitude = level_1_df['Site longitude']
     moduleTemp = level_1_df[moduleType]
     uniqueID = level_1_df['Site Identifier Code']
+    elevation = level_1_df['Site elevation (meters)'].astype(float)
 
     # The Boken map rendering package needs to store data in the ColumnDataFormat
     # Store the lat/lon from the Map_pickle.  Formatting for Lat/Lon has been 
@@ -84,13 +85,14 @@ def outputMapDew(path , mapSelect ):
             Latitude = latitude,
             Longitude = longitude,
             Module_Temp = moduleTemp,
-            uniqueID = uniqueID
+            uniqueID = uniqueID,
+            elevation = elevation
             ) )
 
     p = bkp.figure(width=1500, 
                height=900, 
                tools=tools, 
-               title='IWEC, CWEC, and Average Dew Yield(mmd-1)'  ,
+               title='IWEC, CWEC, and TMY3 of Average Dew Yield (mmd-1)'  ,
                
                x_axis_type="mercator",
                y_axis_type="mercator",
@@ -108,7 +110,7 @@ def outputMapDew(path , mapSelect ):
              source= source , 
              radius="radius" , 
              #fill color will use linear_cmap() to scale the colors of the circles being displayed
-             fill_color = linear_cmap('dew', colorSelector, low=20, high=300),
+             fill_color = linear_cmap('dew', colorSelector, low=0, high=50),
              line_color =None,  
              # Alpha is the transparency of the circle
              alpha=0.3)
@@ -122,14 +124,14 @@ def outputMapDew(path , mapSelect ):
              line_color = None,
              # Alpha is the transparency of the circle
               alpha=.99)   
-
+    
 
     #Create the scale bar to the right of the map
     
     # Create color mapper to make the scale bar on the right of the map
     # palette = color scheme of the mapo
     # low/high sets the scale of the data, use the minimum value and maximum value of the data we are analyzing
-    color_mapper = LogColorMapper(palette= colorSelector, low=20, high=300)
+    color_mapper = LogColorMapper(palette= colorSelector, low=1, high=50)
     
     # color bar will be scale bar set to the right of the map
     color_bar = ColorBar(color_mapper=color_mapper, ticker=LogTicker(),
@@ -145,7 +147,8 @@ def outputMapDew(path , mapSelect ):
     ("Site ID","@uniqueID"),
     ("Lat","@Latitude"),
     ("Lon","@Longitude"),
-    ("Yearly_Dew_Yield","@dew"),
+    ("Yearly_Dew_Yield","@dew" + " (mmd-1)"),
+    ("Elevation","@elevation" + " (m)")
     ]
     
     #Create a hover tool that will rinder only the weather stations i.e stations are small black circles
@@ -161,11 +164,11 @@ def outputMapDew(path , mapSelect ):
 
 
 #TESTING ENVIRONMENT
-#path = r'C:\Users\DHOLSAPP\Desktop\Summer_Project\WithRawIWECfile_Proprietary\Python'
+#path = r'C:\Users\DHOLSAPP\Desktop\Summer_Project\Weather_Database'
 
 #mapSelect = 'dew_yield'
 
-#outputMap(path , mapSelect)
+#outputMapDew(path , mapSelect)
 
 
 

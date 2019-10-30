@@ -7,9 +7,12 @@ Created on Mon Oct 28 08:41:38 2019
 import datetime as dt
 from datetime import timedelta
 import pandas as pd
+
 from Processing.solarTime import solarTime
+
 #from Calculate_Solar_Time import localTimeToSolarTime
 
+#from solarTime import solarTime
 
 class firstClean:
     

@@ -21,14 +21,18 @@ import xlwings as xw
 #from Plane_Of_Irradiance_and_Zenith import get_solarposition , get_total_irradiance  # Source code of pvLib
 import pvlib
 #from Calculate_Solar_Time import localTimeToSolarTime
+
 from Processing.cleanRawOutput import cleanRawOutput
+
+
+
 #from RawDataSearch_and_FirstRow_SummaryReport import stringList_UniqueID_List
-#from Temp_DewPoint import moduleT
 from Processing.energyCalcs import energyCalcs
-#from DewYield import dewYield
 from Processing.firstClean import firstClean
 
-
+#from cleanRawOutput import cleanRawOutput
+#from energyCalcs import energyCalcs
+#from firstClean import firstClean
 
 
 class finalOutputFrame:
@@ -1068,8 +1072,8 @@ class finalOutputFrame:
     
 #Testing    
     
-#currentDirectory = r'C:\Users\DHOLSAPP\Desktop\Weather_DatabaseAddingModuleTempRackRanges'
-#i = 0
+currentDirectory = r'C:\Users\DHOLSAPP\Desktop\Weather_DatabaseAddingModuleTempRackRanges'
+i = 0
 
 
 
