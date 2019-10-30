@@ -924,7 +924,7 @@ class finalOutputFrame:
         summaryListsAs_df["Annual Precipitable Water (mm)"] = annual_PrecipitableWater_List
         summaryListsAs_df["Annual Liquid Percipitation Depth (mm)"] = annual_LiquidPercipitationDepth_List
         
-        summaryListsAs_df["Annual number of Hours Relative Humidity >= to 85%"] = annual_hoursThatRHabove85_List
+        summaryListsAs_df["Annual number of Hours Relative Humidity > to 85%"] = annual_hoursThatRHabove85_List
      
         summaryListsAs_df["Annual POA Global Irradiance (GJ/m^-2)"] = annual_POA_Global_List
         summaryListsAs_df["Annual POA Direct Irradiance (GJ/m^-2)"] = annual_POA_Direct_List 

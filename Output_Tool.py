@@ -480,9 +480,9 @@ def outputFileSummaryPostProcess( currentDirectory ):
     
 
     #Output the column names and summary dataframe
-    myWorkBook.sheets[mySheet].range(6,1).value = columnHeaders_list
+    myWorkBook.sheets[mySheet].range(10,1).value = columnHeaders_list
         # Convert the dataframe into a list and then export the data "removes columns and headers"
-    myWorkBook.sheets[mySheet].range(7,1).value = summary_df.values.tolist()
+    myWorkBook.sheets[mySheet].range(11,1).value = summary_df.values.tolist()
 
 
 
