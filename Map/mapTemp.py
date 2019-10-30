@@ -38,7 +38,7 @@ class mapTemp:
         '''        
         #Select which solar module temperature calculation the user would like to see
         
-        if mapSelect == 'open_rack_cell_glassback':
+        if mapSelect == 'open_rack_cell_glassback98th':
             moduleType = 'Annual Average (98th Percentile) Module Temperature__open_rack_cell_glassback (C)'
             chartHeader = 'Open Rack Cell Glass Back'
             htmlString = '_open_rack_cell_glassback'
@@ -47,7 +47,7 @@ class mapTemp:
             mapScaleUpper = 100
             mapScaleLower = 20
             
-        elif mapSelect == 'roof_mount_cell_glassback':
+        elif mapSelect == 'roof_mount_cell_glassback98th':
             moduleType = 'Annual Average (98th Percentile) Module Temperature__roof_mount_cell_glassback (C)'
             chartHeader = 'Roof Mount Cell Glass Back'
             htmlString = '_roof_mount_cell_glassback'
@@ -56,7 +56,7 @@ class mapTemp:
             mapScaleUpper = 100
             mapScaleLower = 20
             
-        elif mapSelect == 'open_rack_cell_polymerback':
+        elif mapSelect == 'open_rack_cell_polymerback98th':
             moduleType = 'Annual Average (98th Percentile) Module Temperature__open_rack_cell_polymerback (C)'
             chartHeader = 'Open Rack Cell Polymer Back'
             htmlString = '_open_rack_cell_polymerback'
@@ -65,7 +65,7 @@ class mapTemp:
             mapScaleUpper = 100
             mapScaleLower = 20
             
-        elif mapSelect == 'insulated_back_polymerback':
+        elif mapSelect == 'insulated_back_polymerback98th':
             moduleType = 'Annual Average (98th Percentile) Module Temperature__insulated_back_polymerback (C)'
             chartHeader = 'Insulated Back Polymer Back'
             htmlString = '_insulated_back_polymerback'
@@ -74,7 +74,7 @@ class mapTemp:
             mapScaleUpper = 100
             mapScaleLower = 20
             
-        elif mapSelect == 'open_rack_polymer_thinfilm_steel':
+        elif mapSelect == 'open_rack_polymer_thinfilm_steel98th':
             moduleType = 'Annual Average (98th Percentile) Module Temperature__open_rack_polymer_thinfilm_steel (C)'
             chartHeader = 'Open Rack Polymer Thin Film Steel'
             htmlString = '_open_rack_polymer_thinfilm_steel'
@@ -83,7 +83,7 @@ class mapTemp:
             mapScaleUpper = 100
             mapScaleLower = 20
             
-        elif mapSelect == '22x_concentrator_tracker':
+        elif mapSelect == '22x_concentrator_tracker98th':
             moduleType = 'Annual Average (98th Percentile) Module Temperature__22x_concentrator_tracker (C)'
             chartHeader = '22x Concentrator Tracker'
             htmlString = '_22x_concentrator_tracker'
@@ -205,7 +205,7 @@ class mapTemp:
         ("Site ID","@uniqueID"),
         ("Lat","@Latitude"),
         ("Lon","@Longitude"),
-        ("Module_Temp","@Module_Temp"),
+        ("98 Percentile Module Temp","@Module_Temp" + " (C)"),
         ]
         
         #Create a hover tool that will rinder only the weather stations i.e stations are small black circles
