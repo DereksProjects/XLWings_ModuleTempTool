@@ -10,8 +10,6 @@ import pandas as pd
 
 from Processing.solarTime import solarTime
 
-#from Calculate_Solar_Time import localTimeToSolarTime
-
 #from solarTime import solarTime
 
 class firstClean:

@@ -23,10 +23,6 @@ import pvlib
 #from Calculate_Solar_Time import localTimeToSolarTime
 
 from Processing.cleanRawOutput import cleanRawOutput
-
-
-
-#from RawDataSearch_and_FirstRow_SummaryReport import stringList_UniqueID_List
 from Processing.energyCalcs import energyCalcs
 from Processing.firstClean import firstClean
 
@@ -909,7 +905,7 @@ class finalOutputFrame:
         summaryListsAs_df["Annual Average Ambient Temperature (C)"] = annual_Average_Ambient_Temperature_List
         summaryListsAs_df["Annual Maximum Ambient Temperature (C)"] = annual_Maximum_Ambient_Temperature_List
         summaryListsAs_df["Annual Range Ambient Temperature (C)"] = annual_Ambient_Temperature_Range_List
-        
+#######################################################################################################################################        
         summaryListsAs_df["Annual number of Hours Relative Humidity > to 85%"] = annual_hoursThatRHabove85_List
      
         summaryListsAs_df["Annual POA Global Irradiance (GJ/m^-2)"] = annual_POA_Global_List
@@ -991,7 +987,7 @@ class finalOutputFrame:
                                                              'Annual Range Ambient Temperature (C)',
                                                              'Average of Yearly Water Vapor Pressure(kPa)',
                                                              'Sum of Yearly Water Vapor Pressure(kPa)',
-                                                             "Annual number of Hours ambient Relative Humidity > to 85%",
+                                                             "Annual number of Hours Relative Humidity > to 85%",
                                                              'Sum of Yearly Dew(mmd-1)',
     
                                                              'Annual Average (98th Percentile) Cell Temperature__open_rack_cell_glassback (C)', 
@@ -1052,8 +1048,8 @@ class finalOutputFrame:
     
 #Testing    
     
-#currentDirectory = r'C:\Users\DHOLSAPP\Desktop\Weather_DatabaseAddingModuleTempRackRanges'
-#i = 0
+currentDirectory = r'C:\Users\DHOLSAPP\Desktop\Weather_DatabaseAddingModuleTempRackRanges'
+i = 0
 
 
 

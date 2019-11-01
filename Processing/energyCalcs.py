@@ -151,10 +151,7 @@ class energyCalcs:
         return( gJ * 1000 )
         
         
-        
-        
-        
-test = energyCalcs.dewYield( 1 , 2, 3, 4, 5)        
+ 
         
         
         
