@@ -2,7 +2,7 @@
 import pandas as pd
 from bokeh.plotting import  output_file, show
 from bokeh.transform import linear_cmap
-from bokeh.models import ColumnDataSource
+from bokeh.models import ColumnDataSource, LinearColorMapper
 import bokeh.models as bkm
 import bokeh.plotting as bkp
 from bokeh.models import LogColorMapper, LogTicker, ColorBar
@@ -130,7 +130,7 @@ class mapDewYield:
         # Create color mapper to make the scale bar on the right of the map
         # palette = color scheme of the mapo
         # low/high sets the scale of the data, use the minimum value and maximum value of the data we are analyzing
-        color_mapper = LogColorMapper(palette= colorSelector, low=1, high=50)
+        color_mapper = LinearColorMapper(palette= colorSelector, low=1, high=50)
         
         # color bar will be scale bar set to the right of the map
         color_bar = ColorBar(color_mapper=color_mapper, ticker=LogTicker(),

@@ -25,7 +25,7 @@ All fixture types can be represented in the following categories
 import pandas as pd
 from bokeh.plotting import  output_file, show
 from bokeh.transform import linear_cmap
-from bokeh.models import ColumnDataSource
+from bokeh.models import ColumnDataSource, LinearColorMapper
 import bokeh.models as bkm
 import bokeh.plotting as bkp
 from bokeh.models import LogColorMapper, LogTicker, ColorBar
@@ -211,7 +211,7 @@ class mapTemp:
         # Create color mapper to make the scale bar on the right of the map
         # palette = color scheme of the mapo
         # low/high sets the scale of the data, use the minimum value and maximum value of the data we are analyzing
-        color_mapper = LogColorMapper(palette= colorSelector,  low= mapScaleLower, high=mapScaleUpper)
+        color_mapper = LinearColorMapper(palette= colorSelector,  low= mapScaleLower, high=mapScaleUpper)
         
         # color bar will be scale bar set to the right of the map
         color_bar = ColorBar(color_mapper=color_mapper, ticker=LogTicker(),
@@ -243,9 +243,9 @@ class mapTemp:
     
     
     #TESTING ENVIRONMENT
-    #path = r'C:\Users\DHOLSAPP\Desktop\XLWings_ModuleTempTool'
-    #outputMapTemp(path , 'open_rack_cell_glassback')
-    #mapSelect = 'open_rack_cell_glassback'
+#path = r'C:\Users\DHOLSAPP\Desktop\XLWings_ModuleTempTool'
+#mapTemp.outputMapTemp(path , 'open_rack_cell_glassback')
+#mapSelect = 'open_rack_cell_glassback'
     
     
     
