@@ -1,4 +1,26 @@
 
+'''
+Create a data visualization of processed solar module temperatures using the
+King Model. Data visualization will be a global map of module temperatures and
+associated fixture type
+
+    *FIXTURE TYPES*
+    1) open_rack_cell_glassback
+    2) roof_mount_cell_glassback
+    3) open_rack_cell_polymerback
+    4) insulated_back_polymerback
+    5) open_rack_polymer_thinfilm_steel
+    6) 22x_concentrator_tracker
+
+All fixture types can be represented in the following categories
+
+    1) 98th Percentile module temperature (All 6 fixture types)
+    2) Minimum module temperature
+    3) Maximum module temperature
+    4) Average module temperature
+
+@author Derek Holsapple
+'''
 
 import pandas as pd
 from bokeh.plotting import  output_file, show

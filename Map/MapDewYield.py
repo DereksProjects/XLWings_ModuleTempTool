@@ -60,8 +60,7 @@ class mapDewYield:
         for i in range(0, len(level_1_df)):
             #Toggle size of circle
             radiusList.append(2)
-        lat = level_1_df['N'].astype(float) #Northing and easting if Needed
-        lon = level_1_df['E'].astype(float)
+
         radius = radiusList
         dew = level_1_df[moduleType]
         station = level_1_df['Station name']
