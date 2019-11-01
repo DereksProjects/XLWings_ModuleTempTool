@@ -40,10 +40,10 @@ class energyCalcs:
 
         windSpeedCutOff = 4.4 
     #After emailing Daniel Beysens corrected algorith by multiplying by (1/12)
-        dewYield = ( 1/12 ) * .37 * ( 1 + ( 0.204323 * h ) - (0.0238893 * h**2 ) - \
+        dewYield = ( 1/12 ) * (.37 * ( 1 + ( 0.204323 * h ) - (0.0238893 * h**2 ) - \
                    ( 18.0132 - ( 1.04963 * h**2 ) + ( 0.21891 * h**2 ) ) * (10**( -3 ) * tD ) ) * \
                    ( ( ( ( tD + 273.15)/285)**4)*(1 - (n/8))) + (0.06 * (tD - tA ) ) * \
-                   ( 1 + 100 * ( 1 - np.exp( - ( windSpeed / windSpeedCutOff)**20 ) ) )
+                   ( 1 + 100 * ( 1 - np.exp( - ( windSpeed / windSpeedCutOff)**20 ) ) ) )
                    
         return dewYield
     
@@ -149,3 +149,13 @@ class energyCalcs:
         
         '''    
         return( gJ * 1000 )
+        
+        
+        
+        
+        
+test = energyCalcs.dewYield( 1 , 2, 3, 4, 5)        
+        
+        
+        
+        
