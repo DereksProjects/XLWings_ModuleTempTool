@@ -68,6 +68,7 @@ class mapDewYield:
         longitude = level_1_df['Site longitude']
         moduleTemp = level_1_df[moduleType]
         uniqueID = level_1_df['Site Identifier Code']
+        dataSource = level_1_df['Data Source']
         elevation = level_1_df['Site elevation (meters)'].astype(float)
     
         # The Boken map rendering package needs to store data in the ColumnDataFormat
@@ -85,7 +86,8 @@ class mapDewYield:
                 Longitude = longitude,
                 Module_Temp = moduleTemp,
                 uniqueID = uniqueID,
-                elevation = elevation
+                elevation = elevation,
+                dataSource = dataSource
                 ) )
     
         p = bkp.figure(width=1500, 
@@ -144,6 +146,7 @@ class mapDewYield:
         TOOLTIPS = [
         ("Station","@Station") ,
         ("Site ID","@uniqueID"),
+        ("Data Source", "@dataSource"),
         ("Lat","@Latitude"),
         ("Lon","@Longitude"),
         ("Yearly_Dew_Yield","@dew" + " (mmd-1)"),

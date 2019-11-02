@@ -20,63 +20,6 @@ All fixture types can be represented in the following categories
     4) Average module temperature
 
 @author Derek Holsapple
-
-
-
-
-
-
-
-
-                                                             'Annual Minimum Module Temperature__open_rack_cell_glassback (C)',
-                                                             'Annual Average Module Temperature__open_rack_cell_glassback (C)',
-                                                             'Annual Maximum Module Temperature__open_rack_cell_glassback (C)',
-
-                                                             
-
-                                                             'Annual Minimum Module Temperature__roof_mount_cell_glassback (C)',
-                                                             'Annual Average Module Temperature__roof_mount_cell_glassback (C)',
-                                                             'Annual Maximum Module Temperature__roof_mount_cell_glassback (C)',
-                                                         
-                                                             
-
-                                                             'Annual Minimum Module Temperature__open_rack_cell_polymerback (C)',
-                                                             'Annual Average Module Temperature__open_rack_cell_polymerback (C)',
-                                                             'Annual Maximum Module Temperature__open_rack_cell_polymerback (C)',
-                                                         
-                                                             
-
-                                                             'Annual Minimum Module Temperature__insulated_back_polymerback (C)',
-                                                             'Annual Average Module Temperature__insulated_back_polymerback (C)',
-                                                             'Annual Maximum Module Temperature__insulated_back_polymerback (C)',
-)',                                                         
-
-
-                                                             'Annual Minimum Module Temperature__open_rack_polymer_thinfilm_steel (C)',
-                                                             'Annual Average Module Temperature__open_rack_polymer_thinfilm_steel (C)',
-                                                             'Annual Maximum Module Temperature__open_rack_polymer_thinfilm_steel (C)',
-                                                         
-                                                             
-
-                                                             'Annual Minimum Module Temperature__22x_concentrator_tracker (C)',
-                                                             'Annual Average Module Temperature__22x_concentrator_tracker (C)',
-                                                             'Annual Maximum Module Temperature__22x_concentrator_tracker (C)',
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 '''
 
 import pandas as pd
@@ -124,7 +67,7 @@ class mapTemp:
             maxTemp = 'Annual Maximum Module Temperature__open_rack_cell_glassback (C)'
             avgTemp = 'Annual Average Module Temperature__open_rack_cell_glassback (C)'
             module98 = 'Annual Average (98th Percentile) Module Temperature__open_rack_cell_glassback (C)'                        
-            chartHeader = 'Open Rack Cell Glass Back'
+            chartHeader = '98th Percentile Module Temperature Open Rack Cell Glass Back (C)'
             htmlString = '_open_rack_cell_glassback'
             colorSelector = 'Spectral6'
             #Assign the upper and lower bounds of the map 
@@ -137,7 +80,7 @@ class mapTemp:
             maxTemp = 'Annual Maximum Module Temperature__roof_mount_cell_glassback (C)'
             avgTemp = 'Annual Average Module Temperature__roof_mount_cell_glassback (C)'
             module98 = 'Annual Average (98th Percentile) Module Temperature__roof_mount_cell_glassback (C)'                        
-            chartHeader = 'Roof Mount Cell Glass Back'
+            chartHeader = '98th Percentile Module Temperature Roof Mount Cell Glass Back (C)'
             htmlString = '_roof_mount_cell_glassback'
             colorSelector = 'Spectral6'
             #Assign the upper and lower bounds of the map 
@@ -150,7 +93,7 @@ class mapTemp:
             maxTemp = 'Annual Maximum Module Temperature__open_rack_cell_polymerback (C)'
             avgTemp = 'Annual Average Module Temperature__open_rack_cell_polymerback (C)'
             module98 = 'Annual Average (98th Percentile) Module Temperature__open_rack_cell_polymerback (C)'                        
-            chartHeader = 'Open Rack Cell Polymer Back'
+            chartHeader = '98th Percentile Module Temperature Open Rack Cell Polymer Back (C)'
             htmlString = '_open_rack_cell_polymerback'
             colorSelector = 'Spectral6'
             #Assign the upper and lower bounds of the map 
@@ -163,7 +106,7 @@ class mapTemp:
             maxTemp = 'Annual Maximum Module Temperature__insulated_back_polymerback (C)'
             avgTemp = 'Annual Average Module Temperature__insulated_back_polymerback (C)'
             module98 = 'Annual Average (98th Percentile) Module Temperature__insulated_back_polymerback (C)'                        
-            chartHeader = 'Insulated Back Polymer Back'
+            chartHeader = '98th Percentile Module Temperature Insulated Back Polymer Back (C)'
             htmlString = '_insulated_back_polymerback'
             colorSelector = 'Spectral6'
             #Assign the upper and lower bounds of the map 
@@ -176,7 +119,7 @@ class mapTemp:
             maxTemp = 'Annual Maximum Module Temperature__open_rack_polymer_thinfilm_steel (C)'
             avgTemp = 'Annual Average Module Temperature__open_rack_polymer_thinfilm_steel (C)'
             module98 = 'Annual Average (98th Percentile) Module Temperature__open_rack_polymer_thinfilm_steel (C)'        
-            chartHeader = 'Open Rack Polymer Thin Film Steel'
+            chartHeader = '98th Percentile Module Temperature Open Rack Polymer Thin Film Steel (C)'
             htmlString = '_open_rack_polymer_thinfilm_steel'
             colorSelector = 'Spectral6' 
             #Assign the upper and lower bounds of the map 
@@ -189,7 +132,7 @@ class mapTemp:
             maxTemp = 'Annual Maximum Module Temperature__22x_concentrator_tracker (C)'
             avgTemp = 'Annual Average Module Temperature__22x_concentrator_tracker (C)'
             module98 = 'Annual Average (98th Percentile) Module Temperature__22x_concentrator_tracker (C)'            
-            chartHeader = '22x Concentrator Tracker'
+            chartHeader = '98th Percentile Module Temperature 22x Concentrator Tracker (C)'
             htmlString = '_22x_concentrator_tracker'
             colorSelector = 'Spectral6'
             #Assign the upper and lower bounds of the map 
@@ -315,6 +258,7 @@ class mapTemp:
         longitude = level_1_df['Site longitude']
         
         uniqueID = level_1_df['Site Identifier Code']
+        dataSource = level_1_df['Data Source']
         
         moduleTemp98 = level_1_df[module98]
         moduleMinTemp = level_1_df[minTemp]            
@@ -340,14 +284,15 @@ class mapTemp:
                 Module_Min_Temp = moduleMinTemp,
                 Module_Avg_Temp = moduleAvgTemp,
                 Module_Max_Temp = moduleMaxTemp,
-                uniqueID = uniqueID
+                uniqueID = uniqueID,
+                dataSource = dataSource
                 ) )
         
         # Create the figure with the map parameters.  This controls the window
         p = bkp.figure(width=1500, 
                    height=900, 
                    tools=tools, 
-                   title='IWEC, CWEC, and TMY-3 98th Precentile of Module Temperature Celsius (King Model) ' + chartHeader ,
+                   title= chartHeader ,
                    
                    x_axis_type="mercator",
                    y_axis_type="mercator",
@@ -400,6 +345,7 @@ class mapTemp:
         TOOLTIPS = [
         ("Station","@Station") ,
         ("Site ID","@uniqueID"),
+        ("Data Source", "@dataSource"),
         ("Lat","@Latitude"),
         ("Lon","@Longitude"),
         
