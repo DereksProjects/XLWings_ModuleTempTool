@@ -100,9 +100,7 @@ class firstClean:
                                    'Station pressure',
                                    'Wind direction',
                                    'Wind speed',
-                                   'Total sky cover',
-                                   'Precipitable water',
-                                   'Liquid percipitation depth']]
+                                   'Total sky cover']]
         ###############
         # Correct data to pull out metrics, create sub data frames for processing
                 # Predicted Albedo needs to be .2 if data is not provided
@@ -155,8 +153,7 @@ class firstClean:
          
         #Create another column of the hourly numeric Local Solar Time
         level_1_df['Hourly Local Solar Time'] = level_1_df['Local Solar Time'].apply(lambda x: x.hour + (x.minute/60))
-        #We also need the hourly local time in minutes
-        level_1_df['Minutes Local Solar Time'] = level_1_df['Local Solar Time'].apply(lambda x: x.hour*60  + x.minute)
+
     
         
         
@@ -167,12 +164,10 @@ class firstClean:
         level_1_df = level_1_df.drop(columns=['Date (MM/DD/YYYY)', 'Time (HH:MM)' ])
         
         # Re index the column headings in a more organized format 
-        level_1_df = level_1_df.reindex(columns = ['Local Date Time', 
+        level_1_df = level_1_df.reindex(columns = ['Local Date Time',
+                                                   'Universal Date Time',
                                                    'Local Solar Time',
                                                    'Hourly Local Solar Time',
-                                                   'Minutes Local Solar Time',
-                                                   'Universal Date Time',
-                                                   'Day of Year',
                                                    'Albedo', 
                                                    'Corrected Albedo',
                                                    'Global horizontal irradiance',
@@ -185,9 +180,7 @@ class firstClean:
                                                    'Wind direction',
                                                    'Wind speed',
                                                    'Total sky cover',
-                                                   'Total sky cover(okta)',
-                                                   'Precipitable water',
-                                                   'Liquid percipitation depth'
+                                                   'Total sky cover(okta)'
                                                    ])
         
         
