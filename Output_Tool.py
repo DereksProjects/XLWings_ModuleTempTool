@@ -30,6 +30,7 @@ from Processing.closestLatLon import closestLatLon
 
 from Map.mapTemp import mapTemp
 from Map.mapDewYield import mapDewYield
+from Map.mapWaterVaporPressure import mapWaterVaporPressure
 
 '''
 XL Wings Method
@@ -776,7 +777,37 @@ userInput = '677650'
 path = r'C:\Users\DHOLSAPP\Desktop\Summer_Project\Weather_Database'
 
 
+'''
+XL Wings METHOD
 
+createDewMap()
+
+Import the processed map pickle and create a map using the Bokeh package.
+Bokeh will render a html file containing the map. 
+
+@param path       - String, where the excel file is located 
+                                   (passed as an argument from EXCEL using UDF)
+@param mapSelect  - String, used to select what type of map to render
+                            - See "MapDewYield.py" for exact string to pass                                  
+
+ @return void     - Will render a map
+           
+'''
+def createWaterVaporPressureMap(path , mapSelect ):
+    
+    #XL Wings
+    ##############
+    # Use the xl wings caller function to establish handshake with excel
+    xw.Book.caller() 
+    #Reference sheet 0    
+    ##############
+
+    mapWaterVaporPressure.outputMapWaterVaporPressure(path , mapSelect )
+
+
+
+userInput = '677650'
+path = r'C:\Users\DHOLSAPP\Desktop\Summer_Project\Weather_Database'
 
 
 
