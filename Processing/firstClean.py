@@ -8,9 +8,9 @@ import datetime as dt
 from datetime import timedelta
 import pandas as pd
 
-#from Processing.solarTime import solarTime
+from Processing.solarTime import solarTime
 
-from solarTime import solarTime
+#from solarTime import solarTime
 
 class firstClean:
     

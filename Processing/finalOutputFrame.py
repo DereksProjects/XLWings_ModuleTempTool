@@ -23,13 +23,13 @@ import numpy as np
 import pvlib
 #from Calculate_Solar_Time import localTimeToSolarTime
 
-#from Processing.cleanRawOutput import cleanRawOutput
-#from Processing.energyCalcs import energyCalcs
-#from Processing.firstClean import firstClean
+from Processing.cleanRawOutput import cleanRawOutput
+from Processing.energyCalcs import energyCalcs
+from Processing.firstClean import firstClean
 
-from cleanRawOutput import cleanRawOutput
-from energyCalcs import energyCalcs
-from firstClean import firstClean
+#from cleanRawOutput import cleanRawOutput
+#from energyCalcs import energyCalcs
+#from firstClean import firstClean
 
 
 class finalOutputFrame:
