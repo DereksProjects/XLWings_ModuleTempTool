@@ -171,10 +171,10 @@ class solarTime:
     Solar time is 12:00pm when the sun is highest in the sky 
     
     @param longitude         -float, longitude of the current site
-    @param longitude         -int, Number of decimal hours by which local standard 
+    @param timeZoneDif         -int, Number of decimal hours by which local standard 
                                     time is ahead or behind Universal Time 
                                     ( + if ahead, - if behind)
-    @param localTIme         -datetime object, of Date and Time (local time), includes the day of the year
+    @param localTime         -datetime object, of Date and Time (local time), includes the day of the year
                                              EXAMPLE timestamp: 1998-01-01 01:00:00
     
     
