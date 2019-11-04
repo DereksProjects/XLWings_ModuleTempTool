@@ -17,18 +17,19 @@ import pandas as pd
 import glob
 import os 
 import xlwings as xw
+import numpy as np
 # Methods from pvlib to calcualtate solar position and total irradaince
 #from Plane_Of_Irradiance_and_Zenith import get_solarposition , get_total_irradiance  # Source code of pvLib
 import pvlib
 #from Calculate_Solar_Time import localTimeToSolarTime
 
-from Processing.cleanRawOutput import cleanRawOutput
-from Processing.energyCalcs import energyCalcs
-from Processing.firstClean import firstClean
+#from Processing.cleanRawOutput import cleanRawOutput
+#from Processing.energyCalcs import energyCalcs
+#from Processing.firstClean import firstClean
 
-#from cleanRawOutput import cleanRawOutput
-#from energyCalcs import energyCalcs
-#from firstClean import firstClean
+from cleanRawOutput import cleanRawOutput
+from energyCalcs import energyCalcs
+from firstClean import firstClean
 
 
 class finalOutputFrame:
@@ -372,7 +373,7 @@ class finalOutputFrame:
                 #elevation (degrees),
                 #azimuth (degrees),
                 #equation_of_time (minutes)
-           
+           #Uses the NREL spa algorithm to calculate angles
             solarPosition_df = pvlib.solarposition.get_solarposition( level_1_df['Universal Date Time'], 
                                                                                      latitude, 
                                                                                      longitude, 
@@ -384,6 +385,17 @@ class finalOutputFrame:
             level_1_df['Solar Zenith'] = solarPosition_df['zenith'].values
             level_1_df['Solar Azimuth'] = solarPosition_df['azimuth'].values
             level_1_df['Solar Elevation'] = solarPosition_df['elevation'].values
+        
+        
+            # Calculates the angle of incidence of the solar vector on a surface. 
+            # This is the angle between the solar vector and the surface normal.
+            aoi = pvlib.irradiance.aoi(surface_tilt, surface_azimuth,
+                           solarPosition_df['apparent_zenith'], solarPosition_df['azimuth'])
+            #Convert to Radians
+            aoiRadians = np.radians(aoi).to_frame()
+            level_1_df['Angle of incidence'] = aoiRadians['aoi'].values
+            
+        
         
     ################  
     # Calculate the POA
@@ -418,6 +430,8 @@ class finalOutputFrame:
             level_1_df['POA Global'] = totalIrradiance_df['poa_global'].values
             level_1_df['POA Ground Diffuse'] = totalIrradiance_df['poa_ground_diffuse'].values
             level_1_df['POA Sky Diffuse'] = totalIrradiance_df['poa_sky_diffuse'].values
+            
+
             
     #################
     #Calculate the temperatures of the module and then find the top 98% for the summary frame
@@ -827,7 +841,49 @@ class finalOutputFrame:
             #List of unique identifiers for reference
             filePath_List.append(fileNames[i])
             
+            level_1_df = level_1_df.reindex(columns = ['Local Date Time',
+                                                       'Universal Date Time',
+                                                       'Local Solar Time',
+                                                       'Hourly Local Solar Time',
+                                                       'Albedo',
+                                                       'Corrected Albedo',
+                                                       'Dry-bulb temperature',
+                                                       'Dew-point temperature',
+                                                       'Relative humidity',
+                                                       'Station pressure',
+                                                       'Wind direction',
+                                                       'Wind speed',
+                                                       'Total sky cover',
+                                                       'Total sky cover(okta)',
+                                                       'Dew Yield',
+                                                       'Water Vapor Pressure (kPa)',
+                                                       'Global horizontal irradiance',
+                                                       'Direct normal irradiance',
+                                                       'Diffuse horizontal irradiance',
+                                                       'Solar Zenith',
+                                                       'Solar Azimuth',
+                                                       'Solar Elevation',
+                                                       'Angle of incidence',
+                                                       'POA Diffuse',
+                                                       'POA Direct',
+                                                       'POA Global',
+                                                       'POA Ground Diffuse',
+                                                       'POA Sky Diffuse',
+                                                       'Cell Temperature(open_rack_cell_glassback)',
+                                                       'Module Temperature(open_rack_cell_glassback)',
+                                                       'Cell Temperature(roof_mount_cell_glassback)',
+                                                       'Module Temperature(roof_mount_cell_glassback)', 
+                                                       'Cell Temperature(open_rack_cell_polymerback)',
+                                                       'Module Temperature(open_rack_cell_polymerback)',
+                                                       'Cell Temperature(insulated_back_polymerback)',
+                                                       'Module Temperature(insulated_back_polymerback)', 
+                                                       'Cell Temperature(open_rack_polymer_thinfilm_steel)',
+                                                       'Module Temperature(open_rack_polymer_thinfilm_steel)',
+                                                       'Cell Temperature(22x_concentrator_tracker)',
+                                                       'Module Temperature(22x_concentrator_tracker)'                                                       
+                                                       ]) 
             
+
             #Store the level 1 processed Data into a pickle
             level_1_df.to_pickle( path + '\Pandas_Pickle_DataFrames\Pickle_Level1' +'\\'+ fileNames[i] )
             
@@ -1048,8 +1104,8 @@ class finalOutputFrame:
     
 #Testing    
     
-#currentDirectory = r'C:\Users\DHOLSAPP\Desktop\Weather_DatabaseAddingModuleTempRackRanges'
-#i = 0
+currentDirectory = r'C:\Users\DHOLSAPP\Desktop\Weather_DatabaseAddingModuleTempRackRanges'
+i = 0
 
 
 

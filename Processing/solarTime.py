@@ -165,7 +165,7 @@ class solarTime:
     '''
     EXECUTION METHOD
     
-    my_to_datetime()
+    localTimeToSolarTime()
     
     take a datetime object and convert it corrected solar time.
     Solar time is 12:00pm when the sun is highest in the sky 
