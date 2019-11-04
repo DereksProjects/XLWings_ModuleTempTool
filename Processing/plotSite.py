@@ -16,8 +16,7 @@ from bokeh.models import ColumnDataSource
 import bokeh.models as bkm
 from bokeh.plotting import figure
 from bokeh.io import output_notebook
-
-
+from bokeh.models import Legend, LegendItem
 
 
 def findPickleFile(fileID , currentDirectory):
@@ -52,130 +51,152 @@ def findPickleFile(fileID , currentDirectory):
 
 
 
-fileID = '010010'
+
+
+
+
+def individualPlot(currentDirectory , fileID , selector, graphTitle, outputHTML, xAxis, yAxis, toolTipLabel, toolTipMetric):
+    
+    '''           
+
+    Dry-bulb temperature
+    Dew-point temperature
+    Relative humidity
+    Station pressure
+    Wind direction
+    Wind speed
+    Solar Zenith
+    Solar Azimuth
+    Solar Elevation
+    Dew Yield
+    Water Vapor Pressure (kPa) 
+    
+    Global horizontal irradiance
+    Direct normal irradiance
+    Diffuse horizontal irradiance
+    POA Diffuse
+    POA Direct
+    POA Global
+    POA Ground Diffuse
+    POA Sky Diffuse
+    
+    ####SEPARATRE CELL AND MODULE#######
+    Cell Temperature(open_rack_cell_glassback)
+    Module Temperature(open_rack_cell_glassback)
+    Cell Temperature(roof_mount_cell_glassback)
+    Module Temperature(roof_mount_cell_glassback)
+    Cell Temperature(open_rack_cell_polymerback)
+    Module Temperature(open_rack_cell_polymerback)
+    Cell Temperature(insulated_back_polymerback)
+    Module Temperature(insulated_back_polymerback)
+    Cell Temperature(open_rack_polymer_thinfilm_steel)
+    Module Temperature(open_rack_polymer_thinfilm_steel)
+    Cell Temperature(22x_concentrator_tracker)
+    Module Temperature(22x_concentrator_tracker)   
+      
+    ''' 
+    
+    
+    #Access the level_1_df site specific, also collect that sites series data
+    level_1_df , siteLocation_series = findPickleFile(fileID , currentDirectory)
+    
+    ####BOKEH PLOT########
+    
+    #Create the html to be exported
+    output_file( outputHTML + '.html' ) 
+    
+    # Create the tools used for zooming and hovering on the map
+#    tools = "pan,wheel_zoom,box_zoom,reset,previewsave"
+    
+    # Create a blank figure with labels
+    p = figure(plot_width = 900, plot_height = 900, 
+               title = graphTitle,
+               x_axis_label = xAxis, y_axis_label = yAxis)
+    
+    # Bring in all the data to display on plot
+    selector = level_1_df[selector]
+    
+    localTime = level_1_df['Local Date Time']
+    universalTime = level_1_df['Universal Date Time']
+    localSolarTime = level_1_df['Local Solar Time']
+          
+    #Create a Series from 1-8760 (number of hours in a year)
+    numberOfHoursPerYear = []        
+    for i in range(1,8761):
+        numberOfHoursPerYear.append(i)
+    numberOfHoursPerYear = pd.Series(numberOfHoursPerYear)            
+    
+    
+    # The Boken map rendering package needs to store data in the ColumnDataFormat
+    # Add data to create hover labels
+    source = ColumnDataSource(
+        data = dict(
+            selector = selector,
+            localTime = localTime,
+            universalTime = universalTime,
+            localSolarTime = localSolarTime,
+            numberOfHoursPerYear = numberOfHoursPerYear
+            ) )
+    
+    
+    circles = p.circle("numberOfHoursPerYear",
+             "selector", 
+             source=source , 
+             radius= 15 , 
+             #fill color will use linear_cmap() to scale the colors of the circles being displayed
+             fill_color = 'blue',
+             line_color = None,
+             # Alpha is the transparency of the circle
+              alpha=.90)   
+    
+    
+    # These are the labels that are displayed when you hover over a spot on the map
+    #( label , @data), data needs to be inside the ColumnDataSource()
+    TOOLTIPS = [(toolTipLabel,"@selector" + toolTipMetric),
+                ("Local Time","@localTime{%m/%d %H:%M}"),
+                ("Local Solar Time","@localSolarTime{%m/%d %H:%M}"),
+                ("Universal Time","@universalTime{%m/%d %H:%M}")
+                ]
+    #, formatters={"localTime":"datetime"}, mode='vline'
+    
+    #Create a hover tool that will rinder only the weather stations i.e stations are small black circles
+    hover_labels = bkm.HoverTool(renderers=[circles],
+                         tooltips= TOOLTIPS,formatters={"localTime":"datetime","localSolarTime":"datetime","universalTime":"datetime"},mode='mouse')
+    #Add the hover tool to the map
+    p.add_tools(hover_labels)
+    
+    #Add site data to the Legend
+    legend = Legend(items=[
+        LegendItem(label="Station Name: " + siteLocation_series.iloc[1], index=0),
+        LegendItem(label="Site ID Code: "+ siteLocation_series.iloc[0], index=0),
+        LegendItem(label="Country: "+ siteLocation_series.iloc[7], index=0),
+        LegendItem(label="Latitude: "+ str(siteLocation_series.iloc[4]), index=1),
+        LegendItem(label="Longitude: "+ str(siteLocation_series.iloc[5]), index=1),
+    ],location = "top_left")
+    
+    #p.legend.location = "bottom_left"
+    
+    p.add_layout(legend)
+    
+    
+    # Show the plot
+    show(p)        
+            
+    
+fileID = '570830'
 currentDirectory = r'C:\Users\DHOLSAPP\Desktop\XLWings_ModuleTempTool'
-htmlString = 'Bokeh_plot'
-selector = 'Global horizontal irradiance'
-graphTitle = 'Module Temperature(roof_mount_cell_glassback)'
+selector = 'POA Diffuse'
+graphTitle = 'Module Temperature(roof_mount_cell_glassback) (C)'
+outputHTML = 'HourlyPlotModuleTemp(roof_mount_cell_glassback)'
+xAxis = 'Hours in a Year'
+yAxis = 'Module Temperature (C)'
+toolTipLabel = 'Module Temp'
+toolTipMetric = ' (C)'
 
-
-
-
-
-#Access the level_1_df site specific, also collect that sites series data
-level_1_df , siteLocation_series = findPickleFile(fileID , currentDirectory)
-
-####BOKEH PLOT########
-
-#Create the html to be exported
-output_file('TimeSeries_Module_Temperature_Plot' + htmlString + '.html') 
-
-# Create the tools used for zooming and hovering on the map
-tools = "pan,wheel_zoom,box_zoom,reset,previewsave"
-
-
-
-
-
-
-
-
-
-
-# Create a blank figure with labels
-p = figure(plot_width = 1200, plot_height = 1200, 
-           title = graphTitle,
-           x_axis_label = 'Yearly Local Time', y_axis_label = 'Module Temp (C)')
-
-
-
-# Bring in all the data to display on plot
-
-#Radius is the size of the circle to be displayed on the map
-radiusList = []
-for i in range(0, len(level_1_df)):
-    #Toggle size of circle
-    radiusList.append(2)
-
-
-radius = radiusList
-selector = level_1_df[selector]
-
-localTime = level_1_df['Local Date Time']
-universalTime = level_1_df['Universal Date Time']
-localSolarTime = level_1_df['Local Solar Time']
-hourlyLocalSolarTime = level_1_df['Hourly Local Solar Time']        
-        
-        
-
-
-
-
-# The Boken map rendering package needs to store data in the ColumnDataFormat
-# Store the lat/lon from the Map_pickle.  Formatting for Lat/Lon has been 
-# processed prior see "Map_Pickle_Processing.py" file for more details 
-# Add other data to create hover labels
-source = ColumnDataSource(
-    data = dict(
-        selector = selector,
-        localTime = localTime,
-        universalTime = universalTime,
-        localSolarTime = localSolarTime,
-        hourlyLocalSolarTime = hourlyLocalSolarTime 
-        ) )
-
-
-#circles = p.circle(hourlyLocalSolarTime, selector, size = 5, color = 'red')
-
-circles = p.circle("hourlyLocalSolarTime",
-         "selector", 
-         source=source , 
-         radius= .08 , 
-         #fill color will use linear_cmap() to scale the colors of the circles being displayed
-         fill_color = 'blue',
-         line_color = None,
-         # Alpha is the transparency of the circle
-          alpha=.90)   
-
-
-
-
-
-
-# These are the labels that are displayed when you hover over a spot on the map
-#( label , @data), data needs to be inside the ColumnDataSource()
-TOOLTIPS = [
-
-("Module Temp","@selector" + " (C)"),
-("Local Time","@localTime{%F %H:%M}"),
-("Local Solar Time","@localSolarTime{%F %H:%M}"),
-("Universal Time","@universalTime{%F %H:%M}"),
-("Hourly Local Solar Time","@hourlyLocalSolarTime")
-]
-#, formatters={"localTime":"datetime"}, mode='vline'
-
-#Create a hover tool that will rinder only the weather stations i.e stations are small black circles
-hover_labels = bkm.HoverTool(renderers=[circles],
-                     tooltips= TOOLTIPS,formatters={"localTime":"datetime","localSolarTime":"datetime","universalTime":"datetime"},mode='mouse')
-#Add the hover tool to the map
-p.add_tools(hover_labels)
-
-
-
-
-
-
-# Set to output the plot in the notebook
-output_notebook()
-# Show the plot
-show(p)        
-        
-        
-        
-        
-        
-        
-        
+            
+individualPlot(currentDirectory , fileID , selector, graphTitle, outputHTML, xAxis, yAxis, toolTipLabel, toolTipMetric)            
+            
+      
         
         
         
