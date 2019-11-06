@@ -882,8 +882,44 @@ class finalOutputFrame:
                                                        'Cell Temperature(22x_concentrator_tracker)',
                                                        'Module Temperature(22x_concentrator_tracker)'                                                       
                                                        ]) 
-            
-
+             #Put metrics in the final column names
+            level_1_df.rename(columns = {'Albedo' :'Albedo', 
+                                          'Corrected Albedo':'Corrected Albedo', 
+                                          'Dry-bulb temperature':'Dry-bulb temperature',
+                                          'Dew-point temperature':'Dew-point temperature',
+                                          'Relative humidity':'Relative humidity',
+                                          'Station pressure':'Station pressure',
+                                          'Wind direction':'Wind direction',
+                                          'Wind speed':'Wind speed',
+                                          'Total sky cover':'Total sky cover',
+                                          'Total sky cover(okta)':'Total sky cover(okta)',
+                                          'Dew Yield' :'Dew Yield', 
+                                          'Global horizontal irradiance':'Global horizontal irradiance', 
+                                          'Direct normal irradiance':'Direct normal irradiance',
+                                          'Diffuse horizontal irradiance':'Diffuse horizontal irradiance',
+                                          'Solar Zenith':'Solar Zenith',
+                                          'Solar Azimuth':'Solar Azimuth',
+                                          'Solar Elevation':'Solar Elevation',
+                                          'Angle of incidence':'Angle of incidence',
+                                          'POA Diffuse':'POA Diffuse',
+                                          'POA Direct':'POA Direct',                                          
+                                          'POA Global' :'POA Global', 
+                                          'POA Ground Diffuse':'POA Ground Diffuse', 
+                                          'POA Sky Diffuse':'POA Sky Diffuse',
+                                          'Cell Temperature(open_rack_cell_glassback)':'Cell Temperature(open_rack_cell_glassback)',
+                                          'Module Temperature(open_rack_cell_glassback)':'Module Temperature(open_rack_cell_glassback)',
+                                          'Cell Temperature(roof_mount_cell_glassback)':'Cell Temperature(roof_mount_cell_glassback)',
+                                          'Module Temperature(roof_mount_cell_glassback)':'Module Temperature(roof_mount_cell_glassback)',
+                                          'Cell Temperature(open_rack_cell_polymerback)':'Cell Temperature(open_rack_cell_polymerback)',
+                                          'Module Temperature(open_rack_cell_polymerback)':'Module Temperature(open_rack_cell_polymerback)',
+                                          'Cell Temperature(insulated_back_polymerback)':'Cell Temperature(insulated_back_polymerback)',
+                                          'Module Temperature(insulated_back_polymerback)':'Module Temperature(insulated_back_polymerback)',
+                                          'Cell Temperature(open_rack_polymer_thinfilm_steel)':'Cell Temperature(open_rack_polymer_thinfilm_steel)',                                          
+                                          'Module Temperature(open_rack_polymer_thinfilm_steel)' :'Module Temperature(open_rack_polymer_thinfilm_steel)', 
+                                          'Cell Temperature(22x_concentrator_tracker)':'Cell Temperature(22x_concentrator_tracker)', 
+                                          'Module Temperature(22x_concentrator_tracker)':'Module Temperature(22x_concentrator_tracker)'
+                                          }, inplace = True)
+    
             #Store the level 1 processed Data into a pickle
             level_1_df.to_pickle( path + '\Pandas_Pickle_DataFrames\Pickle_Level1' +'\\'+ fileNames[i] )
             
