@@ -1034,10 +1034,205 @@ def outputPlotDriver( currentDirectory , fileID , selector ):
                                 toolTipLabel, 
                                 toolTipMetric)
         
+      
         
         
         
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+    elif selector == 'GlobalHorizontalIrradiance':
+        
+        selector = 'Global horizontal irradiance'
+        graphTitle = 'Global Horizontal Irradiance(Need to add metric)'
+        outputHTML = 'Global_horizontal_irradiance'
+        xAxis = 'Hours in a Year'
+        yAxis = 'Global Horizontal Irradiance(Need to add metric)'
+        toolTipLabel = 'GHI'
+        toolTipMetric = ' (Need to add metric)'
+        
+        plotSite.individualPlot(currentDirectory , 
+                                fileID , 
+                                selector, 
+                                graphTitle, 
+                                outputHTML, 
+                                xAxis, 
+                                yAxis, 
+                                toolTipLabel, 
+                                toolTipMetric)
 
+    elif selector == 'DirectNormalIrradiance':
+        
+        selector = 'Direct normal irradiance'
+        graphTitle = 'Direct Normal Irradiance (Need to add metric)'
+        outputHTML = 'Direct_Normal_Irradiance'
+        xAxis = 'Hours in a Year'
+        yAxis = 'Direct Normal Irradiance (Need to add metric)'
+        toolTipLabel = 'DNI'
+        toolTipMetric = ' (Need to add metric)'
+        
+        plotSite.individualPlot(currentDirectory , 
+                                fileID , 
+                                selector, 
+                                graphTitle, 
+                                outputHTML, 
+                                xAxis, 
+                                yAxis, 
+                                toolTipLabel, 
+                                toolTipMetric)
+        
+     
+    elif selector == 'DiffuseHorizontalIrradiance':
+        
+        selector = 'Diffuse horizontal irradiance'
+        graphTitle = 'Diffuse Horizontal Irradiance (Need to add metric)'
+        outputHTML = 'Diffuse_Horizontal_Irradiance'
+        xAxis = 'Hours in a Year'
+        yAxis = 'Diffuse Horizontal Irradiance (Need to add metric)'
+        toolTipLabel = 'DHI'
+        toolTipMetric = ' (Need to add metric)'
+        
+        plotSite.individualPlot(currentDirectory , 
+                                fileID , 
+                                selector, 
+                                graphTitle, 
+                                outputHTML, 
+                                xAxis, 
+                                yAxis, 
+                                toolTipLabel, 
+                                toolTipMetric)
+        
+      
+    elif selector == 'AngleOfIncidence':
+        
+        selector = 'Angle of incidence'
+        graphTitle = 'Angle Of Incidence (degrees)'
+        outputHTML = 'Angle_Of_Incidence'
+        xAxis = 'Hours in a Year'
+        yAxis = 'Angle Of Incidence (degrees)'
+        toolTipLabel = 'AOI'
+        toolTipMetric = ' (degrees)'
+        
+        plotSite.individualPlot(currentDirectory , 
+                                fileID , 
+                                selector, 
+                                graphTitle, 
+                                outputHTML, 
+                                xAxis, 
+                                yAxis, 
+                                toolTipLabel, 
+                                toolTipMetric)
+    elif selector == 'POADiffuse':
+        
+        selector = 'POA Diffuse'
+        graphTitle = 'Plane Of Array Diffuse (Need to add metric)'
+        outputHTML = 'Plane_Of_Array_Diffuse'
+        xAxis = 'Hours in a Year'
+        yAxis = 'Plane Of Array Diffuse (Need to add metric)'
+        toolTipLabel = 'POA_Diffuse'
+        toolTipMetric = ' (Need to add metric)'
+        
+        plotSite.individualPlot(currentDirectory , 
+                                fileID , 
+                                selector, 
+                                graphTitle, 
+                                outputHTML, 
+                                xAxis, 
+                                yAxis, 
+                                toolTipLabel, 
+                                toolTipMetric)
+        
+     
+    elif selector == 'POADirect':
+        
+        selector = 'POA Direct'
+        graphTitle = 'Plane Of Array Direct (Need to add metric)'
+        outputHTML = 'POA_Direct'
+        xAxis = 'Hours in a Year'
+        yAxis = 'Plane Of Array Direct (Need to add metric)'
+        toolTipLabel = 'POA Direct'
+        toolTipMetric = ' (Need to add metric)'
+        
+        plotSite.individualPlot(currentDirectory , 
+                                fileID , 
+                                selector, 
+                                graphTitle, 
+                                outputHTML, 
+                                xAxis, 
+                                yAxis, 
+                                toolTipLabel, 
+                                toolTipMetric)
+    elif selector == 'POAGlobal':
+        
+        selector = 'POA Global'
+        graphTitle = 'Plane Of Array Global (Neeed to add metric)'
+        outputHTML = 'POA_Global'
+        xAxis = 'Hours in a Year'
+        yAxis = 'Plane Of Array Global (Neeed to add metric)'
+        toolTipLabel = 'POA Global'
+        toolTipMetric = ' (Neeed to add metric)'
+        
+        plotSite.individualPlot(currentDirectory , 
+                                fileID , 
+                                selector, 
+                                graphTitle, 
+                                outputHTML, 
+                                xAxis, 
+                                yAxis, 
+                                toolTipLabel, 
+                                toolTipMetric)
+    elif selector == 'POAGroundDiffuse':
+        
+        selector = 'POA Ground Diffuse'
+        graphTitle = 'Plane Of Array Ground Diffuse (Neeed to add metric)'
+        outputHTML = 'POA_Ground_Diffuse'
+        xAxis = 'Hours in a Year'
+        yAxis = 'Plane Of Array Ground Diffuse (Neeed to add metric)'
+        toolTipLabel = 'POA Ground Diffuse'
+        toolTipMetric = ' (Neeed to add metric)'
+        
+        plotSite.individualPlot(currentDirectory , 
+                                fileID , 
+                                selector, 
+                                graphTitle, 
+                                outputHTML, 
+                                xAxis, 
+                                yAxis, 
+                                toolTipLabel, 
+                                toolTipMetric)
+    elif selector == 'POASkyDiffuse':
+        
+        selector = 'POA Sky Diffuse'
+        graphTitle = 'Plane Of Array Sky Diffuse (Neeed to add metric)'
+        outputHTML = 'POA_Sky_Diffuse'
+        xAxis = 'Hours in a Year'
+        yAxis = 'Plane Of Array Sky Diffuse (Neeed to add metric)'
+        toolTipLabel = 'Water Vapor Pressure'
+        toolTipMetric = ' (Neeed to add metric)'
+        
+        plotSite.individualPlot(currentDirectory , 
+                                fileID , 
+                                selector, 
+                                graphTitle, 
+                                outputHTML, 
+                                xAxis, 
+                                yAxis, 
+                                toolTipLabel, 
+                                toolTipMetric)        
+        
+        
 
 
 
