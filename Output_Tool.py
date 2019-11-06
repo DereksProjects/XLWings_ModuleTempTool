@@ -32,6 +32,10 @@ from Map.mapTemp import mapTemp
 from Map.mapDewYield import mapDewYield
 from Map.mapWaterVaporPressure import mapWaterVaporPressure
 
+from Processing.plotSite import plotSite
+
+
+
 '''
 XL Wings Method
 extractAllZip_Files()
@@ -806,8 +810,253 @@ def createWaterVaporPressureMap(path , mapSelect ):
 
 
 
-userInput = '677650'
-path = r'C:\Users\DHOLSAPP\Desktop\XLWings_ModuleTempTool'
+
+
+def outputPlotDriver( currentDirectory , fileID , selector ): 
+
+    if selector == 'DryBulbTemperature':
+        
+        selector = 'Dry-bulb temperature'
+        graphTitle = 'Dry-Bulb Temperature (C)'
+        outputHTML = 'Dry_Bulb_Temp'
+        xAxis = 'Hours in a Year'
+        yAxis = 'Dry-Bulb Temperature (C)'
+        toolTipLabel = 'Dry-Bulb Temp'
+        toolTipMetric = ' (C)'
+        
+        plotSite.individualPlot(currentDirectory , 
+                                fileID , 
+                                selector, 
+                                graphTitle, 
+                                outputHTML, 
+                                xAxis, 
+                                yAxis, 
+                                toolTipLabel, 
+                                toolTipMetric)
+        
+    elif selector == 'DewPointTemperature':
+        
+        selector = 'Dew-point temperature'
+        graphTitle = 'Dew Point Temperature (C)'
+        outputHTML = 'Dew_Point_Temp'
+        xAxis = 'Hours in a Year'
+        yAxis = 'Dew Point Temperature (C)'
+        toolTipLabel = 'Dew Point Temp'
+        toolTipMetric = ' (C)'
+        
+        plotSite.individualPlot(currentDirectory , 
+                                fileID , 
+                                selector, 
+                                graphTitle, 
+                                outputHTML, 
+                                xAxis, 
+                                yAxis, 
+                                toolTipLabel, 
+                                toolTipMetric)
+        
+    elif selector == 'RelativeHumidity':
+        
+        selector = 'Relative humidity'
+        graphTitle = 'Relative Humidity %'
+        outputHTML = 'Relative_Humidity'
+        xAxis = 'Hours in a Year'
+        yAxis = 'Relative Humidity %'
+        toolTipLabel = 'Relative Humidity'
+        toolTipMetric = ' %'
+        
+        plotSite.individualPlot(currentDirectory , 
+                                fileID , 
+                                selector, 
+                                graphTitle, 
+                                outputHTML, 
+                                xAxis, 
+                                yAxis, 
+                                toolTipLabel, 
+                                toolTipMetric)
+        
+    elif selector == 'StationPressure':
+        
+        selector = 'Station pressure'
+        graphTitle = 'Station Pressure'
+        outputHTML = 'Station_Pressure'
+        xAxis = 'Hours in a Year'
+        yAxis = 'Station Pressure'
+        toolTipLabel = 'Station Pressure'
+        toolTipMetric = ' (pressure need to add metric)'
+        
+        plotSite.individualPlot(currentDirectory , 
+                                fileID , 
+                                selector, 
+                                graphTitle, 
+                                outputHTML, 
+                                xAxis, 
+                                yAxis, 
+                                toolTipLabel, 
+                                toolTipMetric)
+        
+    elif selector == 'WindDirection':
+        
+        selector = 'Wind direction'
+        graphTitle = 'Wind Direction (Degrees)'
+        outputHTML = 'Wind_Direction'
+        xAxis = 'Hours in a Year'
+        yAxis = 'Wind Direction'
+        toolTipLabel = 'Wind Direction'
+        toolTipMetric = ' (degrees)'
+        
+        plotSite.individualPlot(currentDirectory , 
+                                fileID , 
+                                selector, 
+                                graphTitle, 
+                                outputHTML, 
+                                xAxis, 
+                                yAxis, 
+                                toolTipLabel, 
+                                toolTipMetric)
+        
+    elif selector == 'WindSpeed':
+        
+        selector = 'Wind speed'
+        graphTitle = 'Wind Speed'
+        outputHTML = 'Wind_Speed'
+        xAxis = 'Hours in a Year'
+        yAxis = 'Wind Speed'
+        toolTipLabel = 'Wind Speed'
+        toolTipMetric = ' (Need to add metric)'
+        
+        plotSite.individualPlot(currentDirectory , 
+                                fileID , 
+                                selector, 
+                                graphTitle, 
+                                outputHTML, 
+                                xAxis, 
+                                yAxis, 
+                                toolTipLabel, 
+                                toolTipMetric)
+        
+    elif selector == 'SolarZenith':
+        
+        selector = 'Solar Zenith'
+        graphTitle = 'Solar Zenith (Degrees)'
+        outputHTML = 'Solar_Zenith'
+        xAxis = 'Hours in a Year'
+        yAxis = 'Solar Zenith (Degrees)'
+        toolTipLabel = 'Solar Zenith'
+        toolTipMetric = ' (Degrees)'
+        
+        plotSite.individualPlot(currentDirectory , 
+                                fileID , 
+                                selector, 
+                                graphTitle, 
+                                outputHTML, 
+                                xAxis, 
+                                yAxis, 
+                                toolTipLabel, 
+                                toolTipMetric)
+        
+    elif selector == 'SolarAzimuth':
+        
+        selector = 'Solar Azimuth'
+        graphTitle = 'Solar Azimuth (Degrees)'
+        outputHTML = 'Solar_Azimuth'
+        xAxis = 'Hours in a Year'
+        yAxis = 'Solar Azimuth (Degrees)'
+        toolTipLabel = 'Solar Azimuth'
+        toolTipMetric = ' (Degrees)'
+        
+        plotSite.individualPlot(currentDirectory , 
+                                fileID , 
+                                selector, 
+                                graphTitle, 
+                                outputHTML, 
+                                xAxis, 
+                                yAxis, 
+                                toolTipLabel, 
+                                toolTipMetric)
+        
+    elif selector == 'SolarElevation':
+        
+        selector = 'Solar Elevation'
+        graphTitle = 'Solar Elevation (Degrees)'
+        outputHTML = 'Solar_Elevation'
+        xAxis = 'Hours in a Year'
+        yAxis = 'Solar Elevation (Degrees)'
+        toolTipLabel = 'Solar Elevation'
+        toolTipMetric = ' (Degrees)'
+        
+        plotSite.individualPlot(currentDirectory , 
+                                fileID , 
+                                selector, 
+                                graphTitle, 
+                                outputHTML, 
+                                xAxis, 
+                                yAxis, 
+                                toolTipLabel, 
+                                toolTipMetric)
+        
+    elif selector == 'DewYield':
+        
+        selector = 'Dew Yield'
+        graphTitle = 'Dew Yield (mmd-1)'
+        outputHTML = 'Dew_Yield'
+        xAxis = 'Hours in a Year'
+        yAxis = 'Dew Yield (mmd-1)'
+        toolTipLabel = 'Dew Yield'
+        toolTipMetric = ' (mmd-1)'
+        
+        plotSite.individualPlot(currentDirectory , 
+                                fileID , 
+                                selector, 
+                                graphTitle, 
+                                outputHTML, 
+                                xAxis, 
+                                yAxis, 
+                                toolTipLabel, 
+                                toolTipMetric)
+        
+    elif selector == 'WaterVaporPressure':
+        
+        selector = 'Water Vapor Pressure (kPa)'
+        graphTitle = 'Water Vapor Pressure (kPa)'
+        outputHTML = 'Water_Vapor_Pressure'
+        xAxis = 'Hours in a Year'
+        yAxis = 'Water Vapor Pressure (kPa)'
+        toolTipLabel = 'Water Vapor Pressure'
+        toolTipMetric = ' (kPa)'
+        
+        plotSite.individualPlot(currentDirectory , 
+                                fileID , 
+                                selector, 
+                                graphTitle, 
+                                outputHTML, 
+                                xAxis, 
+                                yAxis, 
+                                toolTipLabel, 
+                                toolTipMetric)
+        
+        
+        
+        
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#userInput = '677650'
+#path = r'C:\Users\DHOLSAPP\Desktop\XLWings_ModuleTempTool'
 
 
 
