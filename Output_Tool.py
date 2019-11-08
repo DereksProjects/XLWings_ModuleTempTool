@@ -1397,6 +1397,126 @@ def outputPlotDriver( currentDirectory , fileID , selector ):
 
 
 
+    elif selector == 'ModuleTemperature open rack cell glassback':
+        
+        selector = 'Module Temperature(open_rack_cell_glassback)'
+        graphTitle = 'Module Temperature(open_rack_cell_glassback) (C)'
+        outputHTML = 'Module Temperature_open_rack_cell_glassback'
+        xAxis = 'Hours in a Year'
+        yAxis = 'Module Temperature(open_rack_cell_glassback) (C)'
+        toolTipLabel = 'Module Temp'
+        toolTipMetric = ' (C)'
+        
+        plotSite.individualPlot(currentDirectory , 
+                                fileID , 
+                                selector, 
+                                graphTitle, 
+                                outputHTML, 
+                                xAxis, 
+                                yAxis, 
+                                toolTipLabel, 
+                                toolTipMetric)      
+    elif selector == 'ModuleTemperature roof mount cell glassback':
+        
+        selector = 'Module Temperature(roof_mount_cell_glassback)'
+        graphTitle = 'Module Temperature(roof_mount_cell_glassback) (C)'
+        outputHTML = 'Module Temperature_roof_mount_cell_glassback'
+        xAxis = 'Hours in a Year'
+        yAxis = 'Module Temperature(roof_mount_cell_glassback) (C)'
+        toolTipLabel = 'Module Temp'
+        toolTipMetric = ' (C)'
+        
+        plotSite.individualPlot(currentDirectory , 
+                                fileID , 
+                                selector, 
+                                graphTitle, 
+                                outputHTML, 
+                                xAxis, 
+                                yAxis, 
+                                toolTipLabel, 
+                                toolTipMetric)      
+    elif selector == 'ModuleTemperature open rack cell polymerback':
+        
+        selector = 'Module Temperature(open_rack_cell_polymerback)'
+        graphTitle = 'Module Temperature(open_rack_cell_polymerback) (C)'
+        outputHTML = 'Module Temperature_open_rack_cell_polymerback'
+        xAxis = 'Hours in a Year'
+        yAxis = 'Module Temperature(open_rack_cell_polymerback) (C)'
+        toolTipLabel = 'Module Temp'
+        toolTipMetric = ' (C)'
+        
+        plotSite.individualPlot(currentDirectory , 
+                                fileID , 
+                                selector, 
+                                graphTitle, 
+                                outputHTML, 
+                                xAxis, 
+                                yAxis, 
+                                toolTipLabel, 
+                                toolTipMetric)      
+    elif selector == 'ModuleTemperature insulated back polymerback':
+        
+        selector = 'Module Temperature(insulated_back_polymerback)'
+        graphTitle = 'Module Temperature(insulated_back_polymerback) (C)'
+        outputHTML = 'Module Temperature_insulated_back_polymerback'
+        xAxis = 'Hours in a Year'
+        yAxis = 'Module Temperature(insulated_back_polymerback) (C)'
+        toolTipLabel = 'Module Temp'
+        toolTipMetric = ' (C)'
+        
+        plotSite.individualPlot(currentDirectory , 
+                                fileID , 
+                                selector, 
+                                graphTitle, 
+                                outputHTML, 
+                                xAxis, 
+                                yAxis, 
+                                toolTipLabel, 
+                                toolTipMetric)      
+    elif selector == 'ModuleTemperature open rack polymer thinfilm steel':
+        
+        selector = 'Module Temperature(open_rack_polymer_thinfilm_steel)'
+        graphTitle = 'Module Temperature(open_rack_polymer_thinfilm_steel) (C)'
+        outputHTML = 'Module Temperature_open_rack_polymer_thinfilm_steel'
+        xAxis = 'Hours in a Year'
+        yAxis = 'Module Temperature(open_rack_polymer_thinfilm_steel) (C)'
+        toolTipLabel = 'Module Temp'
+        toolTipMetric = ' (C)'
+        
+        plotSite.individualPlot(currentDirectory , 
+                                fileID , 
+                                selector, 
+                                graphTitle, 
+                                outputHTML, 
+                                xAxis, 
+                                yAxis, 
+                                toolTipLabel, 
+                                toolTipMetric)      
+    elif selector == 'ModuleTemperature 22x concentrator tracker':
+        
+        selector = 'Module Temperature(22x_concentrator_tracker)'
+        graphTitle = 'Module Temperature(22x_concentrator_tracker) (C)'
+        outputHTML = 'Module Temperature_22x_concentrator_tracker'
+        xAxis = 'Hours in a Year'
+        yAxis = 'Module Temperature(22x_concentrator_tracker) (C)'
+        toolTipLabel = 'Module Temp'
+        toolTipMetric = ' (C)'
+        
+        plotSite.individualPlot(currentDirectory , 
+                                fileID , 
+                                selector, 
+                                graphTitle, 
+                                outputHTML, 
+                                xAxis, 
+                                yAxis, 
+                                toolTipLabel, 
+                                toolTipMetric)      
+        
+
+
+
+
+
 
 
 
