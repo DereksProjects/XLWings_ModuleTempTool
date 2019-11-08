@@ -906,18 +906,18 @@ class finalOutputFrame:
                                           'POA Global' :'POA Global', 
                                           'POA Ground Diffuse':'POA Ground Diffuse', 
                                           'POA Sky Diffuse':'POA Sky Diffuse',
-                                          'Cell Temperature(open_rack_cell_glassback)':'Cell Temperature(open_rack_cell_glassback)',
-                                          'Module Temperature(open_rack_cell_glassback)':'Module Temperature(open_rack_cell_glassback)',
-                                          'Cell Temperature(roof_mount_cell_glassback)':'Cell Temperature(roof_mount_cell_glassback)',
-                                          'Module Temperature(roof_mount_cell_glassback)':'Module Temperature(roof_mount_cell_glassback)',
-                                          'Cell Temperature(open_rack_cell_polymerback)':'Cell Temperature(open_rack_cell_polymerback)',
-                                          'Module Temperature(open_rack_cell_polymerback)':'Module Temperature(open_rack_cell_polymerback)',
-                                          'Cell Temperature(insulated_back_polymerback)':'Cell Temperature(insulated_back_polymerback)',
-                                          'Module Temperature(insulated_back_polymerback)':'Module Temperature(insulated_back_polymerback)',
-                                          'Cell Temperature(open_rack_polymer_thinfilm_steel)':'Cell Temperature(open_rack_polymer_thinfilm_steel)',                                          
-                                          'Module Temperature(open_rack_polymer_thinfilm_steel)' :'Module Temperature(open_rack_polymer_thinfilm_steel)', 
-                                          'Cell Temperature(22x_concentrator_tracker)':'Cell Temperature(22x_concentrator_tracker)', 
-                                          'Module Temperature(22x_concentrator_tracker)':'Module Temperature(22x_concentrator_tracker)'
+                                          'Cell Temperature(open_rack_cell_glassback)':'Cell Temperature(open_rack_cell_glassback) (C)',
+                                          'Module Temperature(open_rack_cell_glassback)':'Module Temperature(open_rack_cell_glassback) (C)',
+                                          'Cell Temperature(roof_mount_cell_glassback)':'Cell Temperature(roof_mount_cell_glassback) (C)',
+                                          'Module Temperature(roof_mount_cell_glassback)':'Module Temperature(roof_mount_cell_glassback) (C)',
+                                          'Cell Temperature(open_rack_cell_polymerback)':'Cell Temperature(open_rack_cell_polymerback) (C)',
+                                          'Module Temperature(open_rack_cell_polymerback)':'Module Temperature(open_rack_cell_polymerback) (C)',
+                                          'Cell Temperature(insulated_back_polymerback)':'Cell Temperature(insulated_back_polymerback) (C)',
+                                          'Module Temperature(insulated_back_polymerback)':'Module Temperature(insulated_back_polymerback) (C)',
+                                          'Cell Temperature(open_rack_polymer_thinfilm_steel)':'Cell Temperature(open_rack_polymer_thinfilm_steel) (C)',                                          
+                                          'Module Temperature(open_rack_polymer_thinfilm_steel)' :'Module Temperature(open_rack_polymer_thinfilm_steel) (C)', 
+                                          'Cell Temperature(22x_concentrator_tracker)':'Cell Temperature(22x_concentrator_tracker) (C)', 
+                                          'Module Temperature(22x_concentrator_tracker)':'Module Temperature(22x_concentrator_tracker) (C)'
                                           }, inplace = True)
     
             #Store the level 1 processed Data into a pickle

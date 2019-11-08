@@ -9,13 +9,11 @@ comparison against all TMY3 data
 
 import pandas as pd
 import glob
-from Calculate_Solar_Time import localTimeToSolarTime
-import datetime as dt
 from kempeCalcs import kempeCalcs
 import pvlib
 import numpy as np
 from firstClean import firstClean
-
+import os
 
 
 def filesNameList_RawPickle( path ):
@@ -159,7 +157,7 @@ level_1_df = kempeCalcs.kempePOA_1( level_1_df , surface_tilt )
 
 
 #Make A CSV file from frame   
-level_1_df.to_csv( r'C:\Users\DHOLSAPP\Desktop\XLWings_ModuleTempTool\POA_compare.csv' )
+#level_1_df.to_csv( r'C:\Users\DHOLSAPP\Desktop\XLWings_ModuleTempTool\POA_compare.csv' )
 
 
 
