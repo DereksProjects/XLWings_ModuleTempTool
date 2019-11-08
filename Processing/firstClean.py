@@ -2,6 +2,9 @@
 """
 Created on Mon Oct 28 08:41:38 2019
 
+firstClean will take a raw dataframe and perform preliminary processing.  
+Individual site location needs to be cleaned before processing.
+
 @author: DHOLSAPP
 """
 import datetime as dt

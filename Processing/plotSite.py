@@ -229,7 +229,7 @@ class plotSite:
         '''
         if selector == 'DryBulbTemperature':
             
-            selector = 'Dry-bulb temperature'
+            selector = 'Dry-bulb temperature(C)'
             graphTitle = 'Dry-Bulb Temperature (C)'
             outputHTML = 'Dry_Bulb_Temp'
             xAxis = 'Hours in a Year'
@@ -249,7 +249,7 @@ class plotSite:
             
         elif selector == 'DewPointTemperature':
             
-            selector = 'Dew-point temperature'
+            selector = 'Dew-point temperature(C)'
             graphTitle = 'Dew Point Temperature (C)'
             outputHTML = 'Dew_Point_Temp'
             xAxis = 'Hours in a Year'
@@ -267,9 +267,9 @@ class plotSite:
                                     toolTipLabel, 
                                     toolTipMetric)
             
-        elif selector == 'RelativeHumidity':
+        elif selector == 'Relative humidity':
             
-            selector = 'Relative humidity'
+            selector = 'Relative humidity(%)'
             graphTitle = 'Relative Humidity %'
             outputHTML = 'Relative_Humidity'
             xAxis = 'Hours in a Year'
@@ -289,7 +289,7 @@ class plotSite:
             
         elif selector == 'StationPressure':
             
-            selector = 'Station pressure'
+            selector = 'Station pressure(mbar)'
             graphTitle = 'Station Pressure'
             outputHTML = 'Station_Pressure'
             xAxis = 'Hours in a Year'
@@ -309,7 +309,7 @@ class plotSite:
             
         elif selector == 'WindDirection':
             
-            selector = 'Wind direction'
+            selector = 'Wind direction(degrees)'
             graphTitle = 'Wind Direction (Degrees)'
             outputHTML = 'Wind_Direction'
             xAxis = 'Hours in a Year'
@@ -329,7 +329,7 @@ class plotSite:
             
         elif selector == 'WindSpeed':
             
-            selector = 'Wind speed'
+            selector = 'Wind speed(m/s)'
             graphTitle = 'Wind Speed'
             outputHTML = 'Wind_Speed'
             xAxis = 'Hours in a Year'
@@ -349,7 +349,7 @@ class plotSite:
             
         elif selector == 'SolarZenith':
             
-            selector = 'Solar Zenith'
+            selector = 'Solar Zenith(degrees)'
             graphTitle = 'Solar Zenith (Degrees)'
             outputHTML = 'Solar_Zenith'
             xAxis = 'Hours in a Year'
@@ -369,7 +369,7 @@ class plotSite:
             
         elif selector == 'SolarAzimuth':
             
-            selector = 'Solar Azimuth'
+            selector = 'Solar Azimuth(degrees)'
             graphTitle = 'Solar Azimuth (Degrees)'
             outputHTML = 'Solar_Azimuth'
             xAxis = 'Hours in a Year'
@@ -389,7 +389,7 @@ class plotSite:
             
         elif selector == 'SolarElevation':
             
-            selector = 'Solar Elevation'
+            selector = 'Solar Elevation(degrees)'
             graphTitle = 'Solar Elevation (Degrees)'
             outputHTML = 'Solar_Elevation'
             xAxis = 'Hours in a Year'
@@ -409,7 +409,7 @@ class plotSite:
             
         elif selector == 'DewYield':
             
-            selector = 'Dew Yield'
+            selector = 'Dew Yield(mmd-1)'
             graphTitle = 'Dew Yield (mmd-1)'
             outputHTML = 'Dew_Yield'
             xAxis = 'Hours in a Year'
@@ -449,13 +449,13 @@ class plotSite:
        
         elif selector == 'GlobalHorizontalIrradiance':
             
-            selector = 'Global horizontal irradiance'
-            graphTitle = 'Global Horizontal Irradiance(Need to add metric)'
+            selector = 'Global horizontal irradiance(W/m^2)'
+            graphTitle = 'Global Horizontal Irradiance(W/m^2)'
             outputHTML = 'Global_horizontal_irradiance'
             xAxis = 'Hours in a Year'
-            yAxis = 'Global Horizontal Irradiance(Need to add metric)'
+            yAxis = 'Global Horizontal Irradiance(W/m^2)'
             toolTipLabel = 'GHI'
-            toolTipMetric = ' (Need to add metric)'
+            toolTipMetric = ' (W/m^2)'
             
             plotSite.individualPlot(currentDirectory , 
                                     fileID , 
@@ -469,13 +469,13 @@ class plotSite:
     
         elif selector == 'DirectNormalIrradiance':
             
-            selector = 'Direct normal irradiance'
-            graphTitle = 'Direct Normal Irradiance (Need to add metric)'
+            selector = 'Direct normal irradiance(W/m^2)'
+            graphTitle = 'Direct Normal Irradiance (W/m^2)'
             outputHTML = 'Direct_Normal_Irradiance'
             xAxis = 'Hours in a Year'
-            yAxis = 'Direct Normal Irradiance (Need to add metric)'
+            yAxis = 'Direct Normal Irradiance (W/m^2)'
             toolTipLabel = 'DNI'
-            toolTipMetric = ' (Need to add metric)'
+            toolTipMetric = ' (W/m^2)'
             
             plotSite.individualPlot(currentDirectory , 
                                     fileID , 
@@ -490,13 +490,13 @@ class plotSite:
          
         elif selector == 'DiffuseHorizontalIrradiance':
             
-            selector = 'Diffuse horizontal irradiance'
-            graphTitle = 'Diffuse Horizontal Irradiance (Need to add metric)'
+            selector = 'Diffuse horizontal irradiance(W/m^2)'
+            graphTitle = 'Diffuse Horizontal Irradiance (W/m^2)'
             outputHTML = 'Diffuse_Horizontal_Irradiance'
             xAxis = 'Hours in a Year'
-            yAxis = 'Diffuse Horizontal Irradiance (Need to add metric)'
+            yAxis = 'Diffuse Horizontal Irradiance (W/m^2)'
             toolTipLabel = 'DHI'
-            toolTipMetric = ' (Need to add metric)'
+            toolTipMetric = ' (W/m^2)'
             
             plotSite.individualPlot(currentDirectory , 
                                     fileID , 
@@ -511,7 +511,7 @@ class plotSite:
           
         elif selector == 'AngleOfIncidence':
             
-            selector = 'Angle of incidence'
+            selector = 'Angle of incidence(degrees)'
             graphTitle = 'Angle Of Incidence (degrees)'
             outputHTML = 'Angle_Of_Incidence'
             xAxis = 'Hours in a Year'
@@ -530,13 +530,13 @@ class plotSite:
                                     toolTipMetric)
         elif selector == 'POADiffuse':
             
-            selector = 'POA Diffuse'
-            graphTitle = 'Plane Of Array Diffuse (Need to add metric)'
+            selector = 'POA Diffuse(W/m^2)'
+            graphTitle = 'Plane Of Array Diffuse (W/m^2)'
             outputHTML = 'Plane_Of_Array_Diffuse'
             xAxis = 'Hours in a Year'
-            yAxis = 'Plane Of Array Diffuse (Need to add metric)'
+            yAxis = 'Plane Of Array Diffuse (W/m^2)'
             toolTipLabel = 'POA_Diffuse'
-            toolTipMetric = ' (Need to add metric)'
+            toolTipMetric = ' (W/m^2)'
             
             plotSite.individualPlot(currentDirectory , 
                                     fileID , 
@@ -551,13 +551,13 @@ class plotSite:
          
         elif selector == 'POADirect':
             
-            selector = 'POA Direct'
-            graphTitle = 'Plane Of Array Direct (Need to add metric)'
+            selector = 'POA Direct(W/m^2)'
+            graphTitle = 'Plane Of Array Direct (W/m^2)'
             outputHTML = 'POA_Direct'
             xAxis = 'Hours in a Year'
-            yAxis = 'Plane Of Array Direct (Need to add metric)'
+            yAxis = 'Plane Of Array Direct (W/m^2)'
             toolTipLabel = 'POA Direct'
-            toolTipMetric = ' (Need to add metric)'
+            toolTipMetric = ' (W/m^2)'
             
             plotSite.individualPlot(currentDirectory , 
                                     fileID , 
@@ -570,13 +570,13 @@ class plotSite:
                                     toolTipMetric)
         elif selector == 'POAGlobal':
             
-            selector = 'POA Global'
-            graphTitle = 'Plane Of Array Global (Neeed to add metric)'
+            selector = 'POA Global(W/m^2)'
+            graphTitle = 'Plane Of Array Global (W/m^2)'
             outputHTML = 'POA_Global'
             xAxis = 'Hours in a Year'
-            yAxis = 'Plane Of Array Global (Neeed to add metric)'
+            yAxis = 'Plane Of Array Global (W/m^2)'
             toolTipLabel = 'POA Global'
-            toolTipMetric = ' (Neeed to add metric)'
+            toolTipMetric = ' (W/m^2)'
             
             plotSite.individualPlot(currentDirectory , 
                                     fileID , 
@@ -589,13 +589,13 @@ class plotSite:
                                     toolTipMetric)
         elif selector == 'POAGroundDiffuse':
             
-            selector = 'POA Ground Diffuse'
-            graphTitle = 'Plane Of Array Ground Diffuse (Neeed to add metric)'
+            selector = 'POA Ground Diffuse(W/m^2)'
+            graphTitle = 'Plane Of Array Ground Diffuse (W/m^2)'
             outputHTML = 'POA_Ground_Diffuse'
             xAxis = 'Hours in a Year'
-            yAxis = 'Plane Of Array Ground Diffuse (Neeed to add metric)'
+            yAxis = 'Plane Of Array Ground Diffuse (W/m^2)'
             toolTipLabel = 'POA Ground Diffuse'
-            toolTipMetric = ' (Neeed to add metric)'
+            toolTipMetric = ' (W/m^2)'
             
             plotSite.individualPlot(currentDirectory , 
                                     fileID , 
@@ -608,13 +608,13 @@ class plotSite:
                                     toolTipMetric)
         elif selector == 'POASkyDiffuse':
             
-            selector = 'POA Sky Diffuse'
-            graphTitle = 'Plane Of Array Sky Diffuse (Neeed to add metric)'
+            selector = 'POA Sky Diffuse(W/m^2)'
+            graphTitle = 'Plane Of Array Sky Diffuse (W/m^2)'
             outputHTML = 'POA_Sky_Diffuse'
             xAxis = 'Hours in a Year'
-            yAxis = 'Plane Of Array Sky Diffuse (Neeed to add metric)'
+            yAxis = 'Plane Of Array Sky Diffuse (W/m^2)'
             toolTipLabel = 'Water Vapor Pressure'
-            toolTipMetric = ' (Neeed to add metric)'
+            toolTipMetric = ' (W/m^2)'
             
             plotSite.individualPlot(currentDirectory , 
                                     fileID , 
@@ -628,7 +628,7 @@ class plotSite:
     
         elif selector == 'CellTemperatureOpenRackCellGlassback':
             
-            selector = 'Cell Temperature(open_rack_cell_glassback)'
+            selector = 'Cell Temperature(open_rack_cell_glassback)(C)'
             graphTitle = 'Cell Temperature(open_rack_cell_glassback) (C)'
             outputHTML = 'Cell Temperature_open_rack_cell_glassback'
             xAxis = 'Hours in a Year'
@@ -647,7 +647,7 @@ class plotSite:
                                     toolTipMetric)      
         elif selector == 'CellTemperatureRoofMountCellGlassback':
             
-            selector = 'Cell Temperature(roof_mount_cell_glassback)'
+            selector = 'Cell Temperature(roof_mount_cell_glassback)(C)'
             graphTitle = 'Cell Temperature(roof_mount_cell_glassback) (C)'
             outputHTML = 'Cell Temperature_roof_mount_cell_glassback'
             xAxis = 'Hours in a Year'
@@ -666,7 +666,7 @@ class plotSite:
                                     toolTipMetric)      
         elif selector == 'CellTemperatureOpenRackCellPolymerback':
             
-            selector = 'Cell Temperature(open_rack_cell_polymerback)'
+            selector = 'Cell Temperature(open_rack_cell_polymerback)(C)'
             graphTitle = 'Cell Temperature(open_rack_cell_polymerback) (C)'
             outputHTML = 'Cell Temperature_open_rack_cell_polymerback'
             xAxis = 'Hours in a Year'
@@ -685,7 +685,7 @@ class plotSite:
                                     toolTipMetric)      
         elif selector == 'CellTemperatureInsulatedBackPolymerback':
             
-            selector = 'Cell Temperature(insulated_back_polymerback)'
+            selector = 'Cell Temperature(insulated_back_polymerback)(C)'
             graphTitle = 'Cell Temperature(insulated_back_polymerback) (C)'
             outputHTML = 'Cell Temperature_insulated_back_polymerback'
             xAxis = 'Hours in a Year'
@@ -704,7 +704,7 @@ class plotSite:
                                     toolTipMetric)      
         elif selector == 'CellTemperatureOpenRackPolymerThinfilmSteel':
             
-            selector = 'Cell Temperature(open_rack_polymer_thinfilm_steel)'
+            selector = 'Cell Temperature(open_rack_polymer_thinfilm_steel)(C)'
             graphTitle = 'Cell Temperature(open_rack_polymer_thinfilm_steel) (C)'
             outputHTML = 'Cell Temperature_open_rack_polymer_thinfilm_steel'
             xAxis = 'Hours in a Year'
@@ -723,7 +723,7 @@ class plotSite:
                                     toolTipMetric)      
         elif selector == 'CellTemperature22xConcentratorTracker':
             
-            selector = 'Cell Temperature(22x_concentrator_tracker)'
+            selector = 'Cell Temperature(22x_concentrator_tracker)(C)'
             graphTitle = 'Cell Temperature(22x_concentrator_tracker) (C)'
             outputHTML = 'Cell Temperature_22x_concentrator_tracker'
             xAxis = 'Hours in a Year'
@@ -743,7 +743,7 @@ class plotSite:
     
         elif selector == 'ModuleTemperatureOpenRackCellGlassback':
             
-            selector = 'Module Temperature(open_rack_cell_glassback)'
+            selector = 'Module Temperature(open_rack_cell_glassback)(C)'
             graphTitle = 'Module Temperature(open_rack_cell_glassback) (C)'
             outputHTML = 'Module Temperature_open_rack_cell_glassback'
             xAxis = 'Hours in a Year'
@@ -762,7 +762,7 @@ class plotSite:
                                     toolTipMetric)      
         elif selector == 'ModuleTemperatureRoofMountCellGlassback':
             
-            selector = 'Module Temperature(roof_mount_cell_glassback)'
+            selector = 'Module Temperature(roof_mount_cell_glassback)(C)'
             graphTitle = 'Module Temperature(roof_mount_cell_glassback) (C)'
             outputHTML = 'Module Temperature_roof_mount_cell_glassback'
             xAxis = 'Hours in a Year'
@@ -781,7 +781,7 @@ class plotSite:
                                     toolTipMetric)      
         elif selector == 'ModuleTemperatureOpenRackCellPolymerback':
             
-            selector = 'Module Temperature(open_rack_cell_polymerback)'
+            selector = 'Module Temperature(open_rack_cell_polymerback)(C)'
             graphTitle = 'Module Temperature(open_rack_cell_polymerback) (C)'
             outputHTML = 'Module Temperature_open_rack_cell_polymerback'
             xAxis = 'Hours in a Year'
@@ -800,7 +800,7 @@ class plotSite:
                                     toolTipMetric)      
         elif selector == 'ModuleTemperatureInsulatedBackPolymerback':
             
-            selector = 'Module Temperature(insulated_back_polymerback)'
+            selector = 'Module Temperature(insulated_back_polymerback)(C)'
             graphTitle = 'Module Temperature(insulated_back_polymerback) (C)'
             outputHTML = 'Module Temperature_insulated_back_polymerback'
             xAxis = 'Hours in a Year'
@@ -819,7 +819,7 @@ class plotSite:
                                     toolTipMetric)      
         elif selector == 'ModuleTemperatureOpenRackPolymerThinfilmSteel':
             
-            selector = 'Module Temperature(open_rack_polymer_thinfilm_steel)'
+            selector = 'Module Temperature(open_rack_polymer_thinfilm_steel)(C)'
             graphTitle = 'Module Temperature(open_rack_polymer_thinfilm_steel) (C)'
             outputHTML = 'Module Temperature_open_rack_polymer_thinfilm_steel'
             xAxis = 'Hours in a Year'
@@ -838,7 +838,7 @@ class plotSite:
                                     toolTipMetric)      
         elif selector == 'ModuleTemperature22xConcentratorTracker':
             
-            selector = 'Module Temperature(22x_concentrator_tracker)'
+            selector = 'Module Temperature(22x_concentrator_tracker)(C)'
             graphTitle = 'Module Temperature(22x_concentrator_tracker) (C)'
             outputHTML = 'Module Temperature_22x_concentrator_tracker'
             xAxis = 'Hours in a Year'

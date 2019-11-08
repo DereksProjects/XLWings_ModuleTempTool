@@ -17,7 +17,6 @@ import pandas as pd
 import glob
 import os 
 import xlwings as xw
-import numpy as np
 # Methods from pvlib to calcualtate solar position and total irradaince
 #from Plane_Of_Irradiance_and_Zenith import get_solarposition , get_total_irradiance  # Source code of pvLib
 import pvlib
@@ -1139,8 +1138,8 @@ class finalOutputFrame:
     
 #Testing    
     
-currentDirectory = r'C:\Users\DHOLSAPP\Desktop\Weather_DatabaseAddingModuleTempRackRanges'
-i = 0
+#currentDirectory = r'C:\Users\DHOLSAPP\Desktop\Weather_DatabaseAddingModuleTempRackRanges'
+#i = 0
 
 
 

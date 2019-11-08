@@ -777,9 +777,6 @@ def createDewMap(path , mapSelect ):
 
 
 
-userInput = '677650'
-path = r'C:\Users\DHOLSAPP\Desktop\Summer_Project\Weather_Database'
-
 
 '''
 XL Wings METHOD
