@@ -392,8 +392,7 @@ class finalOutputFrame:
             aoi = pvlib.irradiance.aoi(surface_tilt, surface_azimuth,
                            solarPosition_df['apparent_zenith'], solarPosition_df['azimuth'])
             #Convert to Radians
-            aoiRadians = np.radians(aoi).to_frame()
-            level_1_df['Angle of incidence'] = aoiRadians['aoi'].values
+            level_1_df['Angle of incidence'] = aoi.values
             
         
         
@@ -883,41 +882,41 @@ class finalOutputFrame:
                                                        'Module Temperature(22x_concentrator_tracker)'                                                       
                                                        ]) 
              #Put metrics in the final column names
-            level_1_df.rename(columns = {'Albedo' :'Albedo', 
-                                          'Corrected Albedo':'Corrected Albedo', 
-                                          'Dry-bulb temperature':'Dry-bulb temperature',
-                                          'Dew-point temperature':'Dew-point temperature',
-                                          'Relative humidity':'Relative humidity',
-                                          'Station pressure':'Station pressure',
-                                          'Wind direction':'Wind direction',
-                                          'Wind speed':'Wind speed',
-                                          'Total sky cover':'Total sky cover',
+            level_1_df.rename(columns = { 'Albedo' :'Albedo(ratio of reflected solar irradiance to GHI)', 
+                                          'Corrected Albedo':'Corrected Albedo(ratio of reflected solar irradiance to GHI)', 
+                                          'Dry-bulb temperature':'Dry-bulb temperature(C)',
+                                          'Dew-point temperature':'Dew-point temperature(C)',
+                                          'Relative humidity':'Relative humidity(%)',
+                                          'Station pressure':'Station pressure(mbar)',
+                                          'Wind direction':'Wind direction(degrees)',
+                                          'Wind speed':'Wind speed(m/s)',
+                                          'Total sky cover':'Total sky cover(tenths)',
                                           'Total sky cover(okta)':'Total sky cover(okta)',
-                                          'Dew Yield' :'Dew Yield', 
-                                          'Global horizontal irradiance':'Global horizontal irradiance', 
-                                          'Direct normal irradiance':'Direct normal irradiance',
-                                          'Diffuse horizontal irradiance':'Diffuse horizontal irradiance',
-                                          'Solar Zenith':'Solar Zenith',
-                                          'Solar Azimuth':'Solar Azimuth',
-                                          'Solar Elevation':'Solar Elevation',
-                                          'Angle of incidence':'Angle of incidence',
-                                          'POA Diffuse':'POA Diffuse',
-                                          'POA Direct':'POA Direct',                                          
-                                          'POA Global' :'POA Global', 
-                                          'POA Ground Diffuse':'POA Ground Diffuse', 
-                                          'POA Sky Diffuse':'POA Sky Diffuse',
-                                          'Cell Temperature(open_rack_cell_glassback)':'Cell Temperature(open_rack_cell_glassback) (C)',
-                                          'Module Temperature(open_rack_cell_glassback)':'Module Temperature(open_rack_cell_glassback) (C)',
-                                          'Cell Temperature(roof_mount_cell_glassback)':'Cell Temperature(roof_mount_cell_glassback) (C)',
-                                          'Module Temperature(roof_mount_cell_glassback)':'Module Temperature(roof_mount_cell_glassback) (C)',
-                                          'Cell Temperature(open_rack_cell_polymerback)':'Cell Temperature(open_rack_cell_polymerback) (C)',
-                                          'Module Temperature(open_rack_cell_polymerback)':'Module Temperature(open_rack_cell_polymerback) (C)',
-                                          'Cell Temperature(insulated_back_polymerback)':'Cell Temperature(insulated_back_polymerback) (C)',
-                                          'Module Temperature(insulated_back_polymerback)':'Module Temperature(insulated_back_polymerback) (C)',
-                                          'Cell Temperature(open_rack_polymer_thinfilm_steel)':'Cell Temperature(open_rack_polymer_thinfilm_steel) (C)',                                          
-                                          'Module Temperature(open_rack_polymer_thinfilm_steel)' :'Module Temperature(open_rack_polymer_thinfilm_steel) (C)', 
-                                          'Cell Temperature(22x_concentrator_tracker)':'Cell Temperature(22x_concentrator_tracker) (C)', 
-                                          'Module Temperature(22x_concentrator_tracker)':'Module Temperature(22x_concentrator_tracker) (C)'
+                                          'Dew Yield' :'Dew Yield(mmd-1)', 
+                                          'Global horizontal irradiance':'Global horizontal irradiance(W/m^2)', 
+                                          'Direct normal irradiance':'Direct normal irradiance(W/m^2)',
+                                          'Diffuse horizontal irradiance':'Diffuse horizontal irradiance(W/m^2)',
+                                          'Solar Zenith':'Solar Zenith(degrees)',
+                                          'Solar Azimuth':'Solar Azimuth(degrees)',
+                                          'Solar Elevation':'Solar Elevation(degrees)',
+                                          'Angle of incidence':'Angle of incidence(degrees)',
+                                          'POA Diffuse':'POA Diffuse(W/m^2)',
+                                          'POA Direct':'POA Direct(W/m^2)',                                          
+                                          'POA Global' :'POA Global(W/m^2)', 
+                                          'POA Ground Diffuse':'POA Ground Diffuse(W/m^2)', 
+                                          'POA Sky Diffuse':'POA Sky Diffuse(W/m^2)',
+                                          'Cell Temperature(open_rack_cell_glassback)':'Cell Temperature(open_rack_cell_glassback)(C)',
+                                          'Module Temperature(open_rack_cell_glassback)':'Module Temperature(open_rack_cell_glassback)(C)',
+                                          'Cell Temperature(roof_mount_cell_glassback)':'Cell Temperature(roof_mount_cell_glassback)(C)',
+                                          'Module Temperature(roof_mount_cell_glassback)':'Module Temperature(roof_mount_cell_glassback)(C)',
+                                          'Cell Temperature(open_rack_cell_polymerback)':'Cell Temperature(open_rack_cell_polymerback)(C)',
+                                          'Module Temperature(open_rack_cell_polymerback)':'Module Temperature(open_rack_cell_polymerback)(C)',
+                                          'Cell Temperature(insulated_back_polymerback)':'Cell Temperature(insulated_back_polymerback)(C)',
+                                          'Module Temperature(insulated_back_polymerback)':'Module Temperature(insulated_back_polymerback)(C)',
+                                          'Cell Temperature(open_rack_polymer_thinfilm_steel)':'Cell Temperature(open_rack_polymer_thinfilm_steel)(C)',                                          
+                                          'Module Temperature(open_rack_polymer_thinfilm_steel)' :'Module Temperature(open_rack_polymer_thinfilm_steel)(C)', 
+                                          'Cell Temperature(22x_concentrator_tracker)':'Cell Temperature(22x_concentrator_tracker)(C)', 
+                                          'Module Temperature(22x_concentrator_tracker)':'Module Temperature(22x_concentrator_tracker)(C)'
                                           }, inplace = True)
     
             #Store the level 1 processed Data into a pickle

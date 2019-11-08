@@ -1,7 +1,10 @@
 # -*- coding: utf-8 -*-
 """
-Create a Bokeh Plot of Time Series data
-
+Create a Bokeh Plot of Individual site locations (4,053 locations).  Y-Axis
+will be selected data columns found in the processed site location .pickle file.
+X-axis will be the number of hours in a year.  
+Bokeh plot will have hover features displaying information about each 
+specific datapoint.
 
 Created on Mon Nov  4 08:15:40 2019
 
@@ -15,13 +18,24 @@ from bokeh.plotting import  output_file, show
 from bokeh.models import ColumnDataSource
 import bokeh.models as bkm
 from bokeh.plotting import figure
-from bokeh.io import output_notebook
 from bokeh.models import Legend, LegendItem
+
 
 class plotSite:
     
     def findPickleFile(fileID , currentDirectory):
-    
+        '''
+        HELPER FUNCTION
+        
+        findPickleFile()
+        
+        @param currentDirectory       -String, where the excel file is located       
+        @param fileID                 -String, 6 digit Unique ID of site 
+                                                    specific location
+
+        @return raw_df, summaryRow_df -Series, Site geographic site location data
+                                       -Dataframe, Site location hourly data
+        '''
         #Set path
         path = currentDirectory
         
@@ -51,53 +65,31 @@ class plotSite:
     
     
     
-    
-    
-    
-    
-    
     def individualPlot(currentDirectory , fileID , selector, graphTitle, outputHTML, xAxis, yAxis, toolTipLabel, toolTipMetric):
         
-        '''           
-    
-        Dry-bulb temperature
-        Dew-point temperature
-        Relative humidity
-        Station pressure
-        Wind direction
-        Wind speed
-        Solar Zenith
-        Solar Azimuth
-        Solar Elevation
-        Dew Yield
-        Water Vapor Pressure (kPa) 
+        '''             
+        individualPlot()
         
-        Global horizontal irradiance
-        Direct normal irradiance
-        Diffuse horizontal irradiance
-        POA Diffuse
-        POA Direct
-        POA Global
-        POA Ground Diffuse
-        POA Sky Diffuse
+        Create a Bokeh Plot from the processed_level_1 pickles from individual 
+        site locations.  Choose which column of the data to be displayed on the 
+        y-axis. X-axis will be the number of hours in a year (8760)
         
-        ####SEPARATRE CELL AND MODULE#######
-        Cell Temperature(open_rack_cell_glassback)
-        Module Temperature(open_rack_cell_glassback)
-        Cell Temperature(roof_mount_cell_glassback)
-        Module Temperature(roof_mount_cell_glassback)
-        Cell Temperature(open_rack_cell_polymerback)
-        Module Temperature(open_rack_cell_polymerback)
-        Cell Temperature(insulated_back_polymerback)
-        Module Temperature(insulated_back_polymerback)
-        Cell Temperature(open_rack_polymer_thinfilm_steel)
-        Module Temperature(open_rack_polymer_thinfilm_steel)
-        Cell Temperature(22x_concentrator_tracker)
-        Module Temperature(22x_concentrator_tracker)   
-          
+        @param currentDirectory    - String, where the excel file is located 
+        @param fileID              - String, unique ID of site specific location
+                                            Currently 4,053 different locations                                                        
+        @param selector            - String, column name of the level_1_dataframe 
+        @param graphTitle          - String, title of the graph to be rendered 
+        @param outputHTML          - String, html of the graph to be rendered
+        @param xAxis               - String, x-axis of the graph to be rendered
+        @param yAxis               - String, y-axis of the graph to be rendered 
+        @param toolTipLabel        - String, hover label of individual datapoint
+                                            of the graph to be rendered 
+        @param toolTipMetric       - String, title of the graph to be rendered
+            
+        @return void                - Void  , Renders a data plot of a individual 
+                                                site with corrisponding selector          
         ''' 
-        
-        
+
         #Access the level_1_df site specific, also collect that sites series data
         level_1_df , siteLocation_series = plotSite.findPickleFile(fileID , currentDirectory)
         
@@ -106,8 +98,6 @@ class plotSite:
         #Create the html to be exported
         output_file( outputHTML + '.html' ) 
         
-        # Create the tools used for zooming and hovering on the map
-    #    tools = "pan,wheel_zoom,box_zoom,reset,previewsave"
         
         # Create a blank figure with labels
         p = figure(plot_width = 900, plot_height = 900, 
@@ -183,71 +173,686 @@ class plotSite:
         # Show the plot
         show(p)        
                 
-        
-fileID = '570830'
-currentDirectory = r'C:\Users\DHOLSAPP\Desktop\XLWings_ModuleTempTool'
-selector = 'POA Diffuse'
-graphTitle = 'Module Temperature(roof_mount_cell_glassback) (C)'
-outputHTML = 'HourlyPlotModuleTemp(roof_mount_cell_glassback)'
-xAxis = 'Hours in a Year'
-yAxis = 'Module Temperature (C)'
-toolTipLabel = 'Module Temp'
-toolTipMetric = ' (C)'
-
-            
-#individualPlot(currentDirectory , fileID , selector, graphTitle, outputHTML, xAxis, yAxis, toolTipLabel, toolTipMetric)            
-            
-def outputPlotDriver( currentDirectory , fileID , selector ): 
-
-    if selector == 'DryBulbTemperature':
-        fileID = '570830'
-        currentDirectory = r'C:\Users\DHOLSAPP\Desktop\XLWings_ModuleTempTool'
-        selector = 'POA Diffuse'
-        graphTitle = 'Module Temperature(roof_mount_cell_glassback) (C)'
-        outputHTML = 'HourlyPlotModuleTemp(roof_mount_cell_glassback)'
-        xAxis = 'Hours in a Year'
-        yAxis = 'Module Temperature (C)'
-        toolTipLabel = 'Module Temp'
-        toolTipMetric = ' (C)'
-        
-        plotSite.individualPlot(currentDirectory , fileID , selector, graphTitle, outputHTML, xAxis, yAxis, toolTipLabel, toolTipMetric)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     
+    
+    def xLWingsInterfacePlot( currentDirectory , fileID , selector ): 
+        '''
+        xLWingsInterfacePlot()
         
+        Interface to output custom plots.
         
+        @param currentDirectory    - String, where the excel file is located 
+                                           (passed as an argument from EXCEL using UDF)
+        @param fileID              - String, unique ID of site specific location
+                                            Currently 4,053 different locations
+                                                                     
+        @param selector            - String, select what type data to plot
         
-        
-        
-        
-        
-        
+                        ##### selector string options #####
+                        
+                        DryBulbTemperature
+                        DewPointTemperature                                               
+                        RelativeHumidity
+                        StationPressure
+                        WindDirection
+                        WindSpeed
+                        SolarZenith
+                        SolarAzimuth
+                        SolarElevation
+                        DewYield
+                        WaterVaporPressure
+                        GlobalHorizontalIrradiance
+                        DirectNormalIrradiance
+                        DiffuseHorizontalIrradiance
+                        AngleOfIncidence
+                        POADiffuse
+                        POADirect
+                        POAGlobal
+                        POAGroundDiffuse
+                        POASkyDiffuse
+                        CellTemperatureOpenRackCellGlassback
+                        CellTemperatureRoofMountCellGlassback
+                        CellTemperatureOpenRackCellPolymerback
+                        CellTemperatureInsulatedBackPolymerback
+                        CellTemperatureOpenRackPolymerThinfilmSteel
+                        CellTemperature22xConcentratorTracker
+                        ModuleTemperatureOpenRackCellGlassback
+                        ModuleTemperatureRoofMountCellGlassback
+                        ModuleTemperatureOpenRackCellPolymerback
+                        ModuleTemperatureInsulatedBackPolymerback
+                        ModuleTemperatureOpenRackPolymerThinfilmSteel
+                        ModuleTemperature22xConcentratorTracker
+
+            
+        @return void    - Void  , Renders a data plot of a individual site with corrisponding selector
+                    
+        '''
+        if selector == 'DryBulbTemperature':
+            
+            selector = 'Dry-bulb temperature'
+            graphTitle = 'Dry-Bulb Temperature (C)'
+            outputHTML = 'Dry_Bulb_Temp'
+            xAxis = 'Hours in a Year'
+            yAxis = 'Dry-Bulb Temperature (C)'
+            toolTipLabel = 'Dry-Bulb Temp'
+            toolTipMetric = ' (C)'
+            
+            plotSite.individualPlot(currentDirectory , 
+                                    fileID , 
+                                    selector, 
+                                    graphTitle, 
+                                    outputHTML, 
+                                    xAxis, 
+                                    yAxis, 
+                                    toolTipLabel, 
+                                    toolTipMetric)
+            
+        elif selector == 'DewPointTemperature':
+            
+            selector = 'Dew-point temperature'
+            graphTitle = 'Dew Point Temperature (C)'
+            outputHTML = 'Dew_Point_Temp'
+            xAxis = 'Hours in a Year'
+            yAxis = 'Dew Point Temperature (C)'
+            toolTipLabel = 'Dew Point Temp'
+            toolTipMetric = ' (C)'
+            
+            plotSite.individualPlot(currentDirectory , 
+                                    fileID , 
+                                    selector, 
+                                    graphTitle, 
+                                    outputHTML, 
+                                    xAxis, 
+                                    yAxis, 
+                                    toolTipLabel, 
+                                    toolTipMetric)
+            
+        elif selector == 'RelativeHumidity':
+            
+            selector = 'Relative humidity'
+            graphTitle = 'Relative Humidity %'
+            outputHTML = 'Relative_Humidity'
+            xAxis = 'Hours in a Year'
+            yAxis = 'Relative Humidity %'
+            toolTipLabel = 'Relative Humidity'
+            toolTipMetric = ' %'
+            
+            plotSite.individualPlot(currentDirectory , 
+                                    fileID , 
+                                    selector, 
+                                    graphTitle, 
+                                    outputHTML, 
+                                    xAxis, 
+                                    yAxis, 
+                                    toolTipLabel, 
+                                    toolTipMetric)
+            
+        elif selector == 'StationPressure':
+            
+            selector = 'Station pressure'
+            graphTitle = 'Station Pressure'
+            outputHTML = 'Station_Pressure'
+            xAxis = 'Hours in a Year'
+            yAxis = 'Station Pressure'
+            toolTipLabel = 'Station Pressure'
+            toolTipMetric = ' (pressure need to add metric)'
+            
+            plotSite.individualPlot(currentDirectory , 
+                                    fileID , 
+                                    selector, 
+                                    graphTitle, 
+                                    outputHTML, 
+                                    xAxis, 
+                                    yAxis, 
+                                    toolTipLabel, 
+                                    toolTipMetric)
+            
+        elif selector == 'WindDirection':
+            
+            selector = 'Wind direction'
+            graphTitle = 'Wind Direction (Degrees)'
+            outputHTML = 'Wind_Direction'
+            xAxis = 'Hours in a Year'
+            yAxis = 'Wind Direction'
+            toolTipLabel = 'Wind Direction'
+            toolTipMetric = ' (degrees)'
+            
+            plotSite.individualPlot(currentDirectory , 
+                                    fileID , 
+                                    selector, 
+                                    graphTitle, 
+                                    outputHTML, 
+                                    xAxis, 
+                                    yAxis, 
+                                    toolTipLabel, 
+                                    toolTipMetric)
+            
+        elif selector == 'WindSpeed':
+            
+            selector = 'Wind speed'
+            graphTitle = 'Wind Speed'
+            outputHTML = 'Wind_Speed'
+            xAxis = 'Hours in a Year'
+            yAxis = 'Wind Speed'
+            toolTipLabel = 'Wind Speed'
+            toolTipMetric = ' (Need to add metric)'
+            
+            plotSite.individualPlot(currentDirectory , 
+                                    fileID , 
+                                    selector, 
+                                    graphTitle, 
+                                    outputHTML, 
+                                    xAxis, 
+                                    yAxis, 
+                                    toolTipLabel, 
+                                    toolTipMetric)
+            
+        elif selector == 'SolarZenith':
+            
+            selector = 'Solar Zenith'
+            graphTitle = 'Solar Zenith (Degrees)'
+            outputHTML = 'Solar_Zenith'
+            xAxis = 'Hours in a Year'
+            yAxis = 'Solar Zenith (Degrees)'
+            toolTipLabel = 'Solar Zenith'
+            toolTipMetric = ' (Degrees)'
+            
+            plotSite.individualPlot(currentDirectory , 
+                                    fileID , 
+                                    selector, 
+                                    graphTitle, 
+                                    outputHTML, 
+                                    xAxis, 
+                                    yAxis, 
+                                    toolTipLabel, 
+                                    toolTipMetric)
+            
+        elif selector == 'SolarAzimuth':
+            
+            selector = 'Solar Azimuth'
+            graphTitle = 'Solar Azimuth (Degrees)'
+            outputHTML = 'Solar_Azimuth'
+            xAxis = 'Hours in a Year'
+            yAxis = 'Solar Azimuth (Degrees)'
+            toolTipLabel = 'Solar Azimuth'
+            toolTipMetric = ' (Degrees)'
+            
+            plotSite.individualPlot(currentDirectory , 
+                                    fileID , 
+                                    selector, 
+                                    graphTitle, 
+                                    outputHTML, 
+                                    xAxis, 
+                                    yAxis, 
+                                    toolTipLabel, 
+                                    toolTipMetric)
+            
+        elif selector == 'SolarElevation':
+            
+            selector = 'Solar Elevation'
+            graphTitle = 'Solar Elevation (Degrees)'
+            outputHTML = 'Solar_Elevation'
+            xAxis = 'Hours in a Year'
+            yAxis = 'Solar Elevation (Degrees)'
+            toolTipLabel = 'Solar Elevation'
+            toolTipMetric = ' (Degrees)'
+            
+            plotSite.individualPlot(currentDirectory , 
+                                    fileID , 
+                                    selector, 
+                                    graphTitle, 
+                                    outputHTML, 
+                                    xAxis, 
+                                    yAxis, 
+                                    toolTipLabel, 
+                                    toolTipMetric)
+            
+        elif selector == 'DewYield':
+            
+            selector = 'Dew Yield'
+            graphTitle = 'Dew Yield (mmd-1)'
+            outputHTML = 'Dew_Yield'
+            xAxis = 'Hours in a Year'
+            yAxis = 'Dew Yield (mmd-1)'
+            toolTipLabel = 'Dew Yield'
+            toolTipMetric = ' (mmd-1)'
+            
+            plotSite.individualPlot(currentDirectory , 
+                                    fileID , 
+                                    selector, 
+                                    graphTitle, 
+                                    outputHTML, 
+                                    xAxis, 
+                                    yAxis, 
+                                    toolTipLabel, 
+                                    toolTipMetric)
+            
+        elif selector == 'WaterVaporPressure':
+            
+            selector = 'Water Vapor Pressure (kPa)'
+            graphTitle = 'Water Vapor Pressure (kPa)'
+            outputHTML = 'Water_Vapor_Pressure'
+            xAxis = 'Hours in a Year'
+            yAxis = 'Water Vapor Pressure (kPa)'
+            toolTipLabel = 'Water Vapor Pressure'
+            toolTipMetric = ' (kPa)'
+            
+            plotSite.individualPlot(currentDirectory , 
+                                    fileID , 
+                                    selector, 
+                                    graphTitle, 
+                                    outputHTML, 
+                                    xAxis, 
+                                    yAxis, 
+                                    toolTipLabel, 
+                                    toolTipMetric)
+       
+        elif selector == 'GlobalHorizontalIrradiance':
+            
+            selector = 'Global horizontal irradiance'
+            graphTitle = 'Global Horizontal Irradiance(Need to add metric)'
+            outputHTML = 'Global_horizontal_irradiance'
+            xAxis = 'Hours in a Year'
+            yAxis = 'Global Horizontal Irradiance(Need to add metric)'
+            toolTipLabel = 'GHI'
+            toolTipMetric = ' (Need to add metric)'
+            
+            plotSite.individualPlot(currentDirectory , 
+                                    fileID , 
+                                    selector, 
+                                    graphTitle, 
+                                    outputHTML, 
+                                    xAxis, 
+                                    yAxis, 
+                                    toolTipLabel, 
+                                    toolTipMetric)
+    
+        elif selector == 'DirectNormalIrradiance':
+            
+            selector = 'Direct normal irradiance'
+            graphTitle = 'Direct Normal Irradiance (Need to add metric)'
+            outputHTML = 'Direct_Normal_Irradiance'
+            xAxis = 'Hours in a Year'
+            yAxis = 'Direct Normal Irradiance (Need to add metric)'
+            toolTipLabel = 'DNI'
+            toolTipMetric = ' (Need to add metric)'
+            
+            plotSite.individualPlot(currentDirectory , 
+                                    fileID , 
+                                    selector, 
+                                    graphTitle, 
+                                    outputHTML, 
+                                    xAxis, 
+                                    yAxis, 
+                                    toolTipLabel, 
+                                    toolTipMetric)
+            
+         
+        elif selector == 'DiffuseHorizontalIrradiance':
+            
+            selector = 'Diffuse horizontal irradiance'
+            graphTitle = 'Diffuse Horizontal Irradiance (Need to add metric)'
+            outputHTML = 'Diffuse_Horizontal_Irradiance'
+            xAxis = 'Hours in a Year'
+            yAxis = 'Diffuse Horizontal Irradiance (Need to add metric)'
+            toolTipLabel = 'DHI'
+            toolTipMetric = ' (Need to add metric)'
+            
+            plotSite.individualPlot(currentDirectory , 
+                                    fileID , 
+                                    selector, 
+                                    graphTitle, 
+                                    outputHTML, 
+                                    xAxis, 
+                                    yAxis, 
+                                    toolTipLabel, 
+                                    toolTipMetric)
+            
+          
+        elif selector == 'AngleOfIncidence':
+            
+            selector = 'Angle of incidence'
+            graphTitle = 'Angle Of Incidence (degrees)'
+            outputHTML = 'Angle_Of_Incidence'
+            xAxis = 'Hours in a Year'
+            yAxis = 'Angle Of Incidence (degrees)'
+            toolTipLabel = 'AOI'
+            toolTipMetric = ' (degrees)'
+            
+            plotSite.individualPlot(currentDirectory , 
+                                    fileID , 
+                                    selector, 
+                                    graphTitle, 
+                                    outputHTML, 
+                                    xAxis, 
+                                    yAxis, 
+                                    toolTipLabel, 
+                                    toolTipMetric)
+        elif selector == 'POADiffuse':
+            
+            selector = 'POA Diffuse'
+            graphTitle = 'Plane Of Array Diffuse (Need to add metric)'
+            outputHTML = 'Plane_Of_Array_Diffuse'
+            xAxis = 'Hours in a Year'
+            yAxis = 'Plane Of Array Diffuse (Need to add metric)'
+            toolTipLabel = 'POA_Diffuse'
+            toolTipMetric = ' (Need to add metric)'
+            
+            plotSite.individualPlot(currentDirectory , 
+                                    fileID , 
+                                    selector, 
+                                    graphTitle, 
+                                    outputHTML, 
+                                    xAxis, 
+                                    yAxis, 
+                                    toolTipLabel, 
+                                    toolTipMetric)
+            
+         
+        elif selector == 'POADirect':
+            
+            selector = 'POA Direct'
+            graphTitle = 'Plane Of Array Direct (Need to add metric)'
+            outputHTML = 'POA_Direct'
+            xAxis = 'Hours in a Year'
+            yAxis = 'Plane Of Array Direct (Need to add metric)'
+            toolTipLabel = 'POA Direct'
+            toolTipMetric = ' (Need to add metric)'
+            
+            plotSite.individualPlot(currentDirectory , 
+                                    fileID , 
+                                    selector, 
+                                    graphTitle, 
+                                    outputHTML, 
+                                    xAxis, 
+                                    yAxis, 
+                                    toolTipLabel, 
+                                    toolTipMetric)
+        elif selector == 'POAGlobal':
+            
+            selector = 'POA Global'
+            graphTitle = 'Plane Of Array Global (Neeed to add metric)'
+            outputHTML = 'POA_Global'
+            xAxis = 'Hours in a Year'
+            yAxis = 'Plane Of Array Global (Neeed to add metric)'
+            toolTipLabel = 'POA Global'
+            toolTipMetric = ' (Neeed to add metric)'
+            
+            plotSite.individualPlot(currentDirectory , 
+                                    fileID , 
+                                    selector, 
+                                    graphTitle, 
+                                    outputHTML, 
+                                    xAxis, 
+                                    yAxis, 
+                                    toolTipLabel, 
+                                    toolTipMetric)
+        elif selector == 'POAGroundDiffuse':
+            
+            selector = 'POA Ground Diffuse'
+            graphTitle = 'Plane Of Array Ground Diffuse (Neeed to add metric)'
+            outputHTML = 'POA_Ground_Diffuse'
+            xAxis = 'Hours in a Year'
+            yAxis = 'Plane Of Array Ground Diffuse (Neeed to add metric)'
+            toolTipLabel = 'POA Ground Diffuse'
+            toolTipMetric = ' (Neeed to add metric)'
+            
+            plotSite.individualPlot(currentDirectory , 
+                                    fileID , 
+                                    selector, 
+                                    graphTitle, 
+                                    outputHTML, 
+                                    xAxis, 
+                                    yAxis, 
+                                    toolTipLabel, 
+                                    toolTipMetric)
+        elif selector == 'POASkyDiffuse':
+            
+            selector = 'POA Sky Diffuse'
+            graphTitle = 'Plane Of Array Sky Diffuse (Neeed to add metric)'
+            outputHTML = 'POA_Sky_Diffuse'
+            xAxis = 'Hours in a Year'
+            yAxis = 'Plane Of Array Sky Diffuse (Neeed to add metric)'
+            toolTipLabel = 'Water Vapor Pressure'
+            toolTipMetric = ' (Neeed to add metric)'
+            
+            plotSite.individualPlot(currentDirectory , 
+                                    fileID , 
+                                    selector, 
+                                    graphTitle, 
+                                    outputHTML, 
+                                    xAxis, 
+                                    yAxis, 
+                                    toolTipLabel, 
+                                    toolTipMetric)        
+    
+        elif selector == 'CellTemperatureOpenRackCellGlassback':
+            
+            selector = 'Cell Temperature(open_rack_cell_glassback)'
+            graphTitle = 'Cell Temperature(open_rack_cell_glassback) (C)'
+            outputHTML = 'Cell Temperature_open_rack_cell_glassback'
+            xAxis = 'Hours in a Year'
+            yAxis = 'Cell Temperature(open_rack_cell_glassback) (C)'
+            toolTipLabel = 'Cell Temp'
+            toolTipMetric = ' (C)'
+            
+            plotSite.individualPlot(currentDirectory , 
+                                    fileID , 
+                                    selector, 
+                                    graphTitle, 
+                                    outputHTML, 
+                                    xAxis, 
+                                    yAxis, 
+                                    toolTipLabel, 
+                                    toolTipMetric)      
+        elif selector == 'CellTemperatureRoofMountCellGlassback':
+            
+            selector = 'Cell Temperature(roof_mount_cell_glassback)'
+            graphTitle = 'Cell Temperature(roof_mount_cell_glassback) (C)'
+            outputHTML = 'Cell Temperature_roof_mount_cell_glassback'
+            xAxis = 'Hours in a Year'
+            yAxis = 'Cell Temperature(roof_mount_cell_glassback) (C)'
+            toolTipLabel = 'Cell Temp'
+            toolTipMetric = ' (C)'
+            
+            plotSite.individualPlot(currentDirectory , 
+                                    fileID , 
+                                    selector, 
+                                    graphTitle, 
+                                    outputHTML, 
+                                    xAxis, 
+                                    yAxis, 
+                                    toolTipLabel, 
+                                    toolTipMetric)      
+        elif selector == 'CellTemperatureOpenRackCellPolymerback':
+            
+            selector = 'Cell Temperature(open_rack_cell_polymerback)'
+            graphTitle = 'Cell Temperature(open_rack_cell_polymerback) (C)'
+            outputHTML = 'Cell Temperature_open_rack_cell_polymerback'
+            xAxis = 'Hours in a Year'
+            yAxis = 'Cell Temperature(open_rack_cell_polymerback) (C)'
+            toolTipLabel = 'Cell Temp'
+            toolTipMetric = ' (C)'
+            
+            plotSite.individualPlot(currentDirectory , 
+                                    fileID , 
+                                    selector, 
+                                    graphTitle, 
+                                    outputHTML, 
+                                    xAxis, 
+                                    yAxis, 
+                                    toolTipLabel, 
+                                    toolTipMetric)      
+        elif selector == 'CellTemperatureInsulatedBackPolymerback':
+            
+            selector = 'Cell Temperature(insulated_back_polymerback)'
+            graphTitle = 'Cell Temperature(insulated_back_polymerback) (C)'
+            outputHTML = 'Cell Temperature_insulated_back_polymerback'
+            xAxis = 'Hours in a Year'
+            yAxis = 'Cell Temperature(insulated_back_polymerback) (C)'
+            toolTipLabel = 'Cell Temp'
+            toolTipMetric = ' (C)'
+            
+            plotSite.individualPlot(currentDirectory , 
+                                    fileID , 
+                                    selector, 
+                                    graphTitle, 
+                                    outputHTML, 
+                                    xAxis, 
+                                    yAxis, 
+                                    toolTipLabel, 
+                                    toolTipMetric)      
+        elif selector == 'CellTemperatureOpenRackPolymerThinfilmSteel':
+            
+            selector = 'Cell Temperature(open_rack_polymer_thinfilm_steel)'
+            graphTitle = 'Cell Temperature(open_rack_polymer_thinfilm_steel) (C)'
+            outputHTML = 'Cell Temperature_open_rack_polymer_thinfilm_steel'
+            xAxis = 'Hours in a Year'
+            yAxis = 'Cell Temperature(open_rack_polymer_thinfilm_steel) (C)'
+            toolTipLabel = 'Cell Temp'
+            toolTipMetric = ' (C)'
+            
+            plotSite.individualPlot(currentDirectory , 
+                                    fileID , 
+                                    selector, 
+                                    graphTitle, 
+                                    outputHTML, 
+                                    xAxis, 
+                                    yAxis, 
+                                    toolTipLabel, 
+                                    toolTipMetric)      
+        elif selector == 'CellTemperature22xConcentratorTracker':
+            
+            selector = 'Cell Temperature(22x_concentrator_tracker)'
+            graphTitle = 'Cell Temperature(22x_concentrator_tracker) (C)'
+            outputHTML = 'Cell Temperature_22x_concentrator_tracker'
+            xAxis = 'Hours in a Year'
+            yAxis = 'Cell Temperature(22x_concentrator_tracker) (C)'
+            toolTipLabel = 'Cell Temp'
+            toolTipMetric = ' (C)'
+            
+            plotSite.individualPlot(currentDirectory , 
+                                    fileID , 
+                                    selector, 
+                                    graphTitle, 
+                                    outputHTML, 
+                                    xAxis, 
+                                    yAxis, 
+                                    toolTipLabel, 
+                                    toolTipMetric)      
+    
+        elif selector == 'ModuleTemperatureOpenRackCellGlassback':
+            
+            selector = 'Module Temperature(open_rack_cell_glassback)'
+            graphTitle = 'Module Temperature(open_rack_cell_glassback) (C)'
+            outputHTML = 'Module Temperature_open_rack_cell_glassback'
+            xAxis = 'Hours in a Year'
+            yAxis = 'Module Temperature(open_rack_cell_glassback) (C)'
+            toolTipLabel = 'Module Temp'
+            toolTipMetric = ' (C)'
+            
+            plotSite.individualPlot(currentDirectory , 
+                                    fileID , 
+                                    selector, 
+                                    graphTitle, 
+                                    outputHTML, 
+                                    xAxis, 
+                                    yAxis, 
+                                    toolTipLabel, 
+                                    toolTipMetric)      
+        elif selector == 'ModuleTemperatureRoofMountCellGlassback':
+            
+            selector = 'Module Temperature(roof_mount_cell_glassback)'
+            graphTitle = 'Module Temperature(roof_mount_cell_glassback) (C)'
+            outputHTML = 'Module Temperature_roof_mount_cell_glassback'
+            xAxis = 'Hours in a Year'
+            yAxis = 'Module Temperature(roof_mount_cell_glassback) (C)'
+            toolTipLabel = 'Module Temp'
+            toolTipMetric = ' (C)'
+            
+            plotSite.individualPlot(currentDirectory , 
+                                    fileID , 
+                                    selector, 
+                                    graphTitle, 
+                                    outputHTML, 
+                                    xAxis, 
+                                    yAxis, 
+                                    toolTipLabel, 
+                                    toolTipMetric)      
+        elif selector == 'ModuleTemperatureOpenRackCellPolymerback':
+            
+            selector = 'Module Temperature(open_rack_cell_polymerback)'
+            graphTitle = 'Module Temperature(open_rack_cell_polymerback) (C)'
+            outputHTML = 'Module Temperature_open_rack_cell_polymerback'
+            xAxis = 'Hours in a Year'
+            yAxis = 'Module Temperature(open_rack_cell_polymerback) (C)'
+            toolTipLabel = 'Module Temp'
+            toolTipMetric = ' (C)'
+            
+            plotSite.individualPlot(currentDirectory , 
+                                    fileID , 
+                                    selector, 
+                                    graphTitle, 
+                                    outputHTML, 
+                                    xAxis, 
+                                    yAxis, 
+                                    toolTipLabel, 
+                                    toolTipMetric)      
+        elif selector == 'ModuleTemperatureInsulatedBackPolymerback':
+            
+            selector = 'Module Temperature(insulated_back_polymerback)'
+            graphTitle = 'Module Temperature(insulated_back_polymerback) (C)'
+            outputHTML = 'Module Temperature_insulated_back_polymerback'
+            xAxis = 'Hours in a Year'
+            yAxis = 'Module Temperature(insulated_back_polymerback) (C)'
+            toolTipLabel = 'Module Temp'
+            toolTipMetric = ' (C)'
+            
+            plotSite.individualPlot(currentDirectory , 
+                                    fileID , 
+                                    selector, 
+                                    graphTitle, 
+                                    outputHTML, 
+                                    xAxis, 
+                                    yAxis, 
+                                    toolTipLabel, 
+                                    toolTipMetric)      
+        elif selector == 'ModuleTemperatureOpenRackPolymerThinfilmSteel':
+            
+            selector = 'Module Temperature(open_rack_polymer_thinfilm_steel)'
+            graphTitle = 'Module Temperature(open_rack_polymer_thinfilm_steel) (C)'
+            outputHTML = 'Module Temperature_open_rack_polymer_thinfilm_steel'
+            xAxis = 'Hours in a Year'
+            yAxis = 'Module Temperature(open_rack_polymer_thinfilm_steel) (C)'
+            toolTipLabel = 'Module Temp'
+            toolTipMetric = ' (C)'
+            
+            plotSite.individualPlot(currentDirectory , 
+                                    fileID , 
+                                    selector, 
+                                    graphTitle, 
+                                    outputHTML, 
+                                    xAxis, 
+                                    yAxis, 
+                                    toolTipLabel, 
+                                    toolTipMetric)      
+        elif selector == 'ModuleTemperature22xConcentratorTracker':
+            
+            selector = 'Module Temperature(22x_concentrator_tracker)'
+            graphTitle = 'Module Temperature(22x_concentrator_tracker) (C)'
+            outputHTML = 'Module Temperature_22x_concentrator_tracker'
+            xAxis = 'Hours in a Year'
+            yAxis = 'Module Temperature(22x_concentrator_tracker) (C)'
+            toolTipLabel = 'Module Temp'
+            toolTipMetric = ' (C)'
+            
+            plotSite.individualPlot(currentDirectory , 
+                                    fileID , 
+                                    selector, 
+                                    graphTitle, 
+                                    outputHTML, 
+                                    xAxis, 
+                                    yAxis, 
+                                    toolTipLabel, 
+                                    toolTipMetric)      
+            
