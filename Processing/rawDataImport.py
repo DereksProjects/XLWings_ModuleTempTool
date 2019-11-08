@@ -330,7 +330,6 @@ class rawDataImport:
     
     
     
-    
     '''
     Main METHOD
     
@@ -347,7 +346,6 @@ class rawDataImport:
                                  The first line of data will be saved in a different list with 
                                  the same index                   
     '''
-    
     def createPickleFiles( path ):
         
         dataFrames = rawDataImport.filesToDataFrame( path ) 
