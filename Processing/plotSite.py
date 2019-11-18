@@ -13,6 +13,7 @@ Created on Mon Nov  4 08:15:40 2019
 """
 
 from Processing.cleanRawOutput import cleanRawOutput
+#from cleanRawOutput import cleanRawOutput
 import pandas as pd
 from bokeh.plotting import  output_file, show
 from bokeh.models import ColumnDataSource
@@ -160,7 +161,7 @@ class plotSite:
         legend = Legend(items=[
             LegendItem(label="Station Name: " + siteLocation_series.iloc[1], index=0),
             LegendItem(label="Site ID Code: "+ siteLocation_series.iloc[0], index=0),
-            LegendItem(label="Country: "+ siteLocation_series.iloc[7], index=0),
+            LegendItem(label="Country: "+ str(siteLocation_series.iloc[7]), index=0),
             LegendItem(label="Latitude: "+ str(siteLocation_series.iloc[4]), index=1),
             LegendItem(label="Longitude: "+ str(siteLocation_series.iloc[5]), index=1),
         ],location = "top_left")
@@ -855,4 +856,24 @@ class plotSite:
                                     yAxis, 
                                     toolTipLabel, 
                                     toolTipMetric)      
-            
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

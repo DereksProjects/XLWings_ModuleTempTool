@@ -18,10 +18,8 @@ from Processing.mapProcessing import mapProcessing
 from Processing.cleanRawOutput import cleanRawOutput
 from Processing.closestLatLon import closestLatLon
 from Map.mapTemp import mapTemp
-from Map.mapDewYield import mapDewYield
-from Map.mapWaterVaporPressure import mapWaterVaporPressure
 from Processing.plotSite import plotSite
-
+from Map.mapGenerator import mapGenerator
 
 
 def extractAllZip_Files( path ):
@@ -502,55 +500,21 @@ def createTempMap(path , mapSelect ):
 
 
 
-def createDewMap(path , mapSelect ):
+def outputMapDriver( currentDirectory , mapType ):
     '''
-    XL Wings FUNCTION
+    XL Wings FUNCTIONS
     
-    createDewMap()
+    outputMapDriver()
     
-    Import the processed map pickle and create a map using the Bokeh package.
-    Bokeh will render a html file containing the map. 
+    Driver to render a map. 
     
-    @param path       - String, where the excel file is located 
+    @param currentDirectory    - String, where the excel file is located 
                                        (passed as an argument from EXCEL using UDF)
-    @param mapSelect  - String, used to select what type of map to render
-                                - See "MapDewYield.py" for exact string to pass                                  
-    
-    @return void      - Will render a map          
+    @param mapType             - String, The type of data to display as a map
+                           
+    @return void               - Void, Renders a world map          
     '''    
-    #XL Wings
-    ##############
-    # Use the xl wings caller function to establish handshake with excel
-    xw.Book.caller() 
-    #Reference sheet 0    
-    ##############
-    mapDewYield.outputMapDew(path , mapSelect )
-
-
-
-def createWaterVaporPressureMap(path , mapSelect ):
-    '''
-    XL Wings FUNCTION
-    
-    createDewMap()
-    
-    Import the processed map pickle and create a map using the Bokeh package.
-    Bokeh will render a html file containing the map. 
-    
-    @param path       - String, where the excel file is located 
-                                       (passed as an argument from EXCEL using UDF)
-    @param mapSelect  - String, used to select what type of map to render
-                                - See "MapDewYield.py" for exact string to pass                                  
-    
-    @return void     - Will render a map         
-    '''    
-    #XL Wings
-    ##############
-    # Use the xl wings caller function to establish handshake with excel
-    xw.Book.caller() 
-    #Reference sheet 0    
-    ##############
-    mapWaterVaporPressure.outputMapWaterVaporPressure(path , mapSelect )
+    mapGenerator.mapGeneratorDriver(currentDirectory , mapType)
 
 
 
