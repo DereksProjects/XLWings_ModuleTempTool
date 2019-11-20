@@ -18,7 +18,7 @@ from Processing.mapProcessing import mapProcessing
 from Processing.cleanRawOutput import cleanRawOutput
 from Processing.closestLatLon import closestLatLon
 from Map.mapTemp import mapTemp
-from Processing.plotSite import plotSite
+from Map.plotSite import plotSite
 from Map.mapGenerator import mapGenerator
 
 
