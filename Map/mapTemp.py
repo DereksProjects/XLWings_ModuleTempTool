@@ -28,7 +28,7 @@ from bokeh.transform import linear_cmap
 from bokeh.models import ColumnDataSource, LinearColorMapper
 import bokeh.models as bkm
 import bokeh.plotting as bkp
-from bokeh.models import LogColorMapper, LogTicker, ColorBar
+from bokeh.models import LogTicker, ColorBar
 
 
 
@@ -249,8 +249,6 @@ class mapTemp:
         for i in range(0, len(level_1_df)):
             #Toggle size of circle
             radiusList.append(2)
-        lat = level_1_df['N'].astype(float) #Northing and easting if Needed
-        lon = level_1_df['E'].astype(float)
         radius = radiusList
         selector = level_1_df[moduleType]
         station = level_1_df['Station name']

@@ -49,17 +49,10 @@ class mapProcessing:
         # First access the Summary pickle.  The Map pickle being created will be the summary pickle with map formatting
         path = currentDirectory
         level_1_df = pd.read_pickle(path + "\\Pandas_Pickle_DataFrames\\Pickle_Level1_Summary\\Pickle_Level1_Summary.pickle")
-        
         #Convert the lat/lon frames into floats
         level_1_df['Site longitude'] = level_1_df['Site longitude'].astype(float)
         level_1_df['Site latitude'] = level_1_df['Site latitude'].astype(float)
-        
         #Use helper method to convert all lat/long to webmercator and stores in new column
         level_1_df['E'], level_1_df['N'] = zip(*level_1_df.apply(lambda x: mapProcessing.LongLat_to_EN(x['Site longitude'], x['Site latitude']), axis=1))
-        
         #Create the pickle and name it Pickle_Map.pickle
         level_1_df.to_pickle( path + '\Pandas_Pickle_DataFrames\Pickle_Map\Pickle_Map.pickle')
-    
-    
-    #path = r'C:\Users\DHOLSAPP\Desktop\Summer_Project\Python'
-    #process_Map_Pickle(path)

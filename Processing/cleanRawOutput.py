@@ -1,5 +1,5 @@
 """
-Class contains functions pertaining to raw data imports for display
+Class contains utility functions functions pertaining to raw data imports 
 
 @author: Derek Holsapple
 """
@@ -19,7 +19,7 @@ class cleanRawOutput:
         This will be a dataframe for a user reference table
         Clean the dataframe and change variables for readability
         
-        @param path     -String, path to the folder with the pickle files
+        @param path           -String, path to current working directory
         
         @retrun formatted_df  -Dataframe, summarized dataframe for user 
                                             reference table

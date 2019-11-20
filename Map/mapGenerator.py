@@ -6,8 +6,6 @@ Create a driver to generate a map from the processed level_1_dataframe
 
 @author: DHOLSAPP
 """
-
-
 import pandas as pd
 from bokeh.plotting import  output_file, show
 from bokeh.transform import linear_cmap
@@ -148,10 +146,7 @@ class mapGenerator:
                  line_color = None,
                  # Alpha is the transparency of the circle
                   alpha=.99)   
-        
-    
         #Create the scale bar to the right of the map
-        
         # Create color mapper to make the scale bar on the right of the map
         # palette = color scheme of the mapo
         # low/high sets the scale of the data, use the minimum value and maximum value of the data we are analyzing
@@ -162,8 +157,6 @@ class mapGenerator:
                          label_standoff=12, border_line_color=None, location=(0,0))
         # Assign the scale bar to " p " and put it to the right
         p.add_layout(color_bar, 'right')
-        
-    
         # These are the labels that are displayed when you hover over a spot on the map
         #( label , @data), data needs to be inside the ColumnDataSource()
         TOOLTIPS = [
@@ -175,7 +168,6 @@ class mapGenerator:
         (htmlString ,"@selector" + " " + metric),
         ("Elevation","@elevation" + " (m)")
         ]
-        
         #Create a hover tool that will rinder only the weather stations i.e stations are small black circles
         hover_labels = bkm.HoverTool(renderers=[stations],
                              tooltips= TOOLTIPS )

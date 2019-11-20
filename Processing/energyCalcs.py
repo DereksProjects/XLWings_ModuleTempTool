@@ -1,5 +1,5 @@
 """
-Class containing energy algorithms for processing.
+Contains energy algorithms for processing.
 
 @author: Derek Holsapple
 """
@@ -12,7 +12,9 @@ import math
 
 class energyCalcs:
 
-    @jit(nopython=True , error_model = 'python') # Numba Machine Language Level 
+    
+    # Numba Machine Language Level
+    @jit(nopython=True , error_model = 'python')  
     def dewYield( h , tD , tA , windSpeed , n ):
         '''
         HELPER FUNCTION
@@ -44,8 +46,8 @@ class energyCalcs:
         
         waterVaporPressure()
         
-        Find the average water vapor pressure (kPa) based on the Dew Point Temperature 
-        model created from Mike Kempe on 10/07/19.  
+        Find the average water vapor pressure (kPa) based on the Dew Point 
+        Temperature model created from Mike Kempe on 10/07/19.  
         
         @param dewPtTemp          -float, Dew Point Temperature
         @return                   -float, return water vapor pressur in kPa
@@ -126,10 +128,4 @@ class energyCalcs:
         
         '''    
         return( gJ * 1000 )
-        
-        
- 
-        
-        
-        
-        
+    

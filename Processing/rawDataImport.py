@@ -33,61 +33,48 @@ except ImportError:
 
 class rawDataImport:
 
-###############################################################################
-#Methods below this point are used to create, clean and store data as pickles for
-#   the raw data.  Each csv will have a pickle 
-###############################################################################
     
-    '''
-    HELPER METHOD
     
-    filesNameListCSV()
-    
-    Pull out the file name from the file path and return a list of file names
-    
-    @param path       -String, path to the folder with the files
-    
-    @return allFiles  -List of Strings, filenames without the file path or extension
-    
-    '''
     def filesNameListCSV_EPW( path ):
+        '''
+        HELPER METHOD
         
+        filesNameListCSV()
+        
+        Pull out the file name from the file path and return a list of file names
+        
+        @param path       -String, path to the folder with the files
+        
+        @return allFiles  -List of Strings, filenames without the file path or extension
+        '''        
         #list of strings of all the files
         allFilesCSV = glob.glob(path + '\Python_RawData_Combined' + "/*.csv")
         allFilesEPW = glob.glob(path + '\Python_RawData_Combined' + "/*.epw")
-        
         allFiles = allFilesCSV + allFilesEPW 
-        
         #for loop to go through the lists of strings and to remove irrelavant data
         for i in range( 0, len( allFiles ) ):
-    
             # Delete the path and pull out only the file name using the os package from each file
             temp = os.path.basename(allFiles[i])
             #remove extension from file name
             temp = temp[:-4]
             allFiles[i] = temp
-            
-    
-        
         return allFiles
     
-    
-    
-    '''
-    HELPER METHOD
-    
-    pickleNameList()
-    
-    convert a list of strings to have a .pickle extention
-    
-    @param fileNames  - List of Strings , string of list names to be converted to have pickle extention
-    
-    @return allFiles  - List of Strings, file names with pickle extension
-    
-    '''
+
     
     def pickleNameList( fileNames ):
-    
+        '''
+        HELPER METHOD
+        
+        pickleNameList()
+        
+        convert a list of strings to have a .pickle extention
+        
+        @param fileNames  - List of Strings , string of list names to be converted to have pickle extention
+        
+        @return allFiles  - List of Strings, file names with pickle extension
+        
+        '''    
         pickleNames = []
     
         for i in range( 0 , len( fileNames ) ):
@@ -97,19 +84,19 @@ class rawDataImport:
         return pickleNames
     
     
-    '''
-    HELPER METHOD
-    
-    cleanAndRenameFrame()
-    
-    Rename and clean a csv dataframe (raw data)
-    
-     @param df            -DataFrame, frame of raw data from csv file, uncleaned
-    
-     @return df           -DataFrame, cleaned and renamed frame                  
-    '''    
+   
     def RenameFrame(df):
-    
+        '''
+        HELPER METHOD
+        
+        cleanAndRenameFrame()
+        
+        Rename and clean a csv dataframe (raw data)
+        
+         @param df            -DataFrame, frame of raw data from csv file, uncleaned
+        
+         @return df           -DataFrame, cleaned and renamed frame                  
+        '''     
         #Rename the columns of the frame
         df.columns = ['Date (MM/DD/YYYY)', 
                       'Time (HH:MM)',
@@ -187,31 +174,29 @@ class rawDataImport:
                       'Present Weather']
         return df
     
-    '''
-    HELPER METHOD
-    
-    filesToDataFrame()
-    
-    Put both csv and epw hourly data files as dataframes,  At this point there will
-    be no difference between csv and epw files since they are now pandas dataframes
-    
-     @param path            -String, path of the folder where the raw data .csv files 
-                                     are located
-    
-     @return dataFramelist  -List, List of Dataframes containing semi cleaned frames.  
-                                 *Note: the first row of the datafraemw will not be accessed
-                                 The first line of data will be saved in a different list with 
-                                 the same index                   
-    '''
+
     
     def filesToDataFrame( path ):
+        '''
+        HELPER METHOD
         
+        filesToDataFrame()
+        
+        Put both csv and epw hourly data files as dataframes,  At this point there will
+        be no difference between csv and epw files since they are now pandas dataframes
+        
+         @param path            -String, path of the folder where the raw data .csv files 
+                                         are located
+        
+         @return dataFramelist  -List, List of Dataframes containing semi cleaned frames.  
+                                     *Note: the first row of the datafraemw will not be accessed
+                                     The first line of data will be saved in a different list with 
+                                     the same index                   
+        '''        
         allCsvFiles = glob.glob(path + '\Python_RawData_Combined' + "/*.csv")
         allEpwFiles = glob.glob(path + '\Python_RawData_Combined' + "/*.epw")
-    
         dataFrameCsvlist = [] # Create a list to hold all the csv dataframes
         dataFrameEpwlist = [] # Create a list to hold all the epw dataframes
-        
         #Create a list of dataframes for csv files
         for i in range( 0 , len( allCsvFiles ) ):  
             # (access the file, skip the first 1 rows)
@@ -220,12 +205,7 @@ class rawDataImport:
             if len(csv_df.columns) == 71:
                 csv_df = csv_df.drop(['PresWth source','PresWth uncert (code)'], axis=1)
             csv_df = rawDataImport.RenameFrame(csv_df)
-            dataFrameCsvlist.append(csv_df) # Keep adding dataframes to the end of the list
-    
-    ############################################################################
-    #Will have to sort the df by unique identifier at some point
-    ######################################################    
-    
+            dataFrameCsvlist.append(csv_df) 
         #Create a list of dataframes for csv files
         for i in range( 0 , len( allEpwFiles ) ):  
             # Use helper method to convert the EPW file to a dataframe
@@ -281,12 +261,6 @@ class rawDataImport:
                                                'present_weather_codes',
                                                'snow_depth',
                                                'days_since_last_snowfall'])                                          
-          #Rename the columns of .epw_df to match the .csv_df                                     ])    
-    
-            
-    #Perform all cleaning to match the format of the CSVs
-            # Start with the first df
-           
             epw_df.columns = ['Date (MM/DD/YYYY)', 
                           'Time (HH:MM)',
                           'Hourly extraterrestrial radiation on a horizontal surface',
@@ -318,36 +292,31 @@ class rawDataImport:
                           'Present Weather Codes',
                           'Snow Depth',
                           'Days Since Last Snowfall']        
-            
-            
             dataFrameEpwlist.append(epw_df) # Keep adding dataframes to the end of the list
-    
         #Combine both dataframe lists together
         dataFrameCsvlist.extend(dataFrameEpwlist)
-    
-    
+
         return dataFrameCsvlist
     
     
-    
-    '''
-    Main METHOD
-    
-    createPickleFiles()
-    
-    cycle through the folder and then put each data frame(csv)
-    into an list named df (dataframe)
-    
-     @param dataFrames            -List of DataFrames, list of converted datafraems from .csv files
-     @param rawPicklePath            -String , directory where user wants to store pickles
-    
-     @return void  -Will convert dataframes into raw pickle datafiles  
-                                 *Note: the first row of the datafraemw will not be accessed
-                                 The first line of data will be saved in a different list with 
-                                 the same index                   
-    '''
+
     def createPickleFiles( path ):
+        '''
+        Main METHOD
         
+        createPickleFiles()
+        
+        cycle through the folder and then put each data frame(csv)
+        into an list named df (dataframe)
+        
+         @param dataFrames            -List of DataFrames, list of converted datafraems from .csv files
+         @param rawPicklePath            -String , directory where user wants to store pickles
+        
+         @return void  -Will convert dataframes into raw pickle datafiles  
+                                     *Note: the first row of the datafraemw will not be accessed
+                                     The first line of data will be saved in a different list with 
+                                     the same index                   
+        '''        
         dataFrames = rawDataImport.filesToDataFrame( path ) 
         
         #Pull out the file names from the file path(.csv files) and return a list of file names without .csv extension
@@ -358,40 +327,20 @@ class rawDataImport:
         for i in range( 0 , len( fileNames ) ):
             dataFrames[i].to_pickle( path + '\\Pandas_Pickle_DataFrames\\Pickle_RawData' +'\\'+ pickleStringList[i] )
     
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    ###############################################################################
-    # Methods below this point are to create, clean, and store a pickle from the 
-    #   First row of the csv files.  All csv first rows will be combined into one 
-    #   pickle for reference
-    ###############################################################################
-    
-    
-    '''
-    HELPER METHOD
-    
-    cleanFirstRowDataFrame()
-    
-    Create the First row summary from both csv and epw
-    
-     @param path                -String, path of current working directory
-    
-     @return firstRowDataFrame  -DataFrame, clean and frame of all the first rows of .csv files                  
-    '''
-    
-    
-    
+
+
     def cleanFirstRowDataFrame( path ):
+        '''
+        HELPER METHOD
+        
+        cleanFirstRowDataFrame()
+        
+        Create the First row summary from both csv and epw
+        
+         @param path                -String, path of current working directory
+        
+         @return firstRowDataFrame  -DataFrame, clean and frame of all the first rows of .csv files                  
+        '''
         # Create the data frame from the first line of the .csv files
     
         path = path + '\Python_RawData_Combined'  
@@ -439,8 +388,6 @@ class rawDataImport:
                                       'Time zone code': csv_df['Time zone code'][0],
                                       'Koppen-Geiger climate classification': csv_df['Koppen-Geiger climate classification'][0]
                                     }, ignore_index=True )
-        
-        
         #glob all the .epw files together
         allFilesEPW = glob.glob(path + "/*.epw") 
         
@@ -461,155 +408,142 @@ class rawDataImport:
                                       'Time zone code': '',
                                       'Koppen-Geiger climate classification': ''
                                     }, ignore_index=True ) 
-        
-        #The read_epw_firstRow() parser is having difficulty with the WMO code, some identifiers contain characters
-        # Created a unique ID generator to go through the file paths and pull out each identifier
-        
         uniqueID = allFilesCSV + allFilesEPW
-        #Helper method ID generator found in RawDataSearch_and_FirstRow_SummaryReport.py
         uniqueID = cleanRawOutput.stringList_UniqueID_List( uniqueID)
-        
         row1_df['Site Identifier Code'] = uniqueID
         
         return row1_df
         
         
     
-    '''
-    Main METHOD
-    
-    createPickleFileFirstRow()
-    
-    Cycle through the raw csv folder and pull out the first row of every csv.  
-    Combine the lists into a dataframe and save it as a pickle
-    
-     @param path          -string, current working directory
-    
-     @return void         -Will convert dataframe into raw pickle datafile 
-                      
-    '''
-    
     def createPickleFileFirstRow( path ):
+        '''
+        Main METHOD
         
+        createPickleFileFirstRow()
+        
+        Cycle through the raw csv folder and pull out the first row of every csv.  
+        Combine the lists into a dataframe and save it as a pickle
+        
+         @param path          -string, current working directory
+        
+         @return void         -Will convert dataframe into raw pickle datafile 
+                          
+        '''  
         fileName = 'firstRowSummary_Of_CSV_Files'
         # Convert the fileNames to have a .pickle extention
-        
         dataFrame = rawDataImport.cleanFirstRowDataFrame( path )
-        
         dataFrame.to_pickle( path + '\Pandas_Pickle_DataFrames\Pickle_FirstRows' +'\\'+ fileName + '.pickle' )
     
     
     
-    
-    '''
-    Read an EPW file in to a pandas dataframe.
-    
-    Note that values contained in the metadata dictionary are unchanged
-    from the EPW file.
-    
-    EPW files are commonly used by building simulation professionals
-    and are widely available on the web. For example via:
-    https://energyplus.net/weather , http://climate.onebuilding.org or
-    http://www.ladybug.tools/epwmap/
-    
-    
-    Parameters
-    ----------
-    filename : String
-        Can be a relative file path, absolute file path, or url.
-    
-    coerce_year : None or int, default None
-        If supplied, the year of the data will be set to this value. This can
-        be a useful feature because EPW data is composed of data from
-        different years.
-        Warning: EPW files always have 365*24 = 8760 data rows;
-        be careful with the use of leap years.
-    
-    
-    Returns
-    -------
-    Tuple of the form (data, metadata).
-    
-    data : DataFrame
-        A pandas dataframe with the columns described in the table
-        below. For more detailed descriptions of each component, please
-        consult the EnergyPlus Auxiliary Programs documentation
-        available at: https://energyplus.net/documentation.
-    
-    metadata : dict
-        The site metadata available in the file.
-    
-    Notes
-    -----
-    
-    The returned structures have the following fields.
-    
-    ===============   ======  =========================================
-    key               format  description
-    ===============   ======  =========================================
-    loc               String  default identifier, not used
-    city              String  site loccation
-    state-prov        String  state, province or region (if available)
-    country           String  site country code
-    data_type         String  type of original data source
-    WMO_code          String  WMO identifier
-    latitude          Float   site latitude
-    longitude         Float   site longitude
-    TZ                Float   UTC offset
-    altitude          Float   site elevation
-    ===============   ======  =========================================
-    
-    
-    =============================       ==============================================================================================================================================================
-    EPWData field                       description
-    =============================       ==============================================================================================================================================================
-    index                               A pandas datetime index. NOTE, times are set to local standard time (daylight savings is not included). Days run from 0-23h to comply with PVLIB's convention
-    year                                Year, from original EPW file. Can be overwritten using coerce function.
-    month                               Month, from original EPW file
-    day                                 Day of the month, from original EPW file.
-    hour                                Hour of the day from original EPW file. Note that EPW's convention of 1-24h is not taken over in the index dataframe used in PVLIB.
-    minute                              Minute, from original EPW file. Not used.
-    data_source_unct                    Data source and uncertainty flags. See [1], chapter 2.13
-    temp_air                            Dry bulb temperature at the time indicated, deg C
-    temp_dew                            Dew-point temperature at the time indicated, deg C
-    relative_humidity                   Relatitudeive humidity at the time indicated, percent
-    atmospheric_pressure                Station pressure at the time indicated, Pa
-    etr                                 Extraterrestrial horizontal radiation recv'd during 60 minutes prior to timestamp, Wh/m^2
-    etrn                                Extraterrestrial normal radiation recv'd during 60 minutes prior to timestamp, Wh/m^2
-    ghi_infrared                        Horizontal infrared radiation recv'd during 60 minutes prior to timestamp, Wh/m^2
-    ghi                                 Direct and diffuse horizontal radiation recv'd during 60 minutes prior to timestamp, Wh/m^2
-    dni                                 Amount of direct normal radiation (modeled) recv'd during 60 mintues prior to timestamp, Wh/m^2
-    dhi                                 Amount of diffuse horizontal radiation recv'd during 60 minutes prior to timestamp, Wh/m^2
-    global_hor_illum                    Avg. total horizontal illuminance recv'd during the 60 minutes prior to timestamp, lx
-    direct_normal_illum                 Avg. direct normal illuminance recv'd during the 60 minutes prior to timestamp, lx
-    diffuse_horizontal_illum            Avg. horizontal diffuse illuminance recv'd during the 60 minutes prior to timestamp, lx
-    zenith_luminance                    Avg. luminance at the sky's zenith during the 60 minutes prior to timestamp, cd/m^2
-    wind_direction                      Wind direction at time indicated, degrees from north (360 = north; 0 = undefined,calm)
-    wind_speed                          Wind speed at the time indicated, meter/second
-    total_sky_cover                     Amount of sky dome covered by clouds or obscuring phenonema at time stamp, tenths of sky
-    opaque_sky_cover                    Amount of sky dome covered by clouds or obscuring phenonema that prevent observing the sky at time stamp, tenths of sky
-    visibility                          Horizontal visibility at the time indicated, km
-    ceiling_height                      Height of cloud base above local terrain (7777=unlimited), meter
-    present_weather_observation         Indicator for remaining fields: If 0, then the observed weather codes are taken from the following field. If 9, then missing weather is assumed.
-    present_weather_codes               Present weather code, see [1], chapter 2.9.1.28
-    precipitable_water                  Total precipitable water contained in a column of unit cross section from earth to top of atmosphere, cm
-    aerosol_optical_depth               The broadband aerosol optical depth per unit of air mass due to extinction by aerosol component of atmosphere, unitless
-    snow_depth                          Snow depth in centimeters on the day indicated, (999 = missing data)
-    days_since_last_snowfall            Number of days since last snowfall (maximum value of 88, where 88 = 88 or greater days; 99 = missing data)
-    albedo                              The ratio of reflected solar irradiance to global horizontal irradiance, unitless
-    liquid_precipitation_depth          The amount of liquid precipitation observed at indicated time for the period indicated in the liquid precipitation quantity field, millimeter
-    liquid_precipitation_quantity       The period of accumulation for the liquid precipitation depth field, hour
-    =============================       ==============================================================================================================================================================
-    
-    References
-    ----------
-    
-    [1] EnergyPlus documentation, Auxiliary Programs
-    https://energyplus.net/documentation.
-    '''
-    
     def read_epw_df(filename, coerce_year=None):
-    
+        '''
+        Read an EPW file in to a pandas dataframe.
+        
+        Note that values contained in the metadata dictionary are unchanged
+        from the EPW file.
+        
+        EPW files are commonly used by building simulation professionals
+        and are widely available on the web. For example via:
+        https://energyplus.net/weather , http://climate.onebuilding.org or
+        http://www.ladybug.tools/epwmap/
+        
+        
+        Parameters
+        ----------
+        filename : String
+            Can be a relative file path, absolute file path, or url.
+        
+        coerce_year : None or int, default None
+            If supplied, the year of the data will be set to this value. This can
+            be a useful feature because EPW data is composed of data from
+            different years.
+            Warning: EPW files always have 365*24 = 8760 data rows;
+            be careful with the use of leap years.
+        
+        
+        Returns
+        -------
+        Tuple of the form (data, metadata).
+        
+        data : DataFrame
+            A pandas dataframe with the columns described in the table
+            below. For more detailed descriptions of each component, please
+            consult the EnergyPlus Auxiliary Programs documentation
+            available at: https://energyplus.net/documentation.
+        
+        metadata : dict
+            The site metadata available in the file.
+        
+        Notes
+        -----
+        
+        The returned structures have the following fields.
+        
+        ===============   ======  =========================================
+        key               format  description
+        ===============   ======  =========================================
+        loc               String  default identifier, not used
+        city              String  site loccation
+        state-prov        String  state, province or region (if available)
+        country           String  site country code
+        data_type         String  type of original data source
+        WMO_code          String  WMO identifier
+        latitude          Float   site latitude
+        longitude         Float   site longitude
+        TZ                Float   UTC offset
+        altitude          Float   site elevation
+        ===============   ======  =========================================
+        
+        
+        =============================       ==============================================================================================================================================================
+        EPWData field                       description
+        =============================       ==============================================================================================================================================================
+        index                               A pandas datetime index. NOTE, times are set to local standard time (daylight savings is not included). Days run from 0-23h to comply with PVLIB's convention
+        year                                Year, from original EPW file. Can be overwritten using coerce function.
+        month                               Month, from original EPW file
+        day                                 Day of the month, from original EPW file.
+        hour                                Hour of the day from original EPW file. Note that EPW's convention of 1-24h is not taken over in the index dataframe used in PVLIB.
+        minute                              Minute, from original EPW file. Not used.
+        data_source_unct                    Data source and uncertainty flags. See [1], chapter 2.13
+        temp_air                            Dry bulb temperature at the time indicated, deg C
+        temp_dew                            Dew-point temperature at the time indicated, deg C
+        relative_humidity                   Relatitudeive humidity at the time indicated, percent
+        atmospheric_pressure                Station pressure at the time indicated, Pa
+        etr                                 Extraterrestrial horizontal radiation recv'd during 60 minutes prior to timestamp, Wh/m^2
+        etrn                                Extraterrestrial normal radiation recv'd during 60 minutes prior to timestamp, Wh/m^2
+        ghi_infrared                        Horizontal infrared radiation recv'd during 60 minutes prior to timestamp, Wh/m^2
+        ghi                                 Direct and diffuse horizontal radiation recv'd during 60 minutes prior to timestamp, Wh/m^2
+        dni                                 Amount of direct normal radiation (modeled) recv'd during 60 mintues prior to timestamp, Wh/m^2
+        dhi                                 Amount of diffuse horizontal radiation recv'd during 60 minutes prior to timestamp, Wh/m^2
+        global_hor_illum                    Avg. total horizontal illuminance recv'd during the 60 minutes prior to timestamp, lx
+        direct_normal_illum                 Avg. direct normal illuminance recv'd during the 60 minutes prior to timestamp, lx
+        diffuse_horizontal_illum            Avg. horizontal diffuse illuminance recv'd during the 60 minutes prior to timestamp, lx
+        zenith_luminance                    Avg. luminance at the sky's zenith during the 60 minutes prior to timestamp, cd/m^2
+        wind_direction                      Wind direction at time indicated, degrees from north (360 = north; 0 = undefined,calm)
+        wind_speed                          Wind speed at the time indicated, meter/second
+        total_sky_cover                     Amount of sky dome covered by clouds or obscuring phenonema at time stamp, tenths of sky
+        opaque_sky_cover                    Amount of sky dome covered by clouds or obscuring phenonema that prevent observing the sky at time stamp, tenths of sky
+        visibility                          Horizontal visibility at the time indicated, km
+        ceiling_height                      Height of cloud base above local terrain (7777=unlimited), meter
+        present_weather_observation         Indicator for remaining fields: If 0, then the observed weather codes are taken from the following field. If 9, then missing weather is assumed.
+        present_weather_codes               Present weather code, see [1], chapter 2.9.1.28
+        precipitable_water                  Total precipitable water contained in a column of unit cross section from earth to top of atmosphere, cm
+        aerosol_optical_depth               The broadband aerosol optical depth per unit of air mass due to extinction by aerosol component of atmosphere, unitless
+        snow_depth                          Snow depth in centimeters on the day indicated, (999 = missing data)
+        days_since_last_snowfall            Number of days since last snowfall (maximum value of 88, where 88 = 88 or greater days; 99 = missing data)
+        albedo                              The ratio of reflected solar irradiance to global horizontal irradiance, unitless
+        liquid_precipitation_depth          The amount of liquid precipitation observed at indicated time for the period indicated in the liquid precipitation quantity field, millimeter
+        liquid_precipitation_quantity       The period of accumulation for the liquid precipitation depth field, hour
+        =============================       ==============================================================================================================================================================
+        
+        References
+        ----------
+        
+        [1] EnergyPlus documentation, Auxiliary Programs
+        https://energyplus.net/documentation.
+        '''    
         if filename.startswith('http'):
             # Attempts to download online EPW file
             # See comments above for possible online sources
@@ -665,115 +599,115 @@ class rawDataImport:
     
         return data 
     
-        '''
-    Read an EPW file in to a pandas dataframe.
-    
-    Note that values contained in the metadata dictionary are unchanged
-    from the EPW file.
-    
-    EPW files are commonly used by building simulation professionals
-    and are widely available on the web. For example via:
-    https://energyplus.net/weather , http://climate.onebuilding.org or
-    http://www.ladybug.tools/epwmap/
-    
-    
-    Parameters
-    ----------
-    filename : String
-        Can be a relative file path, absolute file path, or url.
-    
-    coerce_year : None or int, default None
-        If supplied, the year of the data will be set to this value. This can
-        be a useful feature because EPW data is composed of data from
-        different years.
-        Warning: EPW files always have 365*24 = 8760 data rows;
-        be careful with the use of leap years.
-    
-    
-    Returns
-    -------
-    Tuple of the form (data, metadata).
-    
-    data : DataFrame
-        A pandas dataframe with the columns described in the table
-        below. For more detailed descriptions of each component, please
-        consult the EnergyPlus Auxiliary Programs documentation
-        available at: https://energyplus.net/documentation.
-    
-    metadata : dict
-        The site metadata available in the file.
-    
-    Notes
-    -----
-    
-    The returned structures have the following fields.
-    
-    ===============   ======  =========================================
-    key               format  description
-    ===============   ======  =========================================
-    loc               String  default identifier, not used
-    city              String  site loccation
-    state-prov        String  state, province or region (if available)
-    country           String  site country code
-    data_type         String  type of original data source
-    WMO_code          String  WMO identifier
-    latitude          Float   site latitude
-    longitude         Float   site longitude
-    TZ                Float   UTC offset
-    altitude          Float   site elevation
-    ===============   ======  =========================================
-    
-    
-    =============================       ==============================================================================================================================================================
-    EPWData field                       description
-    =============================       ==============================================================================================================================================================
-    index                               A pandas datetime index. NOTE, times are set to local standard time (daylight savings is not included). Days run from 0-23h to comply with PVLIB's convention
-    year                                Year, from original EPW file. Can be overwritten using coerce function.
-    month                               Month, from original EPW file
-    day                                 Day of the month, from original EPW file.
-    hour                                Hour of the day from original EPW file. Note that EPW's convention of 1-24h is not taken over in the index dataframe used in PVLIB.
-    minute                              Minute, from original EPW file. Not used.
-    data_source_unct                    Data source and uncertainty flags. See [1], chapter 2.13
-    temp_air                            Dry bulb temperature at the time indicated, deg C
-    temp_dew                            Dew-point temperature at the time indicated, deg C
-    relative_humidity                   Relatitudeive humidity at the time indicated, percent
-    atmospheric_pressure                Station pressure at the time indicated, Pa
-    etr                                 Extraterrestrial horizontal radiation recv'd during 60 minutes prior to timestamp, Wh/m^2
-    etrn                                Extraterrestrial normal radiation recv'd during 60 minutes prior to timestamp, Wh/m^2
-    ghi_infrared                        Horizontal infrared radiation recv'd during 60 minutes prior to timestamp, Wh/m^2
-    ghi                                 Direct and diffuse horizontal radiation recv'd during 60 minutes prior to timestamp, Wh/m^2
-    dni                                 Amount of direct normal radiation (modeled) recv'd during 60 mintues prior to timestamp, Wh/m^2
-    dhi                                 Amount of diffuse horizontal radiation recv'd during 60 minutes prior to timestamp, Wh/m^2
-    global_hor_illum                    Avg. total horizontal illuminance recv'd during the 60 minutes prior to timestamp, lx
-    direct_normal_illum                 Avg. direct normal illuminance recv'd during the 60 minutes prior to timestamp, lx
-    diffuse_horizontal_illum            Avg. horizontal diffuse illuminance recv'd during the 60 minutes prior to timestamp, lx
-    zenith_luminance                    Avg. luminance at the sky's zenith during the 60 minutes prior to timestamp, cd/m^2
-    wind_direction                      Wind direction at time indicated, degrees from north (360 = north; 0 = undefined,calm)
-    wind_speed                          Wind speed at the time indicated, meter/second
-    total_sky_cover                     Amount of sky dome covered by clouds or obscuring phenonema at time stamp, tenths of sky
-    opaque_sky_cover                    Amount of sky dome covered by clouds or obscuring phenonema that prevent observing the sky at time stamp, tenths of sky
-    visibility                          Horizontal visibility at the time indicated, km
-    ceiling_height                      Height of cloud base above local terrain (7777=unlimited), meter
-    present_weather_observation         Indicator for remaining fields: If 0, then the observed weather codes are taken from the following field. If 9, then missing weather is assumed.
-    present_weather_codes               Present weather code, see [1], chapter 2.9.1.28
-    precipitable_water                  Total precipitable water contained in a column of unit cross section from earth to top of atmosphere, cm
-    aerosol_optical_depth               The broadband aerosol optical depth per unit of air mass due to extinction by aerosol component of atmosphere, unitless
-    snow_depth                          Snow depth in centimeters on the day indicated, (999 = missing data)
-    days_since_last_snowfall            Number of days since last snowfall (maximum value of 88, where 88 = 88 or greater days; 99 = missing data)
-    albedo                              The ratio of reflected solar irradiance to global horizontal irradiance, unitless
-    liquid_precipitation_depth          The amount of liquid precipitation observed at indicated time for the period indicated in the liquid precipitation quantity field, millimeter
-    liquid_precipitation_quantity       The period of accumulation for the liquid precipitation depth field, hour
-    =============================       ==============================================================================================================================================================
-    
-    References
-    ----------
-    
-    [1] EnergyPlus documentation, Auxiliary Programs
-    https://energyplus.net/documentation.
-    '''
+
     
     def read_epw_firstRow(filename, coerce_year=None):
-    
+        '''
+        Read an EPW file in to a pandas dataframe.
+        
+        Note that values contained in the metadata dictionary are unchanged
+        from the EPW file.
+        
+        EPW files are commonly used by building simulation professionals
+        and are widely available on the web. For example via:
+        https://energyplus.net/weather , http://climate.onebuilding.org or
+        http://www.ladybug.tools/epwmap/
+        
+        
+        Parameters
+        ----------
+        filename : String
+            Can be a relative file path, absolute file path, or url.
+        
+        coerce_year : None or int, default None
+            If supplied, the year of the data will be set to this value. This can
+            be a useful feature because EPW data is composed of data from
+            different years.
+            Warning: EPW files always have 365*24 = 8760 data rows;
+            be careful with the use of leap years.
+        
+        
+        Returns
+        -------
+        Tuple of the form (data, metadata).
+        
+        data : DataFrame
+            A pandas dataframe with the columns described in the table
+            below. For more detailed descriptions of each component, please
+            consult the EnergyPlus Auxiliary Programs documentation
+            available at: https://energyplus.net/documentation.
+        
+        metadata : dict
+            The site metadata available in the file.
+        
+        Notes
+        -----
+        
+        The returned structures have the following fields.
+        
+        ===============   ======  =========================================
+        key               format  description
+        ===============   ======  =========================================
+        loc               String  default identifier, not used
+        city              String  site loccation
+        state-prov        String  state, province or region (if available)
+        country           String  site country code
+        data_type         String  type of original data source
+        WMO_code          String  WMO identifier
+        latitude          Float   site latitude
+        longitude         Float   site longitude
+        TZ                Float   UTC offset
+        altitude          Float   site elevation
+        ===============   ======  =========================================
+        
+        
+        =============================       ==============================================================================================================================================================
+        EPWData field                       description
+        =============================       ==============================================================================================================================================================
+        index                               A pandas datetime index. NOTE, times are set to local standard time (daylight savings is not included). Days run from 0-23h to comply with PVLIB's convention
+        year                                Year, from original EPW file. Can be overwritten using coerce function.
+        month                               Month, from original EPW file
+        day                                 Day of the month, from original EPW file.
+        hour                                Hour of the day from original EPW file. Note that EPW's convention of 1-24h is not taken over in the index dataframe used in PVLIB.
+        minute                              Minute, from original EPW file. Not used.
+        data_source_unct                    Data source and uncertainty flags. See [1], chapter 2.13
+        temp_air                            Dry bulb temperature at the time indicated, deg C
+        temp_dew                            Dew-point temperature at the time indicated, deg C
+        relative_humidity                   Relatitudeive humidity at the time indicated, percent
+        atmospheric_pressure                Station pressure at the time indicated, Pa
+        etr                                 Extraterrestrial horizontal radiation recv'd during 60 minutes prior to timestamp, Wh/m^2
+        etrn                                Extraterrestrial normal radiation recv'd during 60 minutes prior to timestamp, Wh/m^2
+        ghi_infrared                        Horizontal infrared radiation recv'd during 60 minutes prior to timestamp, Wh/m^2
+        ghi                                 Direct and diffuse horizontal radiation recv'd during 60 minutes prior to timestamp, Wh/m^2
+        dni                                 Amount of direct normal radiation (modeled) recv'd during 60 mintues prior to timestamp, Wh/m^2
+        dhi                                 Amount of diffuse horizontal radiation recv'd during 60 minutes prior to timestamp, Wh/m^2
+        global_hor_illum                    Avg. total horizontal illuminance recv'd during the 60 minutes prior to timestamp, lx
+        direct_normal_illum                 Avg. direct normal illuminance recv'd during the 60 minutes prior to timestamp, lx
+        diffuse_horizontal_illum            Avg. horizontal diffuse illuminance recv'd during the 60 minutes prior to timestamp, lx
+        zenith_luminance                    Avg. luminance at the sky's zenith during the 60 minutes prior to timestamp, cd/m^2
+        wind_direction                      Wind direction at time indicated, degrees from north (360 = north; 0 = undefined,calm)
+        wind_speed                          Wind speed at the time indicated, meter/second
+        total_sky_cover                     Amount of sky dome covered by clouds or obscuring phenonema at time stamp, tenths of sky
+        opaque_sky_cover                    Amount of sky dome covered by clouds or obscuring phenonema that prevent observing the sky at time stamp, tenths of sky
+        visibility                          Horizontal visibility at the time indicated, km
+        ceiling_height                      Height of cloud base above local terrain (7777=unlimited), meter
+        present_weather_observation         Indicator for remaining fields: If 0, then the observed weather codes are taken from the following field. If 9, then missing weather is assumed.
+        present_weather_codes               Present weather code, see [1], chapter 2.9.1.28
+        precipitable_water                  Total precipitable water contained in a column of unit cross section from earth to top of atmosphere, cm
+        aerosol_optical_depth               The broadband aerosol optical depth per unit of air mass due to extinction by aerosol component of atmosphere, unitless
+        snow_depth                          Snow depth in centimeters on the day indicated, (999 = missing data)
+        days_since_last_snowfall            Number of days since last snowfall (maximum value of 88, where 88 = 88 or greater days; 99 = missing data)
+        albedo                              The ratio of reflected solar irradiance to global horizontal irradiance, unitless
+        liquid_precipitation_depth          The amount of liquid precipitation observed at indicated time for the period indicated in the liquid precipitation quantity field, millimeter
+        liquid_precipitation_quantity       The period of accumulation for the liquid precipitation depth field, hour
+        =============================       ==============================================================================================================================================================
+        
+        References
+        ----------
+        
+        [1] EnergyPlus documentation, Auxiliary Programs
+        https://energyplus.net/documentation.
+        '''    
         if filename.startswith('http'):
             # Attempts to download online EPW file
             # See comments above for possible online sources
@@ -828,28 +762,3 @@ class rawDataImport:
         data.index = idx
     
         return meta
-    
-    
-    
-    #path = r'C:\Users\DHOLSAPP\Desktop\Summer_Project\WithRawIWECfile_Proprietary\Python'
-    
-    
-    
-    #test = cleanFirstRowDataFrame( path )
-    
-    #createPickleFileFirstRow( path )
-    
-    #firstRow_summary_df = pd.read_pickle( path + '\\Pandas_Pickle_DataFrames\\Pickle_FirstRows\\firstRowSummary_Of_CSV_Files.pickle')
-    
-    
-    
-    
-    
-    
-    
-
-
-
-
-
-

@@ -24,6 +24,8 @@ from bokeh.models import Legend, LegendItem
 
 class plotSite:
     
+    
+    
     def findPickleFile(fileID , currentDirectory):
         '''
         HELPER FUNCTION
@@ -39,29 +41,22 @@ class plotSite:
         '''
         #Set path
         path = currentDirectory
-        
         # Get the file name of each raw data pickle,  the unique identifier is inside this list
         rawfileNames = cleanRawOutput.filesNameList( path )
-        
         # Reference the summary frame to pull out the user Input row and display
         summary_df = cleanRawOutput.dataSummaryFrame( path )
-        
         #Create a list of unique identifiers for the file string names "See helper functions"
         uniqueID_List = cleanRawOutput.stringList_UniqueID_List(rawfileNames)
-        
         booleanSearch = summary_df["Site Identifier Code"].str.find(fileID) 
         for r in range( 0 , len(booleanSearch)):
             if booleanSearch[r] == 0:
                 summaryRow_df = summary_df.iloc[r,:]
                 break
-            
         for i in range(0 , len( rawfileNames ) ):
-        
             #If the user input is a match with a raw data file
             if fileID == uniqueID_List[i]:
                 # Pull out the raw pickle of the located file name
                 raw_df = pd.read_pickle( path + '/Pandas_Pickle_DataFrames/Pickle_Level1/' + rawfileNames[i] )
-                
         return raw_df , summaryRow_df
     
     
